@@ -1,0 +1,240 @@
+%!TEX program = xelatex
+\documentclass[10pt]{article}
+
+% Packages for XeLaTeX
+\usepackage{fontspec} % For custom fonts and Unicode support
+\usepackage{multicol} % For two-column layout
+\usepackage{amsmath} % For mathematical equations
+\usepackage{graphicx} % For including figures
+\usepackage{lipsum} % For placeholder text (remove in your actual document)
+\usepackage{geometry} % To adjust margins and padding
+\usepackage{authblk} % For author affiliations
+\usepackage{booktabs} % For better table formatting
+\usepackage{appendix} % For appendices
+\usepackage{placeins} % For controlling figure placement
+\usepackage{float} % For better control of figure and table placement
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage{biblatex} % For bibliography management
+\usepackage{array} % Required for tabularx
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage[hidelinks]{hyperref}
+\usepackage{todonotes}
+\setuptodonotes{inline}
+\hypersetup{
+    % colorlinks=true,       % Colored links instead of boxes
+    % linkcolor=blue,       % Internal link color
+    % citecolor=magenta,    % Citation links
+    % urlcolor=cyan,        % URL links
+    pdftitle={Thesis Proposal}, % PDF metadata
+    pdfauthor={Michail Raftopoulos}
+}
+
+% Bibliography setup
+\AtEveryBibitem{
+  \clearfield{doi}
+  \clearfield{issn}
+}
+
+% Set main font (optional, replace with your preferred font)
+\setmainfont{Linux Libertine}
+
+% Title, Author, and Date
+\title{\textbf{Early Detection of Alzheimer's Disease from Speech with Hierarchical Fusion Networks}\\[0.5em]
+\Large A Research Proposal}
+
+\author{\textbf{Raftopoulos Michail}}
+\affil{National Technical University of Athens, Greece}
+\date{} % Remove date
+
+\addbibresource{references.bib}
+
+% Adjust page geometry (reduce margins)
+\geometry{
+    a4paper, % Paper size
+    left=20mm, % Left margin
+    right=20mm, % Right margin
+    top=30mm, % Top margin
+    bottom=30mm, % Bottom margin
+    columnsep=8mm % Space between columns
+}
+
+\newcommand{\tpar}[1]{\par\textbf{#1: }}
+
+\begin{document}
+
+% Title and Abstract
+\maketitle
+\begin{abstract}
+    Early detection of Alzheimer's Disease (AD) and Mild Cognitive Impairment (MCI) is crucial for timely intervention and more effective disease management.
+    While automated speech analysis has shown promise for AD detection, current approaches face significant limitations: until recently, most focused on binary AD versus healthy 
+    control classification, neglecting the clinically critical MCI stage, models often lack interpretability required for clinical adoption, and generalization across 
+    languages remains limited. This research proposes a hierarchical fusion network designed to address these challenges by incorporating multiple interpretable feature 
+    modalities—including acoustic, linguistic, paralinguistic, and demographic information—at various levels of abstraction. The hierarchical architecture adds transparency
+    to the model's decision-making process through attention mechanisms while promising high performance on the challenging three-class classification problem (AD/MCI/HC). 
+\end{abstract}
+
+% Two-column content starts here
+\begin{multicols}{2}
+
+\section{Introduction}
+\par Dementia is a progressive neurodegenerative disorder that causes irreversible brain damage, significantly impairing activities of daily living.
+It is estimated that it affects over 57.4 million people, a figure that is expected to rise dramatically 
+due to the aging population \cite{nicholsEstimationGlobalPrevalence2022}.
+Alzheimer's Disease (AD) is the most prevalent form of dementia, accounting for 60-70\% of all cases \cite{silvaAlzheimersDiseaseRisk2019}.
+\par While there is no known cure for AD, early detection can greatly help patients manage their symptoms and improve the quality of life for
+them and their families. Particularly, researchers highlight the need for detecting a cognitive decline stage known 
+as Mild Cognitive Impairment (MCI) which may or may not progress to dementia. Speech analysis has emerged as a promising approach for detecting MCI, 
+offering a non-invasive, cost-effective, and accessible means of assessment \cite{2018AlzheimersDisease2018, lanziDementiaBankTheoreticalRationale2023}.
+
+\section{Problem Statement}
+\par There have been many advancements in the field of AD detection from spontaneous speech. Organizations such as DementiaBank have provided the research
+community with essential datasets, and many competitions have used the existing datasets to produce valuable benchmarks
+for researchers to develop and evaluate their models. These efforts have resulted in numerous successful approaches, with reported accuracies often surpassing 90\%.
+\cite{shakeriNaturalLanguageProcessing2025a, rundeOptimizationNaturalLanguage2024}. However, several critical limitations prevent clinical translation of these technologies.
+\tpar{Detection of MCI} The majority of previous studies have focused on the binary classification task between AD and Healthy Control (HC) subjects. The inclusion 
+of MCI as a separate class presents a significantly more challenging three-class classification problem, yet it is clinically essential as MCI represents a critical 
+intervention window where treatments may be most effective. \cite{shakeriNaturalLanguageProcessing2025a, shakeriMultiConADUnifiedMultilingual2025}. 
+\tpar{Language Generalization} Currently, most datasets contain only English speech samples. This limits the global applicability of the models, since important markers
+may differ across languages. \cite{shakeriMultiConADUnifiedMultilingual2025} showcases that while some languages benefit from multilingual training, others
+require language-specific models. 
+\tpar{Interpretability} Clinical adoption requires model interpretability, as healthcare professionals need to understand which speech characteristics drive diagnostic 
+predictions to integrate findings with other clinical indicators and build professional trust. However, most previous approaches have utilized
+complex deep learning architectures and/or pre-trained language models, which are often considered black boxes, hindering model interpretability.
+\par These challenges have attracted considerable attention from the research community, leading to a growing number of recent studies addressing the topic.
+
+\section{Objectives}
+\par Out of the mentioned problems, this project will mainly focus on the detection of MCI and aim for high performance in the according 3-class classification problem (AD/MCI/HC). 
+The model will be  developed in a way that preserves an acceptable level of interpretability through the use of various proven interpretable features,
+fused with a hierarchical architecture. The attention weights at the fusion stage will provide valuable insight on the model's decision making process.
+
+\section{Literature Review}
+\subsection{Datasets and Evaluation Challenges}
+\tpar{DementiaBank} Most datasets currently available are provided by the DementiaBank database. The largest and most widely used of them is the Pitt corpus, a collection of
+transcripted audio recordings from various cognitive tasks. There has also been work toward the creation and expansion of the 
+Delaware corpus, a new dataset that focuses on the binary MCI vs HC distinction. It provides transcripted videos of a large variety of cognitive tasks and includes subjects
+of a wide ethnic and cultural diversity \cite{lanziDementiaBankTheoreticalRationale2023}.
+\par It should be mentioned that a recent analysis \cite{liuCleverHansEffect2024} identified the presence of the Clever Hans effect within the Pitt corpus. This phenomenon occurs 
+when models exploit spurious dataset artifacts rather than learning genuine diagnostic patterns, potentially inflating 
+reported accuracies while compromising real-world generalizability. This finding raises important questions about the reliability of some previously reported performance metrics
+and underscores the need for more robust evaluation protocols.
+\tpar{ADReSS, ADReSSo and ADReSS-M} The ADReSS Challenge was introduced in the Interspeech 2020 conference. It provides a balanced subset of the Pitt corpus, with respect to
+age and gender \cite{luzAlzheimersDementiaRecognition2020}. The ADReSSo Challenge followed in 2021, introducing a more difficult task of AD detection using only speech samples,
+without manually-created transcriptions. It also utilized a subset of the Pitt corpus \cite{luzDetectingCognitiveDecline}. Lastly, the ADReSS-M challenge, introduced 
+in the ICASSP 2023 conference, focused on the binary classification task of AD detection in the Greek language. It provided a subset of the Pitt corpus, as well as a new 
+dataset with Greek speech samples \cite{luzOverviewADReSSMSignal2024}. These challenges have provided valuable benchmarks and lead to significant advancements in the field.
+\tpar{MultiConAD} The MultiConAD dataset \cite{shakeriMultiConADUnifiedMultilingual2025} is a recent effort to tackle the problems of 3-class classification and
+multilingual generalization. It combines multiple existing datasets, mostly the ones provided by DementiaBank, to create a large and diverse multilingual dataset, with a variety
+of cognitive assessment tasks. It includes audio and transcription samples in English, Spanish, Chinese, and Greek. Additionally, it provides an important set of baseline models,
+that act as a starting point for future research.
+\tpar{PROCESS} The ICASSP 2025 PROCESS Grand Challenge \cite{taoEarlyDementiaDetection2024} introduced a modern dataset, to serve as a benchmark for the 3-class detection problem.
+It provides audio recordings and manual transcripts (with only audio provided for the test set) from three cognitive tasts: Sematic Fluency, Phonemic Fluency, and Picture Description. The contestants
+were also tasked with performing regression on the MMSE score, a widely used clinical assessment for cognitive impairment.
+
+\subsection{Relevant Approaches}
+\par Table \ref{tab:3class} summarizes the most successful approaches for the classification problem in the known 3-class datasets. For the MultiConAD baseline,
+the selected model was the top-performing one that used only English transcriptions and dense text representations \cite{shakeriMultiConADUnifiedMultilingual2025}. 
+It should be noted that we could not find any other approaches that train and evaluate on the MultiConAD dataset. 
+In the PROCESS Challenge, the most performant baseline model utilized only eGeMAPS acoustic features and a Random Forest classifier \cite{taoEarlyDementiaDetection2024}.
+Some proposed baselines in the paper perform better, but are trained and evaluated on subsets of the dataset.
+The overall winner of the PROCESS Challenge \cite{gaoLeveragingMultimodalMethods2025} leveraged linguistic features, extracted from ASR transcriptions, 
+and an ensemble of traditional machine learning models, to achieve an F1 score of 0.649. These linguistic features include cognitive-task-specific indicators
+(count of correct words in Verbal Fluency Tasks) and algorithmically extracted speech pause descriptors.
+The best performing submission specific to the classification task \cite{zhangCognitiveDeclineDetection2025} achieved an F1 score of 0.696, using a self-developed
+Digital Linguistic Biomarker (DLB) extractor.
+\par A review of top-performing approaches reveals that much of the literature emphasizes the extraction of informative feature sets as a key factor in achieving high performance. 
+Several notable studies illustrate this trend. For instance, \cite{zolnooriADscreenSpeechProcessingbased2023} extract a broad range of features, including metrics related to 
+phonetic motor planning, semantic disfluency (e.g., word repetition and pausing), lexical diversity, and syntactic structure. They further incorporate BERT embeddings to capture 
+verbal disfluencies, as well as psycholinguistic features such as LIWC and GeMAPS. Similarly, \cite{haiderAffectiveSpeechAlzheimers2020} focus on the emotional dimension of 
+speech by introducing the Affective Behaviour Representation (ABR), which employs a machine learning model to label each speech segment with an emotion and summarize the 
+emotional content of an entire recording into a single vector. Finally, \cite{jiaWhisperBasedMultilingualAlzheimers} leverages fine-tuned Whisper models for AD detection in 
+low-resource languages. The authors chose to additionally integrate speaker background information such as age, gender, and education level, showing that the inclusion of
+demographic variables leads to significant performance improvements.
+
+\end{multicols}
+\begin{table}[H]
+    \centering
+    \caption{Most successful approaches and baselines for the 3-class classification problem (AD/MCI/HC).}
+    \label{tab:3class}
+    \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}
+        \noalign{\hrule height 1pt}
+        \bf{Study} & \bf{Dataset} & \bf{Method} & \bf{Accuracy} & \bf{F1 score} \\
+        \hline
+        \cite{shakeriMultiConADUnifiedMultilingual2025} & MultiConAD (English only) & SVM + \texttt{multilingual-e5-large} (baseline) & 0.65 & - \\ 
+        \hline
+        \cite{taoEarlyDementiaDetection2024} & PROCESS & RF + eGeMAPS (baseline) & 0.525 & 0.474 \\
+        \hline
+        \cite{gaoLeveragingMultimodalMethods2025} & PROCESS & Whisper + linguistic features + esemble of traditional ML models & - & 0.649 \\
+        \hline
+        \cite{zhangCognitiveDeclineDetection2025} & PROCESS & DLB extractor + RF + PCA & - & 0.696 \\
+        \noalign{\hrule height 1pt}
+    \end{tabularx}
+\end{table}
+\begin{multicols}{2}
+
+\subsection{Hierarchical Fusion Networks}
+\par Hierarchical architectures have been extensively applied across a wide range of domains, consistently demonstrating strong performance. In particular, they have 
+proven highly effective in affective computing and multimodal learning, where the ability to integrate information at the appropriate levels of granularity—ranging from low-level 
+signals to higher-level abstractions—has been shown to capture complex patterns more accurately \cite{chatzichristodoulouMEDUSAMultimodalDeep2025, georgiouDeepHierarchicalFusion2019, triantafyllopoulosDepressionDetectionSocial2023, xezonakiAffectiveConditioningHierarchical2020a}.
+\par In addition to their proven strong performance, we believe that hierarchical fusion networks can also exhibit a high level of interpretability. If interpretable
+features are used, and we decide to fuse them by concatenation, one can examine the attention weights at the fusion stage to understand which features
+contributed the most to the model's decision. 
+\par Although hierarchical architectures offer these advantages, our review of the literature revealed no prior approaches that apply them specifically to AD and MCI detection. 
+This absence highlights a promising research gap: by leveraging hierarchical structures, future models could potentially capture speech and language patterns at 
+multiple levels of representation, leading to more accurate and interpretable predictions.
+
+\section{Methodology}
+\subsection{Dataset}
+\par Since the main focus of this project is the detection of MCI, the PROCESS dataset is considered to be the most suitable, as it provides the most modern and well-structured
+dataset for this task. However, the data does not seem to be publicly available yet, so a special request from the organizers will be needed.
+\par Another viable option is the MultiConAD dataset. Its large collection of samples can allow larger models to be trained, and its multilingual nature can facilitate
+experiments with joint multilingual training. The majority of the data can be acquired though a request to the DementiaBank organization.
+
+\subsection{Architecture}
+\par The proposed model will include audio and language modalities, with additional feature sets explored to identify the most effective combination. 
+Since this approach might add some layers of complexity, the development process will be divided into 2 stages, with the first one focusing on a simpler model to act
+as a strong baseline, and the second on expanding that baseline with additional features.
+
+\subsubsection{Stage 1: Model Baseline}
+\par The baseline model will utilize audio and linguistic features, as these are the most significant for the problem at hand. For acoustic features, the eGeMAPS feature set
+\cite{eybenGenevaMinimalisticAcoustic2016a} was selected, due to its interpretability and proven effectiveness in paralinguistic and clinical speech analysis. These features will be extracted 
+using the OpenSMILE toolkit. For the linguistic modality, the raw audio will be transcribed using a pre-trained ASR model (e.g., Whisper), and the resulting text will be 
+encoded using a model like BERT to generate embeddings.
+Although in most DementiaBank datasets manual transcripts are provided, they will be omitted as they would not be available in a real-world clinical setting.
+\par The selected modalities will be aligned at the word level, to provide fine-grained temporal information. Then, they will be fused through concatenation, followed by processing via a Transformer Encoder. Those
+representations will then be aggregated to the recording level using a pooling layer and subsequently fed into the classification head. Lastly, the model's hyperparameters 
+will be optimized either manually or algorithmically, depending on the available computational resources.
+
+\subsubsection{Stage 2: Additional Feature Integration}
+\par The second stage focuses on experimentation with additional feature sets, inspired by the literature review. There is also interest in experimenting
+with different abstraction levels for the already existing modalities, such as phrase-level or recording-level embeddings.
+The potential candidates can be summarized as follows:
+\begin{itemize}
+    \item Algorithmically extracted paralinguistic features.
+    \item Psycholinguistic features and affective information.
+    \item Demographic data.
+    \item Phrase-level fusion of embeddings.
+    \item Recording-level fusion of embeddings.
+\end{itemize}
+Through an ablation study, we will identify the optimal combination of feature sets and assess the relative importance of each set in contributing to model performance.
+After the optimal feature combination is identified, the model's hyperparameters may be re-optimized to ensure peak performance.
+
+\subsection{Possible Extensions}
+\par In addition to the primary objectives of the project, some potential extensions could be explored, depending on the availability of time and resources.
+Firstly, given the focus on the interpretable traits of the proposed architecture, an in-depth interpretability assessment would enhance the robustness of this study.
+Secondly, if the MultiConAD dataset is used, there would be interest in training the model in multilingual data and evaluating its performance on low-resource languages, 
+such as Greek.
+
+\subsection{Expected Outcomes}
+This project is expected to demonstrate that hierarchical fusion networks can effectively address the three-class classification problem of AD, MCI, and healthy controls 
+while preserving interpretability. By systematically integrating and evaluating diverse feature sets, the study aims to identify which modalities and levels of representation 
+contribute most to robust performance. We hope that this approach will result in a model that is not only highly accurate but also transparent, aligning with the 
+critical needs of the healthcare community.
+
+\printbibliography 
+
+\end{multicols}
+
+\end{document}

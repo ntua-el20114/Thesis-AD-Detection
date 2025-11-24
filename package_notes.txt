@@ -1,0 +1,4 @@
+These packages were installed with pip and are not part of the conda environment:
+- opensmile
+- openai-whisper
+- whisperx
