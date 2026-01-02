@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 
 from src.dataloader import create_dataloaders
 from src.models.wavlm_model import WavLMClassifier
+from src.models.test_models import LinearFusionModel
 from src.train import train
 import argparse
 
@@ -42,13 +43,12 @@ def main(
     # batch_size: int = 4,
     # num_epochs: int = 5,
     # learning_rate: float = 2e-5,
-    model_name: str,
+    model: str,
     comment: str,
     batch_size: int,
     num_epochs: int,
     learning_rate: float,
     num_repetitions: int = 5,
-    freeze_backbone: bool = False,
     results_dir: str = 'results',
 ):
     """
@@ -60,7 +60,6 @@ def main(
         num_epochs: Number of epochs
         learning_rate: Learning rate
         num_repetitions: Number of experiment repetitions (default=5)
-        freeze_backbone: Whether to freeze backbone
         results_dir: Directory to save results
     """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -79,7 +78,7 @@ def main(
     
     # Create experiment directory
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    exp_name = f"{model_name}_{timestamp}"
+    exp_name = f"{model}_{timestamp}"
     exp_dir = Path(results_dir) / exp_name
     exp_dir.mkdir(parents=True, exist_ok=True)
     
@@ -88,7 +87,7 @@ def main(
     
     # Save hyperparameters
     config = {
-        'model': model_name,
+        'model': model,
         'comment': comment,
         'num_repetitions': num_repetitions,
         'seeds': seeds,
@@ -97,7 +96,6 @@ def main(
         'num_epochs': num_epochs,
         'batch_size': batch_size,
         'learning_rate': learning_rate,
-        'freeze_backbone': freeze_backbone,
     }
     with open(exp_dir / 'config.json', 'w') as f:
         json.dump(config, f, indent=2)
@@ -120,11 +118,13 @@ def main(
         print(f"Seed: {seed}")
 
         # Create model for this repetition
-        print(f"Creating {model_name} model...")
-        if model_name == 'wavlm':
-            model = WavLMClassifier(num_classes=2, freeze_backbone=freeze_backbone)
+        print(f"Creating {model} model...")
+        if model == 'wavlm':
+            model = WavLMClassifier(num_classes=2)
+        elif model == 'test_linear':
+            model = LinearFusionModel()
         else:
-            raise ValueError(f"Unknown model: {model_name}")
+            raise ValueError(f"Unknown model: {model}")
         
         # Train
         print("Starting training...")
@@ -203,24 +203,22 @@ def main(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train model')
-    parser.add_argument('--model_name', type=str, required=True, help='Model name')
+    parser.add_argument('--model', type=str, required=True, help='Model name')
     parser.add_argument('--comment', type=str, default='none', help='Personal comment for the experiment')
     parser.add_argument('--batch_size', type=int, required=True, help='Batch size')
     parser.add_argument('--num_epochs', type=int, required=True, help='Number of epochs')
     parser.add_argument('--learning_rate', type=float, required=True, help='Learning rate')
     parser.add_argument('--num_repetitions', type=int, default=5, help='Number of experiment repetitions')
-    parser.add_argument('--freeze_backbone', action='store_true', help='Freeze backbone')
     parser.add_argument('--results_dir', type=str, default='results', help='Results directory')
     
     args = parser.parse_args()
     
     main(
-        model_name=args.model_name,
+        model=args.model,
         comment=args.comment,
         batch_size=args.batch_size,
         num_epochs=args.num_epochs,
         learning_rate=args.learning_rate,
         num_repetitions=args.num_repetitions,
-        freeze_backbone=args.freeze_backbone,
         results_dir=args.results_dir,
     )

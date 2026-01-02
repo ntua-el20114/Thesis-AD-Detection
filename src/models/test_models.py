@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-class SimpleFusionModel(nn.Module):
+class LinearFusionModel(nn.Module):
     """Simple model that processes egemaps and BERT features"""
     
     def __init__(self, egemaps_dim=88, bert_dim=768, hidden_dim=256, num_classes=3):
@@ -13,7 +13,7 @@ class SimpleFusionModel(nn.Module):
             hidden_dim: Hidden layer dimension
             num_classes: Number of output classes (e.g., for classification)
         """
-        super(SimpleFusionModel, self).__init__()
+        super(LinearFusionModel, self).__init__()
         
         # Separate pathways for each modality
         self.egemaps_encoder = nn.Sequential(
