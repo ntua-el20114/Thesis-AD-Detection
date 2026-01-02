@@ -1,0 +1,474 @@
+%!TEX program = xelatex
+\documentclass[10pt]{article}
+
+% Packages for XeLaTeX
+\usepackage{fontspec} % For custom fonts and Unicode support
+\usepackage{multicol} % For two-column layout
+\usepackage{amsmath} % For mathematical equations
+\usepackage{graphicx} % For including figures
+\usepackage{lipsum} % For placeholder text (remove in your actual document)
+\usepackage{geometry} % To adjust margins and padding
+\usepackage{authblk} % For author affiliations
+\usepackage{booktabs} % For better table* formatting
+\usepackage{appendix} % For appendices
+\usepackage{placeins} % For controlling figure placement
+\usepackage{float} % For better control of figure and table* placement
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage{csquotes} % Recommended for APA
+\usepackage[
+    backend=biber,   
+    style=ieee,        
+]{biblatex}
+\usepackage{array} % Required for tabularx
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{adjustbox}
+\usepackage[hidelinks]{hyperref}
+\usepackage{todonotes}
+\usepackage{xcolor}
+
+\setuptodonotes{inline}
+\hypersetup{
+    colorlinks=true,      
+    linkcolor=blue,       
+    citecolor=blue,       
+    filecolor=blue,       
+    urlcolor=blue,        
+    pdftitle={Raftopoulos Thesis Proposal},
+}
+% Todonotes setup
+\definecolor{mygreen}{HTML}{13C325} 
+
+% Bibliography setup
+\AtEveryBibitem{
+  \clearfield{doi}
+  \clearfield{issn}
+}
+
+% Set main font (optional, replace with your preferred font)
+\setmainfont{Linux Libertine}
+
+% Title, Author, and Date
+\title{\textbf{Early Detection of Alzheimer's Disease from Speech \todo{with
+	what?}}
+\Large A Research Proposal}
+
+\author{\textbf{Raftopoulos Michail}}
+\affil{National Technical University of Athens, Greece}
+\date{} % Remove date
+
+\addbibresource{references.bib}
+
+% Adjust page geometry (reduce margins)
+\geometry{
+    a4paper, % Paper size
+    left=20mm, % Left margin
+    right=20mm, % Right margin
+    top=30mm, % Top margin
+    bottom=30mm, % Bottom margin
+    columnsep=8mm % Space between columns
+}
+
+\newcommand{\tpar}[1]{\par\textbf{#1: }}
+
+\begin{document}
+
+% Title and Abstract
+\maketitle
+
+\todo[color=mygreen]{Latest changes can be found in Section
+\ref{sec:methodology}: Methodology.} 
+
+\begin{abstract} Early detection of Alzheimer's Disease (AD) and Mild Cognitive
+	Impairment (MCI) is crucial for timely intervention and more effective
+	disease management. While automated speech analysis has shown promise for
+	AD detection, current approaches face significant limitations: until
+	recently, most focused on binary AD versus healthy control classification,
+	neglecting the clinically critical MCI stage, ...\todo{finish abstract}
+\end{abstract}
+
+% Two-column content starts here
+\begin{multicols}{2}
+
+\section{Introduction}
+\par Dementia is a progressive neurodegenerative disorder
+that causes irreversible brain damage, significantly impairing activities of daily
+living. It is estimated that it affects over 57.4 million people, a figure that is
+expected to rise dramatically due to the aging population
+\cite{nicholsEstimationGlobalPrevalence2022}. Alzheimer's Disease (AD) is the most
+prevalent form of dementia, accounting for 60-70\% of all cases
+\cite{silvaAlzheimersDiseaseRisk2019}.
+\par While there is no known cure for AD,
+early detection can greatly help patients manage their symptoms and improve the
+quality of life for them and their families. Particularly, researchers highlight
+the need for detecting a cognitive decline stage known as Mild Cognitive Impairment
+(MCI) which may or may not progress to dementia. Speech analysis has emerged as a
+promising approach for detecting MCI, offering a non-invasive, cost-effective, and
+accessible means of assessment \cite{2018AlzheimersDisease2018,
+lanziDementiaBankTheoreticalRationale2023}.
+\par The field has witnessed significant academic interest in recent years,
+characterized by frequent competitions and a growing body of literature.
+However, it continues to face substantial challenges that hinder clinical
+translation. Although many models report high evaluation metrics, performance
+levels remain insufficient for reliable clinical application. Moreover, these
+models are frequently trained and evaluated on small or outdated datasets,
+raising concerns regarding their generalizability. In this research proposal,
+we perform a comprehensive literature review of existing methodologies and the
+evaluation metrics achieved. We then identify gaps in the literature and missed
+opportunities, finally proposing a set of promising methodologies to address
+these limitations.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{cookie-theft-picture.png}
+	\caption{\todo{add caption}}
+	\label{fig:ctp}
+\end{figure}
+
+% \section{Problem Statement} \par There have been many advancements in the field of
+% AD detection from spontaneous speech. Organizations such as DementiaBank have
+% provided the research community with essential datasets, and many competitions have
+% used the existing datasets to produce valuable benchmarks for researchers to
+% develop and evaluate their models. These efforts have resulted in numerous
+% successful approaches, with reported accuracies often surpassing 90\%.
+% \cite{shakeriNaturalLanguageProcessing2025a, rundeOptimizationNaturalLanguage2024}.
+% However, several critical limitations prevent clinical translation of these
+% technologies. \tpar{Detection of MCI} The majority of previous studies have focused
+% on the binary classification task between AD and Healthy Control (HC) subjects. The
+% inclusion of MCI as a separate class presents a significantly more challenging
+% three-class classification problem, yet it is clinically essential as MCI
+% represents a critical intervention window where treatments may be most effective.
+% \cite{shakeriNaturalLanguageProcessing2025a,
+% shakeriMultiConADUnifiedMultilingual2025}. \tpar{Language Generalization}
+% Currently, most datasets contain only English speech samples. This limits the
+% global applicability of the models, since important markers may differ across
+% languages. \cite{shakeriMultiConADUnifiedMultilingual2025} showcases that while
+% some languages benefit from multilingual training, others require language-specific
+% models. \tpar{Interpretability} Clinical adoption requires model interpretability,
+% as healthcare professionals need to understand which speech characteristics drive
+% diagnostic predictions to integrate findings with other clinical indicators and
+% build professional trust. However, most previous approaches have utilized complex
+% deep learning architectures and/or pre-trained language models, which are often
+% considered black boxes, hindering model interpretability. \par These challenges
+% have attracted considerable attention from the research community, leading to a
+% growing number of recent studies addressing the topic.
+%
+% \section{Objectives} \par Out of the mentioned problems, this project will mainly
+% focus on the detection of MCI and aim for high performance in the according 3-class
+% classification problem (AD/MCI/HC). Our methodology will give special attention to
+% the problem of data scarcity and ensure maximum generalizability.
+
+\section{Literature Review}
+\subsection{Datasets and Evaluation Challenges}
+\todo{Mentnion Cookie Theft Picture, describe CHAT tokens}
+\tpar{DementiaBank} Most datasets currently available are provided by the
+DementiaBank database. The largest and most widely used of them is the Pitt corpus,
+a collection of transcripted audio recordings from various cognitive tasks. There
+has also been work toward the creation and expansion of the Delaware corpus, a new
+dataset that focuses on the binary MCI vs HC distinction. It provides transcripted
+videos of a large variety of cognitive tasks and includes subjects of a wide ethnic
+and cultural diversity \cite{lanziDementiaBankTheoreticalRationale2023}.
+\tpar{WLS} The WLS is a large-scale, extended longitudinal study of a random
+sample of 10,317 men and women who graduated from Wisconsin high schools in
+1957. The WLS participants were in- terviewed up to 6 times between 1957 and
+2011. DementiaBank provides access to audio recordings from the 2003 and 2011
+interview rounds, amounting to about 1300 different speakers. Although this is
+a dataset of substantial size, it lacks clinical labels for cognitive
+impairment, limiting its direct applicability to supervised learning tasks.
+\tpar{ADReSS, ADReSSo and ADReSS-M} The ADReSS Challenge was introduced in the
+Interspeech 2020 conference. It provides a balanced subset of the Pitt corpus,
+with respect to age and gender \cite{luzAlzheimersDementiaRecognition2020}. The
+ADReSSo Challenge followed in 2021, introducing a more difficult task of AD
+detection using only speech samples, without manually-created transcriptions.
+It also utilized a subset of the Pitt corpus
+\cite{luzDetectingCognitiveDecline}. Lastly, the ADReSS-M challenge, introduced
+in the ICASSP 2023 conference, focused on the binary classification task of AD
+detection in the Greek language. It provided a subset of the Pitt corpus, as
+well as a new dataset with Greek speech samples
+\cite{luzOverviewADReSSMSignal2024}. Even after the end of these challenges,
+the datasets remain available and have been widely used as benchmarks for new
+approaches. 
+\tpar{MultiConAD} The MultiConAD dataset
+\cite{shakeriMultiConADUnifiedMultilingual2025} is a recent effort to tackle the
+problems of 3-class classification and multilingual generalization. It combines
+multiple existing datasets, mostly the ones provided by DementiaBank, to create a
+large and diverse multilingual dataset, with a variety of cognitive assessment
+tasks. It includes audio and transcription samples in English, Spanish, Chinese,
+and Greek. Additionally, it provides an important set of baseline models, that act
+as a starting point for future research. \tpar{PROCESS} The ICASSP 2025 PROCESS
+Grand Challenge \cite{taoEarlyDementiaDetection2024} introduced a modern dataset,
+to serve as a benchmark for the 3-class detection problem. It provides audio
+recordings and manual transcripts (with only audio provided for the test set) from
+three cognitive tasts: Sematic Fluency, Phonemic Fluency, and Picture Description.
+The contestants were also tasked with performing regression on the MMSE score, a
+widely used clinical assessment for cognitive impairment.
+
+\subsection{AD and MCI Detection from Speech} 
+\par In this section, we summarize the general trends in methodologies tackling AD
+and MCI detection from speech. We organize our review by general methodologies;
+however, these subsections loosely resemble the chronological development of
+approaches. 
+
+\subsubsection{Feature Engineering} 
+\par Initial work emphasized mostly on the extraction of
+information-rich features, used in conjunction with traditional ML methods. These
+approaches proved very effective in the challenge settings as well, where the
+applications were limited to the small challenge datasets. These methods extract
+mostly hand-crafted acoustic (eg. pauses, low level descriptors, etc.) and
+linguistic (eg. verbal richness, filler words, etc.) features and/or semantic
+representations, mostly from the BERT \cite{devlinBERTPretrainingDeep2019} language
+model. \par Such approaches have lead to winning submissions in the ADReSS and
+ADReSSo Challenges \cite{haulcyClassifyingAlzheimersDisease2021,
+syedTacklingADRESSOChallenge2021}. In the more recent PROCESS Challenge, the
+overall winner leveraged linguistic features, extracted from ASR transcriptions,
+and an ensemble of traditional machine learning models, to achieve an F1 score of
+0.649. These linguistic features include cognitive- task-specific indicators (count
+of correct words in Verbal Fluency Tasks) and algorithmically extracted speech
+pause descriptors \cite{gaoLeveragingMultimodalMethods2025}. The best performing
+submission specific to the classification task achieved an F1 score of 0.696, using
+a self-developed Digital Linguistic Biomarker (DLB) extractor
+\cite{zhangCognitiveDeclineDetection2025}. \par In a notable paradigm of this
+methodology, the authors od ADscreen
+\cite{zolnooriADscreenSpeechProcessingbased2023} extract a broad range of features,
+including metrics related to phonetic motor planning, semantic disfluency (e.g.,
+word repetition and pausing), lexical diversity, and syntactic structure. They
+further incorporate BERT embeddings to capture verbal disfluencies, as well as
+psycholinguistic features such as LIWC and GeMAPS. Similarly, Haider et al. focus
+on the emotional dimension of speech by introducing the Affective Behaviour
+Representation (ABR), which employs a machine learning model to label each speech
+segment with an emotion and summarize the emotional content of an entire recording
+into a single vector \cite{haiderAffectiveSpeechAlzheimers2020}.
+
+\subsubsection{Deep Learning Architectures and Multimodal Fusion}
+\par While feature engineering relies on extracting predefined markers, deep
+learning approaches aim to learn latent representations directly from the data.
+Given the success of deep learning in the more general field of paralinguistics,
+researchers naturally sought to implement it in the AD detection from speech
+domain. Deep learning architectures were used to produce meaningful latent
+representations and fuse acoustic and textutal cues.
+Within early works, Liu et al. \cite{liuDetectingAlzheimersDisease2021} feed
+MFCCs into a DNN encoder to produce low
+dimention bottleneck features of 40ms time frames, followed by CNN and BiLSTM
+layers. Evaluating their model with 10-fold CV on the Pitt corpus, they achieved an
+accuracy of 82.59\% and an F1 of 82.94\%.
+\par In the multimodal setting, a wide variety of methods and architectures
+emerged. These approaches experiment with various combinations of features, such as
+BERT embeddings, traditional acoustic features, and other neural-network extracted
+features \cite{iliasMultimodalApproachDementia2022,
+iliasMultimodalDeepLearning2022a, panSwinBERTFeatureFusion2024,
+chengCogniVoiceMultimodalMultilingual2024, linMultimodalDeepLearning2024}. In an
+interesting approach, Lee et al. achieved state-of-the-art results in the ADReSSo
+Dataset, by processing the Cookie Theft Picture description task image with VLMs
+and comparing it with the patient's text modality to check the validity of the
+response. They additionally utilized the Shapley value from game theory, to
+introduce a new auxiliary loss function, which includes information about each
+modality's contribution \cite{leeMultimodalAlzheimersDisease2025}.
+
+\subsubsection{Fine-tuning and Foundational Models} 
+\par Foundational models have been influencing the domain of AD detection from
+speech since the early days of the ADReSS Challenge. As mentioned in the preceeding
+paragraphs, BERT was frequently used to extract semantic embeddings, that were
+later used as features for classification.
+Today, Large Language Models are still widely used
+\cite{keOptimizingPauseContext2025,parkReasoningBasedApproachChainofThought,rundeOptimizationNaturalLanguage2024},
+utilizing ASR transctiptions from state-of-the-art models and leading to promising
+results. An extensive study that compared various text-based ML methods showed that
+the finetuning of pretrained models is the most performant approach
+\cite{ihnainiDetectionAlzheimersDisease2025}, at least in the text-only setting. 
+However, limiting the input to text
+only discards very crucial biomarkers embedded in the patient's voice. While some
+have resorted to encoding audio information into the transcripts
+\cite{keOptimizingPauseContext2025}, others have fine-tuned the ASR models
+themselves, to allow the processing of purely acoustic inputs
+\cite{jiaWhisperBasedMultilingualAlzheimers, akinrintoyoWhisperDDementiaSpeech2025,
+liWhisperBasedTransferLearning2024}. 
+\par Most recent works merge acoustic and linguistic information by incorporating
+the use of Large Audio-Language Models \cite{zolnourLLMCAREEarlyDetection2025,
+shahinZeroShotCognitiveImpairment2025}. Zolnour et al. use a late fusion
+architecture, combining the predictions of a classifier that is fed pretrained
+encoder features, and a classifier that is fed handcrafted linguistic features.
+They also perform extensive experimentations with unimodal and multimodal LLMs,
+fine-tuned on classification from text and audio. Lastly, they generate synthetic
+text by prompting foundational LLMs. Overall, the late fusion scheme outperformed
+the finetuned LLMs \cite{zolnourLLMCAREEarlyDetection2025}. Shanin et al. bypass
+finetuning entirely by simply prompting an Audio-Language model. Although the
+results were not optimal, they were comparable with supervised methods
+\cite{shahinZeroShotCognitiveImpairment2025}.
+\par Lastly, regarding intermediate pretraining, Zhu et al.
+\cite{zhuDomainawareIntermediatePretraining2022a} used language model perplexity
+metrics to select large datasets from the GLUE benchmark, that are maximally
+similar to the ADReSS Challenge dataset. Then, they pre-trained a language model on
+the chosen datasets, followed by finetuning on the AD detection task. They
+additionally utilized their used perplexity-based metrics to invent a new
+sample-level pretraining technique, where samples that don't reduce perplexity are
+discarded.
+
+\subsubsection{Data Augmentation}
+\par Despite the known issue of data scarcity in the field, the applications of
+data augmentation are limitted. To our knowledge, only two publications in the
+field study explicitly the creation of synthetic data. The authors of CDA
+\cite{duanCDAContrastiveData2023} propose a contrastive data augmentation
+technique, that simulates cognitive decline by removing random words from
+sentences, and generates positive samples with multiple passes in conjuction with
+dropout. Hlédiková et al. \cite{hledikovaDataAugmentationDementia2022} perform
+extensive experimentation with various data-space augmentation techniques. The
+methods included classical acoustic and verbal pertrubations and deep learning
+based ones, namely voice conversion with the FragmentVC model, lexical paraphrasing
+with the Pegasus model and text generation using GPT-2. The authors conclude that
+their tested neural-based methods perform similarly to traditional ones, still
+achieving significantly high results. 
+\par Some other works have incorporate data
+augmentation into their methodologies. Specifically, Liu et al.
+\cite{liuDetectingAlzheimersDisease2021} utilize SpecAugment
+\cite{parkSpecAugmentSimpleData2019}, Runde et al.
+\cite{rundeOptimizationNaturalLanguage2024} apply Synthetic Minority Over-sampling
+to balance out the datasets and Lin and Washington perform Synonym Replacement for
+their text-based model. Additionally, the authors of LLMCARE
+\cite{zolnourLLMCAREEarlyDetection2025} experiment with various LLMs to generate
+synthetic transcripts.
+
+\subsubsection{State Of The Art}
+\todo{describe SOTA table -- the table has some inaccuracies}
+\begin{table*}[htbp]
+\caption{State-of-the-Art (SOTA) Models for Alzheimer's Disease Detection from Speech (2024--2025)}
+\label{tab:sota_ad_speech}
+\centering
+\begin{tabular}{@{}p{2.5cm} p{2.2cm} c p{3.5cm} p{2.5cm} p{2.5cm}@{}}
+\toprule
+\textbf{Dataset} & \textbf{Train / Test Split} & \textbf{Classes} & \textbf{SOTA Model} & \textbf{Performance} & \textbf{Source} \\ \midrule
+
+\textbf{DementiaBank (Pitt Corpus)} & $\approx$ 442 Subjects (10-fold CV) & 2 (AD, HC) & \textbf{SPID-AD}: BERT (Text) + Augmented CNN (Audio) Fusion & \textbf{Acc:} 95.6\% \newline \textbf{F1:} $>$0.95 & \href{https://doi.org/10.1111/coin.70051}{Chakravarthi et al. (2025)} \\ \midrule
+
+\textbf{ADReSS} (2020) & Train: 108 \newline Test: 48 & 2 (AD, HC) & \textbf{Hybrid Deep Acoustic}: Log-Mel + MFCC + VGGish & \textbf{Acc:} 89.9\% \newline \textbf{F1:} $\approx$0.90 & \href{https://ieeexplore.ieee.org/document/9383491}{Meghanani et al. (2021)} \\ \midrule
+
+\textbf{ADReSSo} (2021) & Train: 166 \newline Test: 71 & 2 (AD, HC) &
+\textbf{Multimodal Fusion}: ImageBind (Audio) + ELMo (Text) & \textbf{Acc:} 90.3\%
+\newline \textbf{F1:} 0.914 &
+\href{https://pmc.ncbi.nlm.nih.gov/articles/PMC11688076/}{Fu et al. (2024)} \\ \midrule
+
+\textbf{ADReSS-M} (2023) & Train: 237 (Eng) \newline Test: 46 (Grk) & 2 (AD, HC) & \textbf{CONSEN}: Ensemble of Paralinguistic \& Disfluency Features & \textbf{Acc:} 87.0\% \newline \textbf{RMSE:} 3.73 & \href{https://ieeexplore.ieee.org/document/10095522}{Choi et al. (2023)} \\ \midrule
+
+\textbf{TAUKADIAL} (2024) & Train: 387 \newline Test: 120 & 2 (MCI, HC) & \textbf{Lang-Specific Multimodal}: Fine-tuned RoBERTa + Acoustic & \textbf{UAR:} 0.86 & \href{http://www.apsipa.org/proceedings/2025/papers/APSIPA2025_P335.pdf}{Shahin et al. (2025)} \\ \midrule
+
+\textbf{PROCESS} (2025) & Train/Dev: 157 \newline Test: Hidden & 3 (AD, MCI, HC) & \textbf{Ensemble Acoustic}: ComParE Feature Set + SVC Voting & \textbf{Macro-F1:} 0.64 & \href{https://ieeexplore.ieee.org/document/10889847}{Zafar et al. (2025)} \\ \midrule
+
+\textbf{MultiConAD} (2025) & Aggregated (16 datasets) & 2 or 3 & \textbf{Random Forest}: Sparse (TF-IDF) Features & \textbf{Bin Acc:} 0.90 \newline \textbf{Ter Acc:} 0.74 & \href{https://arxiv.org/abs/2502.19208}{Shakeri et al. (2025)} \\ \bottomrule
+
+\end{tabular}
+\end{table*}
+
+
+\subsection{Limitations and Opportunities}
+\subsubsection{Generalizability Concerns}
+\par While the scientific community has achieved remarkable evaluation metrics and
+made impressive strides in the field, these advancements are currently limited by
+the small, often outdated and noisy available datasets—often containing only a few
+hundred samples. Consequently, the applicability of these models in a clinical
+setting must be questioned.
+\par In a study by Runde et al. \cite{rundeOptimizationNaturalLanguage2024},
+the authors managed to achieve 0.99 accuracy and
+F1 on the Pitt Corpus - a superset of the ADReSS and ADReSSo datasets - by
+utilizing Wav2Vec trasncripts and ada-002 text embeddings. However, when tested on
+a 10-fold cross validation scheme, these scores dropped to 0.79. A more
+concerning example involves researchers achieving nearly 100\% accuracy on the Pitt
+Corpus, using solely the
+silent segments of the audio recordings. This demonstrates the presence of a
+"Clever Hans" effect, where models achieve high accuracy not by actually learning
+the underlying mechanisms of the problem, but though spurious correlations in the
+training data \cite{liuCleverHansEffect2024}. These findings strongly emphasize
+the need for a larger, more
+diverse dataset, a gap promised to be filled by MultiConAD.
+\subsubsection{Interpretabilbity}
+\par Clinical adoption necessitates model interpretability, as healthcare
+professionals must understand which speech characteristics drive diagnostic
+predictions in order to integrate findings with other clinical indicators and
+establish professional trust. However, most current approaches utilize complex
+deep learning architectures and pre-trained language models that function as
+``black boxes,'' thereby obscuring the decision-making process. While the
+domain may not yet have prioritized interpretability as an immediate
+prerequisite, future methodologies must be designed with the understanding that
+clinical viability ultimately depends on the transparency and interpretability
+of the model.
+\subsubsection{Untreated Conversational Nature of Data}
+\label{sec:conversational-nature}
+\par With the exception of the 100 samples of the VAS (Voice Assistant System)
+corpus, all of the DementiaBank data consist of recorded dialogues, where
+an interviewer administates a cognitive test with the patient. To our knowledge, no
+recent study has accounted for this conversational structure, instead treating
+the recordings as homogeneous samples. Consequently, models analyze semantic
+and paralinguistic information from both the patient and the interviewer
+indiscriminately. Previous studies have highlighted this limitation,
+demonstrating that the interviewer's speech significantly impacts observed
+linguistic features, thereby potentially introducing bias and confounding model
+predictions \cite{liThereAnythingElse2025}.
+
+\subsubsection{Addressing Data Limitations}
+\par The most significant constraint within the studied domain is the limited
+size of available datasets, which restricts methodological innovation and
+hampers the generalization capabilities of proposed models. Furthermore, the
+acquisition and dissemination of such data are inherently slow processes due to
+severe data privacy concerns. Consequently, it is expected that data
+availability in this field will consistently lag behind industry standards
+established for more general tasks. While advanced techniques for mitigating
+data scarcity--such as data augmentation, synthetic data generation, and
+advanced fine-tuning--should be central to research in this area, they appear to
+be underrepresented in the current literature. Moreover, the WLS dataset
+remains significantly underutilized. Despite being unlabeled, this dataset
+offers substantial potential for pre-training and silver labeling strategies
+prior to fine-tuning on labeled data. To the best of our knowledge, the only
+studies that have leveraged WLS in this manner are \cite{shakeriMultiConADUnifiedMultilingual2025} and \cite{guoCrossingCookieTheft2021},
+which manually determine potential labels based on task performance criteria.
+
+\section{Methodology}
+\label{sec:methodology}
+\par In this section, we propose a set of promising methodologies and
+demonstrate their potential to address gaps in the literature. Each of these
+concepts may evolve into a standalone study, capable of being pursued
+independently or, in some cases, in conjunction with one another. 
+
+\subsection{Conversational Modeling}
+\par As mentioned in \ref{sec:conversational-nature}, most studies disregard
+the conversational nature of the available data, leading to the undetermined
+involvement of the interviewer's acoustic and linguistic features. A promising
+solution is to model the dialogue in a manner that
+distinguishes between the two speakers, drawing inspiration from recent
+advancements in paralinguistics and Emotion Recognition in Conversation (ERC).
+Various methods exist for modeling conversation, such as context modeling—where
+each turn is isolated and enriched with speaker-level information
+\cite{linParalinguisticsEnhancedLargeLanguage2024}—or graph modeling, where
+utterances serve as nodes connected across speakers and processed via
+GNNs\cite{wuMultimodalEmotionRecognition2025}. Such an approach would align
+more closely with the inherent nature of the DementiaBank data, allowing the
+modeling and control of interviewer involvement and potentially
+yielding more accurate predictions and enhancing model interpretability.
+
+\subsection{Self-Supervised Learning on WLS}
+\par Data scarcity is one of the most prevalent challenges in the field, with
+labeled data amounting to fewer than 3,000 total recordings. However, a
+significantly larger dataset containing highly similar cognitive tests exists:
+the Wisconsin Longitudinal Study (WLS). From its most recent sampling round in
+2011, DementiaBank provides recordings from over 1300 speakers, yielding
+approximately 6500 recordings, with similar counts observed in the 2003 round.
+Consequently, utilizing this vast amount of unlabeled data via self-supervised
+learning techniques is a logical step. There is a rich body of literature
+supporting this domain adaptation approach, exemplified by the work of
+Paraskevopoulos et al.
+\cite{paraskevopoulosSampleEfficientUnsupervisedDomain2022}, where
+self-supervision was applied to perform ASR in the recource-limited greek
+language.
+
+\subsection{}
+\todo{maybe with denerative models mimicking samples? Also, MultiConAD is quite
+imbalanced and can benefit from class-balancing augmentation}
+
+\subsection{Speaker Baselinling}
+\todo{might actually be possible.
+\href{https://www.researchgate.net/publication/395957228_Dementia_prevalence_in_the_Wisconsin_Longitudinal_Study/figures?lo=1&utm_source=google&utm_medium=organic}{This
+paper} performs cognitive status assessment for 5414 participants of WLS.
+However, DementiaBank only provides ~1300 speakers from 2011 and ~1100 from
+2003. Maybe we could access the entire WLS dataset for a better picture.}
+
+\printbibliography 
+
+\end{multicols}
+\end{document}

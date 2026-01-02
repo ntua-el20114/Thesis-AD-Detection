@@ -1,0 +1,404 @@
+.
+├── ADDReSSo
+│   ├── test-dist
+│   │   ├── audio
+│   │   │   └── adrsdt10.wav (+70 more)
+│   │   ├── segmentation
+│   │   │   ├── adrsdt10.csv
+│   │   │   ├── adrsdt11.csv
+│   │   │   ├── adrsdt12.csv
+│   │   │   ├── adrsdt13.csv
+│   │   │   ├── adrsdt14.csv
+│   │   │   ├── adrsdt15.csv
+│   │   │   ├── adrsdt16.csv
+│   │   │   ├── adrsdt17.csv
+│   │   │   ├── adrsdt18.csv
+│   │   │   ├── adrsdt19.csv
+│   │   │   ├── adrsdt1.csv
+│   │   │   ├── adrsdt20.csv
+│   │   │   ├── adrsdt21.csv
+│   │   │   ├── adrsdt22.csv
+│   │   │   ├── adrsdt23.csv
+│   │   │   ├── adrsdt24.csv
+│   │   │   ├── adrsdt25.csv
+│   │   │   ├── adrsdt26.csv
+│   │   │   ├── adrsdt27.csv
+│   │   │   ├── adrsdt28.csv
+│   │   │   ├── adrsdt29.csv
+│   │   │   ├── adrsdt2.csv
+│   │   │   ├── adrsdt30.csv
+│   │   │   ├── adrsdt31.csv
+│   │   │   ├── adrsdt32.csv
+│   │   │   ├── adrsdt33.csv
+│   │   │   ├── adrsdt34.csv
+│   │   │   ├── adrsdt35.csv
+│   │   │   ├── adrsdt36.csv
+│   │   │   ├── adrsdt37.csv
+│   │   │   ├── adrsdt38.csv
+│   │   │   ├── adrsdt39.csv
+│   │   │   ├── adrsdt3.csv
+│   │   │   ├── adrsdt40.csv
+│   │   │   ├── adrsdt41.csv
+│   │   │   ├── adrsdt42.csv
+│   │   │   ├── adrsdt43.csv
+│   │   │   ├── adrsdt44.csv
+│   │   │   ├── adrsdt45.csv
+│   │   │   ├── adrsdt46.csv
+│   │   │   ├── adrsdt47.csv
+│   │   │   ├── adrsdt48.csv
+│   │   │   ├── adrsdt49.csv
+│   │   │   ├── adrsdt4.csv
+│   │   │   ├── adrsdt50.csv
+│   │   │   ├── adrsdt51.csv
+│   │   │   ├── adrsdt52.csv
+│   │   │   ├── adrsdt53.csv
+│   │   │   ├── adrsdt54.csv
+│   │   │   ├── adrsdt55.csv
+│   │   │   ├── adrsdt56.csv
+│   │   │   ├── adrsdt57.csv
+│   │   │   ├── adrsdt58.csv
+│   │   │   ├── adrsdt59.csv
+│   │   │   ├── adrsdt5.csv
+│   │   │   ├── adrsdt60.csv
+│   │   │   ├── adrsdt61.csv
+│   │   │   ├── adrsdt62.csv
+│   │   │   ├── adrsdt63.csv
+│   │   │   ├── adrsdt64.csv
+│   │   │   ├── adrsdt65.csv
+│   │   │   ├── adrsdt66.csv
+│   │   │   ├── adrsdt67.csv
+│   │   │   ├── adrsdt68.csv
+│   │   │   ├── adrsdt69.csv
+│   │   │   ├── adrsdt6.csv
+│   │   │   ├── adrsdt70.csv
+│   │   │   ├── adrsdt71.csv
+│   │   │   ├── adrsdt7.csv
+│   │   │   ├── adrsdt8.csv
+│   │   │   └── adrsdt9.csv
+│   │   ├── README
+│   │   ├── test_results_task1.csv
+│   │   └── test_results_task2.csv
+│   ├── train
+│   │   ├── audio
+│   │   │   ├── ad
+│   │   │   │   └── adrso024.wav (+86 more)
+│   │   │   └── cn
+│   │   │       └── adrso002.wav (+78 more)
+│   │   ├── segmentation
+│   │   │   ├── ad
+│   │   │   │   ├── adrso024.csv
+│   │   │   │   ├── adrso025.csv
+│   │   │   │   ├── adrso027.csv
+│   │   │   │   ├── adrso028.csv
+│   │   │   │   ├── adrso031.csv
+│   │   │   │   ├── adrso032.csv
+│   │   │   │   ├── adrso033.csv
+│   │   │   │   ├── adrso035.csv
+│   │   │   │   ├── adrso036.csv
+│   │   │   │   ├── adrso039.csv
+│   │   │   │   ├── adrso043.csv
+│   │   │   │   ├── adrso045.csv
+│   │   │   │   ├── adrso046.csv
+│   │   │   │   ├── adrso047.csv
+│   │   │   │   ├── adrso049.csv
+│   │   │   │   ├── adrso053.csv
+│   │   │   │   ├── adrso054.csv
+│   │   │   │   ├── adrso055.csv
+│   │   │   │   ├── adrso056.csv
+│   │   │   │   ├── adrso059.csv
+│   │   │   │   ├── adrso060.csv
+│   │   │   │   ├── adrso063.csv
+│   │   │   │   ├── adrso068.csv
+│   │   │   │   ├── adrso070.csv
+│   │   │   │   ├── adrso071.csv
+│   │   │   │   ├── adrso072.csv
+│   │   │   │   ├── adrso074.csv
+│   │   │   │   ├── adrso075.csv
+│   │   │   │   ├── adrso077.csv
+│   │   │   │   ├── adrso078.csv
+│   │   │   │   ├── adrso089.csv
+│   │   │   │   ├── adrso090.csv
+│   │   │   │   ├── adrso092.csv
+│   │   │   │   ├── adrso093.csv
+│   │   │   │   ├── adrso098.csv
+│   │   │   │   ├── adrso106.csv
+│   │   │   │   ├── adrso109.csv
+│   │   │   │   ├── adrso110.csv
+│   │   │   │   ├── adrso112.csv
+│   │   │   │   ├── adrso116.csv
+│   │   │   │   ├── adrso122.csv
+│   │   │   │   ├── adrso123.csv
+│   │   │   │   ├── adrso125.csv
+│   │   │   │   ├── adrso126.csv
+│   │   │   │   ├── adrso128.csv
+│   │   │   │   ├── adrso130.csv
+│   │   │   │   ├── adrso134.csv
+│   │   │   │   ├── adrso138.csv
+│   │   │   │   ├── adrso141.csv
+│   │   │   │   ├── adrso142.csv
+│   │   │   │   ├── adrso144.csv
+│   │   │   │   ├── adrso187.csv
+│   │   │   │   ├── adrso188.csv
+│   │   │   │   ├── adrso189.csv
+│   │   │   │   ├── adrso190.csv
+│   │   │   │   ├── adrso192.csv
+│   │   │   │   ├── adrso197.csv
+│   │   │   │   ├── adrso198.csv
+│   │   │   │   ├── adrso200.csv
+│   │   │   │   ├── adrso202.csv
+│   │   │   │   ├── adrso205.csv
+│   │   │   │   ├── adrso206.csv
+│   │   │   │   ├── adrso209.csv
+│   │   │   │   ├── adrso211.csv
+│   │   │   │   ├── adrso212.csv
+│   │   │   │   ├── adrso215.csv
+│   │   │   │   ├── adrso216.csv
+│   │   │   │   ├── adrso218.csv
+│   │   │   │   ├── adrso220.csv
+│   │   │   │   ├── adrso222.csv
+│   │   │   │   ├── adrso223.csv
+│   │   │   │   ├── adrso224.csv
+│   │   │   │   ├── adrso228.csv
+│   │   │   │   ├── adrso229.csv
+│   │   │   │   ├── adrso232.csv
+│   │   │   │   ├── adrso233.csv
+│   │   │   │   ├── adrso234.csv
+│   │   │   │   ├── adrso236.csv
+│   │   │   │   ├── adrso237.csv
+│   │   │   │   ├── adrso244.csv
+│   │   │   │   ├── adrso245.csv
+│   │   │   │   ├── adrso246.csv
+│   │   │   │   ├── adrso247.csv
+│   │   │   │   ├── adrso248.csv
+│   │   │   │   ├── adrso249.csv
+│   │   │   │   ├── adrso250.csv
+│   │   │   │   └── adrso253.csv
+│   │   │   └── cn
+│   │   │       ├── adrso002.csv
+│   │   │       ├── adrso003.csv
+│   │   │       ├── adrso005.csv
+│   │   │       ├── adrso007.csv
+│   │   │       ├── adrso008.csv
+│   │   │       ├── adrso010.csv
+│   │   │       ├── adrso012.csv
+│   │   │       ├── adrso014.csv
+│   │   │       ├── adrso015.csv
+│   │   │       ├── adrso016.csv
+│   │   │       ├── adrso017.csv
+│   │   │       ├── adrso018.csv
+│   │   │       ├── adrso019.csv
+│   │   │       ├── adrso021.csv
+│   │   │       ├── adrso022.csv
+│   │   │       ├── adrso023.csv
+│   │   │       ├── adrso148.csv
+│   │   │       ├── adrso151.csv
+│   │   │       ├── adrso152.csv
+│   │   │       ├── adrso153.csv
+│   │   │       ├── adrso154.csv
+│   │   │       ├── adrso156.csv
+│   │   │       ├── adrso157.csv
+│   │   │       ├── adrso158.csv
+│   │   │       ├── adrso159.csv
+│   │   │       ├── adrso160.csv
+│   │   │       ├── adrso161.csv
+│   │   │       ├── adrso162.csv
+│   │   │       ├── adrso164.csv
+│   │   │       ├── adrso165.csv
+│   │   │       ├── adrso167.csv
+│   │   │       ├── adrso168.csv
+│   │   │       ├── adrso169.csv
+│   │   │       ├── adrso170.csv
+│   │   │       ├── adrso172.csv
+│   │   │       ├── adrso173.csv
+│   │   │       ├── adrso177.csv
+│   │   │       ├── adrso178.csv
+│   │   │       ├── adrso180.csv
+│   │   │       ├── adrso182.csv
+│   │   │       ├── adrso183.csv
+│   │   │       ├── adrso186.csv
+│   │   │       ├── adrso257.csv
+│   │   │       ├── adrso259.csv
+│   │   │       ├── adrso260.csv
+│   │   │       ├── adrso261.csv
+│   │   │       ├── adrso262.csv
+│   │   │       ├── adrso263.csv
+│   │   │       ├── adrso264.csv
+│   │   │       ├── adrso265.csv
+│   │   │       ├── adrso266.csv
+│   │   │       ├── adrso267.csv
+│   │   │       ├── adrso268.csv
+│   │   │       ├── adrso270.csv
+│   │   │       ├── adrso273.csv
+│   │   │       ├── adrso274.csv
+│   │   │       ├── adrso276.csv
+│   │   │       ├── adrso277.csv
+│   │   │       ├── adrso278.csv
+│   │   │       ├── adrso280.csv
+│   │   │       ├── adrso281.csv
+│   │   │       ├── adrso283.csv
+│   │   │       ├── adrso285.csv
+│   │   │       ├── adrso286.csv
+│   │   │       ├── adrso289.csv
+│   │   │       ├── adrso291.csv
+│   │   │       ├── adrso292.csv
+│   │   │       ├── adrso296.csv
+│   │   │       ├── adrso298.csv
+│   │   │       ├── adrso299.csv
+│   │   │       ├── adrso300.csv
+│   │   │       ├── adrso302.csv
+│   │   │       ├── adrso307.csv
+│   │   │       ├── adrso308.csv
+│   │   │       ├── adrso309.csv
+│   │   │       ├── adrso310.csv
+│   │   │       ├── adrso312.csv
+│   │   │       ├── adrso315.csv
+│   │   │       └── adrso316.csv
+│   │   └── adresso-train-mmse-scores.csv
+│   ├── acoustic_features.py
+│   ├── dx-mmse.csv
+│   └── README.md
+├── Baycrest
+│   ├── Transcripts
+│   │   ├── 0docs
+│   │   │   ├── ~$8538.docx
+│   │   │   ├── 0demographics_all.xlsx
+│   │   │   ├── 0neuropsych_all.xlsx
+│   │   │   ├── 11976.xlsx
+│   │   │   ├── 12257.xlsx
+│   │   │   ├── 12813.xlsx
+│   │   │   ├── 12814.xlsx
+│   │   │   ├── 2013.xlsx
+│   │   │   ├── 7352.xlsx
+│   │   │   ├── 8538.docx
+│   │   │   └── 8538.xlsx
+│   │   ├── 0metadata.cdc
+│   │   └── Baycrest11633.cha (+9 more)
+│   ├── Baycrest11633.mp3 (+9 more)
+│   └── baycrest.jsonl
+├── Delaware
+│   ├── HC
+│   │   └── Delaware_01-2.mp3 (+193 more)
+│   ├── MCI
+│   │   └── Delaware_01-1.mp3 (+109 more)
+│   ├── Transcripts
+│   │   ├── 01-1.cha (+17 more)
+│   │   ├── 0metadata.cdc
+│   │   ├── 0README-Important.rtf
+│   │   ├── 101-1.cha (+285 more)
+│   │   └── demo-test.xlsx
+│   └── delaware.jsonl
+├── Kempler
+│   ├── Transcripts
+│   │   ├── 0metadata.cdc
+│   │   └── d10.cha (+6 more)
+│   ├── kempler-d10.mp3 (+6 more)
+│   └── kempler.jsonl
+├── Lu
+│   ├── Dementia
+│   │   └── lu-F01.mp3 (+27 more)
+│   ├── HC
+│   │   └── lu-F22.mp3 (+25 more)
+│   ├── Transcripts
+│   │   ├── 0metadata.cdc
+│   │   └── F01.cha (+53 more)
+│   └── lu.jsonl
+├── MultiConAD
+│   ├── audio
+│   │   ├── Baycrest11633.mp3 -> /home/mr/Documents/School/Thesis/Data/Baycrest/Baycrest11633.mp3 (+926 more)
+│   │   ├── taukdial-001-1.wav -> /home/mr/Documents/School/Thesis/Data/Taukdial/test/taukdial-001-1.wav (+506 more)
+│   │   └── VAS_001.mp3 -> /home/mr/Documents/School/Thesis/Data/VAS/vas-001.mp3 (+99 more)
+│   ├── combined_English.jsonl
+│   ├── debug.jsonl
+│   ├── test_english.jsonl
+│   └── train_english.jsonl
+├── Pitt
+│   ├── Dementia
+│   │   └── pitt-001-0.mp3 (+308 more)
+│   ├── HC
+│   │   └── pitt-002-0.mp3 (+242 more)
+│   ├── Transcripts
+│   │   ├── 0metadata.cdc
+│   │   └── pitt-001-0.cha (+551 more)
+│   └── pitt.jsonl
+├── __pycache__
+│   └── collection.cpython-313.pyc
+├── Taukdial
+│   ├── test
+│   │   ├── README.md
+│   │   └── taukdial-001-1.wav (+119 more)
+│   ├── train
+│   │   ├── groundtruth.csv
+│   │   └── taukdial-002-1.wav (+386 more)
+│   ├── meta_test.csv
+│   ├── README.md
+│   ├── results_task1_attempt1.txt
+│   ├── results_task2_attempt1.txt
+│   ├── taukdial.json
+│   └── testgroundtruth.csv
+├── Tauk-Transcribe
+│   ├── dataset-metadata.json
+│   ├── taukdial-001-1.wav (+506 more)
+│   └── transcripts.json
+├── VAS
+│   ├── Transcripts
+│   │   ├── 0demo.xlsx
+│   │   ├── 0metadata.cdc
+│   │   └── vas-001.cha (+99 more)
+│   ├── vas-001.mp3 (+99 more)
+│   └── vas-vas
+├── WLS
+│   ├── 2003del
+│   │   └── 2003del
+│   │       └── 2000000002_del_200x.wav (+1151 more)
+│   ├── 2003flu
+│   │   ├── 2003flu_sim
+│   │   │   └── 2003flu
+│   │   │       └── 2000000002_flu_200x.wav (+1194 more)
+│   │   ├── CogCat_03.xls
+│   │   ├── CogLet_03.xls
+│   │   └── CogSim_03.xls
+│   ├── 2003imm
+│   │   └── 2003imm
+│   │       └── 2000000002_imm_200x.wav (+1185 more)
+│   ├── 2011del
+│   │   └── 2011del
+│   │       └── 2000000002_del_2011.mp3 (+1363 more)
+│   ├── 2011flu
+│   │   ├── 2011flu
+│   │   │   └── 2011flu
+│   │   │       └── 2000000002_flu_2011.mp3 (+1361 more)
+│   │   ├── CogCat_11.xls
+│   │   └── CogLet_11.xls
+│   ├── 2011imm
+│   │   ├── 2011imm
+│   │   │   └── 2000000002_imm_2011.mp3 (+1347 more)
+│   │   └── __MACOSX
+│   │       └── 2011imm
+│   ├── 2011sim
+│   │   ├── 2011sim
+│   │   │   ├── 2011sim
+│   │   │   │   └── 2000000002_sim_2011.mp3 (+1368 more)
+│   │   │   └── __MACOSX
+│   │   │       └── 2011sim
+│   │   └── CogSim_11.xls
+│   ├── Audio
+│   │   └── 00007.mp3 (+1367 more)
+│   ├── Transcripts
+│   │   ├── 0metadata.cdc
+│   │   └── wls-00007.cha (+1294 more)
+│   ├── extract_labels.py
+│   ├── REAMDE.md
+│   ├── wls_ad_mci_labels.csv
+│   ├── WLS-data.xlsx
+│   ├── wls_hc_labels.csv
+│   └── wls.jsonl
+├── acoustic_features.py
+├── ASR_audio_dataset.py
+├── ASR_collection.py
+├── cha_collection.py
+├── collection.py
+├── file_struct.txt
+├── linguistic_features.py
+└── text_cleaning_English.py
+
+62 directories, 16784 files

@@ -12,6 +12,49 @@
   keywords = {Alzheimer's dementia,Alzheimer's disease,Biomarker,Caregivers,Dementia,Diagnostic criteria,Early detection,Early diagnosis,Family caregiver,Health care costs,Health care expenditures,Health care professional,Incidence,Long-term care costs,Long-term care insurance,Medicaid spending,Medicare spending,Mild cognitive impairment,Morbidity,Mortality,Prevalence,Preventable hospitalizations,Risk factors,Spouse caregiver}
 }
 
+@misc{akinrintoyoWhisperDDementiaSpeech2025,
+  title = {{{WhisperD}}: {{Dementia Speech Recognition}} and {{Filler Word Detection}} with {{Whisper}}},
+  shorttitle = {{{WhisperD}}},
+  author = {Akinrintoyo, Emmanuel and Abdelhalim, Nadine and Salomons, Nicole},
+  year = 2025,
+  month = may,
+  number = {arXiv:2505.21551},
+  eprint = {2505.21551},
+  primaryclass = {eess},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2505.21551},
+  abstract = {Whisper fails to correctly transcribe dementia speech because persons with dementia (PwDs) often exhibit irregular speech patterns and disfluencies such as pauses, repetitions, and fragmented sentences. It was trained on standard speech and may have had little or no exposure to dementia-affected speech. However, correct transcription is vital for dementia speech for cost-effective diagnosis and the development of assistive technology. In this work, we fine-tune Whisper with the open-source dementia speech dataset (DementiaBank) and our in-house dataset to improve its word error rate (WER). The fine-tuning also includes filler words to ascertain the filler inclusion rate (FIR) and F1 score. The fine-tuned models significantly outperformed the off-the-shelf models. The medium-sized model achieved a WER of 0.24, outperforming previous work. Similarly, there was a notable generalisability to unseen data and speech patterns.},
+  archiveprefix = {arXiv},
+  keywords = {Fine-tuning}
+}
+
+@INPROCEEDINGS{11249319,
+  author={Bilal, Muhammad and Abdulla, Waleed and Cheung, Gary and Tippett, Lynette and Shahamiri, Seyed Reza},
+  booktitle={2025 Asia Pacific Signal and Information Processing Association Annual Summit and Conference (APSIPA ASC)}, 
+  title={Multimodal Speech Analysis for Early Detection of Mild Cognitive Impairment: A Scalable Approach}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={2465-2470},
+  keywords={Adaptation models;Speech analysis;Scalability;Semantics;Pipelines;Feature extraction;Data augmentation;Acoustics;Data models;Dementia},
+  doi={10.1109/APSIPAASC65261.2025.11249319}}
+
+@inproceedings{chatziagapiDataAugmentationUsing2019,
+  title = {Data {{Augmentation Using GANs}} for {{Speech Emotion Recognition}}},
+  booktitle = {Interspeech 2019},
+  author = {Chatziagapi, Aggelina and Paraskevopoulos, Georgios and Sgouropoulos, Dimitris and Pantazopoulos, Georgios and Nikandrou, Malvina and Giannakopoulos, Theodoros and Katsamanis, Athanasios and Potamianos, Alexandros and Narayanan, Shrikanth},
+  year = 2019,
+  month = sep,
+  pages = {171--175},
+  publisher = {ISCA},
+  doi = {10.21437/Interspeech.2019-2561},
+  abstract = {In this work, we address the problem of data imbalance for the task of Speech Emotion Recognition (SER). We investigate conditioned data augmentation using Generative Adversarial Networks (GANs), in order to generate samples for underrepresented emotions. We adapt and improve a conditional GAN architecture to generate synthetic spectrograms for the minority class. For comparison purposes, we implement a series of signal-based data augmentation methods. The proposed GANbased approach is evaluated on two datasets, namely IEMOCAP and FEEL-25k, a large multi-domain dataset. Results demonstrate a 10\% relative performance improvement in IEMOCAP and 5\% in FEEL-25k, when augmenting the minority classes.},
+  langid = {english},
+  keywords = {Data Augmentation,Emotion Recognition},
+  annotation = {105 citations (Crossref/DOI) [2025-12-24]\\
+GSCC: 0000199 2025-12-23T15:13:06.100Z 0.61}
+}
+
 @misc{chatzichristodoulouMEDUSAMultimodalDeep2025,
   title = {{{MEDUSA}}: {{A Multimodal Deep Fusion Multi-Stage Training Framework}} for {{Speech Emotion Recognition}} in {{Naturalistic Conditions}}},
   shorttitle = {{{MEDUSA}}},
@@ -26,6 +69,67 @@
   abstract = {SER is a challenging task due to the subjective nature of human emotions and their uneven representation under naturalistic conditions. We propose MEDUSA, a multimodal framework with a four-stage training pipeline, which effectively handles class imbalance and emotion ambiguity. The first two stages train an ensemble of classifiers that utilize DeepSER, a novel extension of a deep cross-modal transformer fusion mechanism from pretrained self-supervised acoustic and linguistic representations. Manifold MixUp is employed for further regularization. The last two stages optimize a trainable meta-classifier that combines the ensemble predictions. Our training approach incorporates human annotation scores as soft targets, coupled with balanced data sampling and multitask learning. MEDUSA ranked 1st in Task 1: Categorical Emotion Recognition in the Interspeech 2025: Speech Emotion Recognition in Naturalistic Conditions Challenge.},
   archiveprefix = {arXiv},
   keywords = {Computer Science - Computation and Language}
+}
+
+@inproceedings{chenCrossLingualAlzheimersDisease2023,
+  title = {Cross-{{Lingual Alzheimer}}'s {{Disease Detection Based}} on {{Paralinguistic}} and {{Pre-Trained Features}}},
+  booktitle = {{{ICASSP}} 2023 - 2023 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Chen, Xuchu and Pu, Yu and Li, Jinpeng and Zhang, Wei-Qiang},
+  year = 2023,
+  month = jun,
+  pages = {1--2},
+  issn = {2379-190X},
+  doi = {10.1109/ICASSP49357.2023.10095522},
+  abstract = {We present our submission to the ICASSP-SPGC-2023 ADReSS-M Challenge Task, which aims to investigate which acoustic features can be generalized and transferred across languages for Alzheimer's Disease (AD) prediction. The challenge consists of two tasks: one is to classify the speech of AD patients and healthy individuals, and the other is to infer Mini Mental State Examination (MMSE) score based on speech only. The difficulty is mainly embodied in the mismatch of the dataset, in which the training set is in English while the test set is in Greek. We extract paralinguistic features using openSmile toolkit and acoustic features using XLSR-53. In addition, we extract linguistic features after transcribing the speech into text. These features are used as indicators for AD detection in our method. Our method achieves an accuracy of 69.6\% on the classification task and a root mean squared error (RMSE) of 4.788 on the regression task. The results show that our proposed method is expected to achieve automatic multilingual Alzheimer's Disease detection through spontaneous speech.},
+  keywords = {Acoustics,Alzheimer's dementia detection,Alzheimer's disease,Feature extraction,Linguistics,paralinguistic features,pre-trained features,Signal processing,Task analysis,Training}
+}
+
+@misc{chengCogniVoiceMultimodalMultilingual2024,
+  title = {{{CogniVoice}}: {{Multimodal}} and {{Multilingual Fusion Networks}} for {{Mild Cognitive Impairment Assessment}} from {{Spontaneous Speech}}},
+  shorttitle = {{{CogniVoice}}},
+  author = {Cheng, Jiali and Elgaar, Mohamed and Vakil, Nidhi and Amiri, Hadi},
+  year = 2024,
+  month = jul,
+  number = {arXiv:2407.13660},
+  eprint = {2407.13660},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2407.13660},
+  abstract = {Mild Cognitive Impairment (MCI) is a medical condition characterized by noticeable declines in memory and cognitive abilities, potentially affecting individual's daily activities. In this paper, we introduce CogniVoice, a novel multilingual and multimodal framework to detect MCI and estimate Mini-Mental State Examination (MMSE) scores by analyzing speech data and its textual transcriptions. The key component of CogniVoice is an ensemble multimodal and multilingual network based on ``Product of Experts'' that mitigates reliance on shortcut solutions. Using a comprehensive dataset containing both English and Chinese languages from TAUKADIAL challenge, CogniVoice outperforms the best performing baseline model on MCI classification and MMSE regression tasks by 2.8 and 4.1 points in F1 and RMSE respectively, and can effectively reduce the performance gap across different language groups by 0.7 points in F11.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Multimodal}
+}
+
+@misc{devlinBERTPretrainingDeep2019,
+  title = {{{BERT}}: {{Pre-training}} of {{Deep Bidirectional Transformers}} for {{Language Understanding}}},
+  shorttitle = {{{BERT}}},
+  author = {Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  year = 2019,
+  month = may,
+  number = {arXiv:1810.04805},
+  eprint = {1810.04805},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1810.04805},
+  abstract = {We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models, BERT is designed to pre-train deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be fine-tuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial task-specific architecture modifications. BERT is conceptually simple and empirically powerful. It obtains new state-of-the-art results on eleven natural language processing tasks, including pushing the GLUE score to 80.5\% (7.7\% point absolute improvement), MultiNLI accuracy to 86.7\% (4.6\% absolute improvement), SQuAD v1.1 question answering Test F1 to 93.2 (1.5 point absolute improvement) and SQuAD v2.0 Test F1 to 83.1 (5.1 point absolute improvement).},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Computation and Language}
+}
+
+@inproceedings{duanCDAContrastiveData2023,
+  title = {{{CDA}}: {{A Contrastive Data Augmentation Method}} for {{Alzheimer}}'s {{Disease Detection}}},
+  shorttitle = {{{CDA}}},
+  booktitle = {Findings of the {{Association}} for {{Computational Linguistics}}: {{ACL}} 2023},
+  author = {Duan, Junwen and Wei, Fangyuan and Liu, Jin and Li, Hongdong and Liu, Tianming and Wang, Jianxin},
+  year = 2023,
+  pages = {1819--1826},
+  publisher = {Association for Computational Linguistics},
+  address = {Toronto, Canada},
+  doi = {10.18653/v1/2023.findings-acl.114},
+  abstract = {Alzheimer's Disease (AD) is a neurodegenerative disorder that significantly impacts a patient's ability to communicate and organize language. Traditional methods for detecting AD, such as physical screening or neurological testing, can be challenging and time-consuming. Recent research has explored the use of deep learning techniques to distinguish AD patients from non-AD patients by analysing the spontaneous speech. These models, however, are limited by the availability of data. To address this, we propose a novel contrastive data augmentation method, which simulates the cognitive impairment of a patient by randomly deleting a proportion of text from the transcript to create negative samples. The corrupted samples are expected to be in worse conditions than the original by a margin. Experimental results on the benchmark ADReSS Challenge dataset demonstrate that our model achieves the best performance among language-based models1.},
+  langid = {english},
+  keywords = {Data Augmentation}
 }
 
 @article{eybenGenevaMinimalisticAcoustic2016a,
@@ -69,7 +173,25 @@
   doi = {10.21437/Interspeech.2019-3243},
   abstract = {Recognizing the emotional tone in spoken language is a challenging research problem that requires modeling not only the acoustic and textual modalities separately but also their crossinteractions. In this work, we introduce a hierarchical fusion scheme for sentiment analysis of spoken sentences. Two bidirectional Long-Short-Term-Memory networks (BiLSTM), followed by multiple fully connected layers, are trained in order to extract feature representations for each of the textual and audio modalities. The representations of the unimodal encoders are both fused at each layer and propagated forward, thus achieving fusion at the word, sentence and high/sentiment levels. The proposed approach of deep hierarchical fusion achieves stateof-the-art results for sentiment analysis tasks. Through an ablation study, we show that the proposed fusion method achieves greater performance gains over the unimodal baseline compared to other fusion approaches in the literature.},
   langid = {english},
-  keywords = {Sentiment Analysis}
+  keywords = {Sentiment Analysis},
+  annotation = {19 citations (Crossref/DOI) [2025-12-24]\\
+GSCC: 0000039 2025-12-23T15:13:10.827Z 0.12}
+}
+
+@article{guoCrossingCookieTheft2021,
+  title = {Crossing the ``{{Cookie Theft}}'' {{Corpus Chasm}}: {{Applying What BERT Learns From Outside Data}} to the {{ADReSS Challenge Dementia Detection Task}}},
+  shorttitle = {Crossing the ``{{Cookie Theft}}'' {{Corpus Chasm}}},
+  author = {Guo, Yue and Li, Changye and Roan, Carol and Pakhomov, Serguei and Cohen, Trevor},
+  year = 2021,
+  month = apr,
+  journal = {Frontiers in Computer Science},
+  volume = {3},
+  publisher = {Frontiers},
+  issn = {2624-9898},
+  doi = {10.3389/fcomp.2021.642517},
+  abstract = {Large amounts of labeled data are a prerequisite to training accurate and reliable machine learning models. However, in the medical domain in particular, this is also a stumbling block as accurately labeled data are hard to obtain. DementiaBank, a publicly available corpus of spontaneous speech samples from a picture description task widely used to study Alzheimer's disease (AD) patients' language characteristics and for training classification models to distinguish patients with AD from healthy controls, is relatively small - a limitation that is further exacerbated when restricting to the balanced subset used in the Alzheimer's Dementia Recognition through Spontaneous Speech (ADReSS) challenge. We build on previous work showing that the performance of traditional machine learning models on DementiaBank can be improved by the addition of normative data from other sources, evaluating the utility of such extrinsic data to further improve the performance of state-of-the-art deep learning based methods on the ADReSS challenge dementia detection task. To this end, we developed a new corpus of professionally transcribed recordings from the Wisconsin Longitudinal Study (WLS), resulting in 1366 additional Cookie Theft Task transcripts, increasing the available training data by an order of magnitude. Using these data in conjunction with DementiaBank is challenging because the WLS metadata corresponding to these transcripts do not contain dementia diagnoses. However, cognitive status of WLS participants can be inferred from results of several cognitive tests including semantic verbal fluency available in WLS data. In this work, we evaluate the utility of using the entire WLS corpus as normative data as well as selecting normative data based on the inferred cognitive status for training deep learning models to discriminate between language produced by patients with dementia and healthy controls. We find that incorporating WLS data during training a BERT model on ADReSS data improves its performance on the ADReSS dementia detection task, supporting the hypotheses that incorporating WLS data adds value in this context. We also demonstrate that weighted cost functions and additional prediction targets may be effective ways to address issues arising from class imbalance and confounding effects due to data provenance.},
+  langid = {english},
+  keywords = {Alzheimer's disease,BERT,Dementia diagnosis,machine learning,Natural Language Processing}
 }
 
 @book{haiderAffectiveSpeechAlzheimers2020,
@@ -80,10 +202,124 @@
   abstract = {Affective behaviour could provide an indicator of Alzheimer's disease and help develop clinical tools for automatically detecting and monitoring disease progression. In this paper, we present a study of the predictive value of emotional behaviour features automatically extracted from spontaneous speech using an affect recognition system for Alzheimer's dementia detection. The effectiveness of affective behaviour features for Alzheimer's Disease detection was assessed on a gender and age balanced subset of the Pitt Corpus, a spontaneous speech database from DementiaBank. The affect recognition system was trained using the extended Geneva Minimalistic Acoustic Parameter Set (eGeMAPS) and the Berlin database of emotional speech. The output of this system provides classification scores or class posterior probabilities of 6+1 emotions as an input for statistical analysis and Alzheimer's dementia detection. The statistical analysis shows that the non-AD subjects have higher mean value of classification scores for anger and disgust, along with a higher entropy of classification scores than AD subjects. The AD subjects have a higher classification scores for the sad emotional behaviour than non-AD. This paper also introduces a novel 'affective behaviour representation' feature vector for Alzheimer's dementia recognition. Results show that classification models based solely on affective behaviour attain 63.42\% detection accuracy.}
 }
 
+@article{haulcyClassifyingAlzheimersDisease2021,
+  title = {Classifying {{Alzheimer}}'s {{Disease Using Audio}} and {{Text-Based Representations}} of {{Speech}}},
+  author = {Haulcy, R'mani and Glass, James},
+  year = 2021,
+  month = jan,
+  journal = {Frontiers in Psychology},
+  volume = {11},
+  publisher = {Frontiers},
+  issn = {1664-1078},
+  doi = {10.3389/fpsyg.2020.624137},
+  abstract = {Alzheimer's Disease (AD) is a form of dementia that affects the memory, cognition, and motor skills of patients. Extensive research has been done to develop accessible, cost-effective, and non-invasive techniques for the automatic detection of AD. Previous research has shown that speech can be used to distinguish between healthy patients and afflicted patients. In this paper, the ADReSS dataset, a dataset balanced by gender and age, was used to automatically classify AD from spontaneous speech. The performance of 5 classifiers, as well as a convolutional neural network and long short-term memory network, was compared when trained on audio features (i-vectors and x-vectors) and text features (word vectors, BERT embeddings, LIWC features, and CLAN features). The same audio and text features were used to train 5 regression models to predict the Mini-Mental State Examination score for each patient, a score that has a maximum value of 30. The top-performing classification models were the support vector machine and random forest classifiers trained on BERT embeddings, which both achieved an accuracy of 85.4\% on the test set. The best-performing regression model was the gradient boosting regression model trained on BERT embeddings and CLAN features, which had a root mean squared error of 4.56 on the test set. The performance on both tasks illustrates the feasibility of using speech to classify AD and predict neuropsychological scores.},
+  langid = {english},
+  keywords = {Alzheimer's disease,BERT,Dementia detection,I-vectors,MMSE prediction,Speech,Word Vectors,X-vectors}
+}
+
+@misc{hledikovaDataAugmentationDementia2022,
+  title = {Data {{Augmentation}} for {{Dementia Detection}} in {{Spoken Language}}},
+  author = {Hl{\'e}dikov{\'a}, Anna and Woszczyk, Dominika and Akman, Alican and Demetriou, Soteris and Schuller, Bj{\"o}rn},
+  year = 2022,
+  month = jul,
+  number = {arXiv:2206.12879},
+  eprint = {2206.12879},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2206.12879},
+  abstract = {Dementia is a growing problem as our society ages, and detection methods are often invasive and expensive. Recent deep-learning techniques can offer a faster diagnosis and have shown promising results. However, they require large amounts of labelled data which is not easily available for the task of dementia detection. One effective solution to sparse data problems is data augmentation, though the exact methods need to be selected carefully. To date, there has been no empirical study of data augmentation on Alzheimer's disease (AD) datasets for NLP and speech processing. In this work, we investigate data augmentation techniques for the task of AD detection and perform an empirical evaluation of the different approaches on two kinds of models for both the text and audio domains. We use a transformer-based model for both domains, and SVM and Random Forest models for the text and audio domains, respectively. We generate additional samples using traditional as well as deep learning based methods and show that data augmentation improves performance for both the text- and audio-based models and that such results are comparable to state-of-the-art results on the popular ADReSS set, with carefully crafted architectures and features.},
+  archiveprefix = {arXiv},
+  keywords = {Data Augmentation}
+}
+
+@article{ihnainiDetectionAlzheimersDisease2025,
+  title = {Detection of {{Alzheimer}}'s {{Disease Using Fine-Tuned Large Language Models}}},
+  author = {Ihnaini, Baha and Deng, Yongxin and He, Yujie and Geng, Le and Xu, Jiyai},
+  year = 2025,
+  month = aug,
+  journal = {Forum for Linguistic Studies},
+  volume = {7},
+  number = {8},
+  pages = {373--384},
+  issn = {2705-0602},
+  doi = {10.30564/fls.v7i8.9899},
+  abstract = {Since there is no known cure for Alzheimer's disease (AD), early detection is essential to controlling its progression.Because of the high cost and invasiveness of traditional diagnostic techniques like MRIs and pathological testing, researchers are looking into less expensive alternatives that use machine learning (ML) and natural language processing (NLP). By evaluating their performance against traditional ML and deep learning (DL) techniques, this study explores the possibility of using fine-tuned open-source large language models (LLMs) to identify AD through linguistic analysis. To optimize models like Qwen1.5--7B and OLMo1.7--7B, we used supervised fine-tuning (SFT) with parameter-efficient techniques like LoRA and QLoRA on the Pitt Corpus dataset, which consists of speech transcripts from the ``Cookie Theft'' picture description task. The findings showed that LLMs performed noticeably better than conventional techniques; Qwen1.5--7B had an F1-score of 0.8824, which was higher than CNN (0.7987), LSTM (0.7689), and logistic regression (0.83). The study demonstrates how LLMs can detect subtle linguistic impairments in AD that are difficult for traditional models to identify, like syntactic errors and repetitions. The comparatively small dataset size and exclusive reliance on textual data are limitations, though, and it is recommended that future studies include multimodal inputs and more varied datasets. Despite limitations, the results highlight the potential of optimized LLMs as scalable, non-invasive methods for early AD detection, providing a way to enhance patient care and diagnostic precision. Through this study, a novel, accurate, and reliable method for early diagnosis of Alzheimer's disease patients can be provided.},
+  copyright = {Copyright \copyright{} 2025 Baha Ihnaini, Yongxin Deng , Yujie He, Le Geng, Jiyai Xu},
+  langid = {english},
+  keywords = {Fine-tuning}
+}
+
+@inproceedings{iliasMultimodalApproachDementia2022,
+  title = {A {{Multimodal Approach}} for {{Dementia Detection}} from {{Spontaneous Speech}} with {{Tensor Fusion Layer}}},
+  booktitle = {2022 {{IEEE-EMBS International Conference}} on {{Biomedical}} and {{Health Informatics}} ({{BHI}})},
+  author = {Ilias, Loukas and Askounis, Dimitris and Psarras, John},
+  year = 2022,
+  month = sep,
+  eprint = {2211.04368},
+  primaryclass = {cs},
+  pages = {1--5},
+  doi = {10.1109/BHI56158.2022.9926818},
+  abstract = {Alzheimer's disease (AD) is a progressive neurological disorder, meaning that the symptoms develop gradually throughout the years. It is also the main cause of dementia, which affects memory, thinking skills, and mental abilities. Nowadays, researchers have moved their interest towards AD detection from spontaneous speech, since it constitutes a time-effective procedure. However, existing state-of-the-art works proposing multimodal approaches do not take into consideration the inter- and intramodal interactions and propose early and late fusion approaches. To tackle these limitations, we propose deep neural networks, which can be trained in an end-to-end trainable way and capture the inter- and intra-modal interactions. Firstly, each audio file is converted to an image consisting of three channels, i.e., logMel spectrogram, delta, and delta-delta. Next, each transcript is passed through a BERT model followed by a gated selfattention layer. Similarly, each image is passed through a Swin Transformer followed by an independent gated self-attention layer. Acoustic features are extracted also from each audio file. Finally, the representation vectors from the different modalities are fed to a tensor fusion layer for capturing the inter-modal interactions. Extensive experiments conducted on the ADReSS Challenge dataset indicate that our introduced approaches obtain valuable advantages over existing research initiatives reaching Accuracy and F1-score up to 86.25\% and 85.48\% respectively.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Multimodal}
+}
+
+@article{iliasMultimodalDeepLearning2022a,
+  title = {Multimodal {{Deep Learning Models}} for {{Detecting Dementia From Speech}} and {{Transcripts}}},
+  author = {Ilias, Loukas and Askounis, Dimitris},
+  year = 2022,
+  month = mar,
+  journal = {Frontiers in Aging Neuroscience},
+  volume = {14},
+  publisher = {Frontiers},
+  issn = {1663-4365},
+  doi = {10.3389/fnagi.2022.830943},
+  abstract = {Alzheimer's dementia (AD) entails negative psychological, social, and economic consequences not only for the patients but also for their families, relatives, and society in general. Despite the significance of this phenomenon and the importance for an early diagnosis, there are still limitations. Specifically, the main limitation is pertinent to the way the modalities of speech and transcripts are combined in a single neural network. Existing research works add/concatenate the image and text representations, employ majority voting approaches or average the predictions after training many textual and speech models separately. To address these limitations, in this paper we present some new methods to detect AD patients and predict the Mini-Mental State Examination (MMSE) scores in an end-to-end trainable manner consisting of a combination of BERT, Vision Transformer, Co-Attention, Multimodal Shifting Gate, and a variant of the self-attention mechanism. Specifically, we convert audio to Log-Mel spectrograms, their delta, and delta-delta (acceleration values). First, we pass each transcript and image through a BERT model and Vision Transformer respectively adding a co-attention layer at the top, which generates image and word attention simultaneously. Secondly, we propose an architecture, which integrates multimodal information to a BERT model via a Multimodal Shifting Gate. Finally, we introduce an approach to capture both the inter- and intra-modal interactions by concatenating the textual and visual representations and utilizing a self-attention mechanism, which includes a gate model. Experiments conducted on the ADReSS Challenge dataset indicate that our introduced models demonstrate valuable advantages over existing research initiatives achieving competitive results in both the AD classification and MMSE regression task. Specifically, our best performing model attains an accuracy of 90.00\% and a Root Mean Squared Error (RMSE) of 3.61 in the AD classification task and MMSE regression task respectively, achieving a new state-of-the-art performance in the MMSE regression task.},
+  langid = {english},
+  keywords = {Multimodal}
+}
+
+@inproceedings{illaPathologicalVoiceAdaptation2021,
+  title = {Pathological Voice Adaptation with Autoencoder-Based Voice Conversion},
+  booktitle = {11th {{ISCA Speech Synthesis Workshop}} ({{SSW}} 11)},
+  author = {Illa, Marc and Halpern, Bence Mark and Son, Rob Van and {Moro-Velazquez}, Laureano and Scharenborg, Odette},
+  year = 2021,
+  month = aug,
+  pages = {19--24},
+  publisher = {ISCA},
+  doi = {10.21437/SSW.2021-4},
+  abstract = {In this paper, we propose a new approach to pathological speech synthesis. Instead of using healthy speech as a source, we customise an existing pathological speech sample to a new speaker's voice characteristics. This approach alleviates the evaluation problem one normally has when converting typical speech to pathological speech, as in our approach, the voice conversion (VC) model does not need to be optimised for speech degradation but only for the speaker change. This change in the optimisation ensures that any degradation found in naturalness is due to the conversion process and not due to the model exaggerating characteristics of a speech pathology. To show a proof of concept of this method, we convert dysarthric speech using the UASpeech database and an autoencoder-based VC technique. Subjective evaluation results show reasonable naturalness for high intelligibility dysarthric speakers, though lower intelligibility seems to introduce a marginal degradation in naturalness scores for mid and low intelligibility speakers compared to ground truth. Conversion of speaker characteristics for low and high intelligibility speakers is successful, but not for mid. Whether the differences in the results for the different intelligibility levels is due to the intelligibility levels or due to the speakers needs to be further investigated.},
+  langid = {english}
+}
+
+@inproceedings{inproceedings,
+  title = {Multimodal Speech Analysis for Early Detection of Mild Cognitive Impairment: A Scalable Approach},
+  author = {Bilal, Muhammad and Abdulla, Waleed and Cheung, Gary and Tippett, Lynette and Shahamiri, Seyed Reza},
+  year = 2025,
+  month = oct,
+  pages = {2465--2470},
+  doi = {10.1109/APSIPAASC65261.2025.11249319}
+}
+
 @article{jiaWhisperBasedMultilingualAlzheimers,
   title = {Whisper-{{Based Multilingual Alzheimer}}'s {{Disease Detection}} and {{Improvements}} for {{Low-Resource Language}}},
   author = {Jia, Kaichen and Li, Jinpeng and Li, Ke and Zhang, Wei-Qiang},
   abstract = {Alzheimer's Disease (AD) poses a growing global health challenge due to population aging. Using spontaneous speech for the early diagnosis of AD has emerged as a notable area of research. In response to the global trend of AD, our study proposes a speech-based multilingual AD detection method. In our study, we utilize Whisper for transfer learning to build a multilingual pre-trained AD diagnostic model that achieves 81.38\% accuracy on a test set comprising multiple languages. To enhance low-resource language performance, we fine-tune the pre-trained model with multilingual data and full transcripts as prompts, achieving a 4-7\% accuracy improvement. Additionally, we incorporate the speaker's background information, enhancing the accuracy of low-resource languages by 11-13\%. The results demonstrate the validity of our work in multilingual Alzheimer's detection tasks and also illustrate the feasibility of our approach in addressing the global need for Alzheimer's detection.},
+  langid = {english},
+  keywords = {Fine-tuning}
+}
+
+@inproceedings{keOptimizingPauseContext2025,
+  title = {Optimizing {{Pause Context}} in {{Fine-Tuning Pre-trained Large Language Models}} for {{Dementia Detection}}},
+  booktitle = {Interspeech 2025},
+  author = {Ke, Xiaoquan and Mak, Man-Wai and Meng, Helen},
+  year = 2025,
+  month = aug,
+  pages = {1408--1412},
+  publisher = {ISCA},
+  doi = {10.21437/Interspeech.2025-1080},
+  abstract = {Speech pauses serve as a valuable and non-invasive biomarker for the early detection of dementia. Our study aims to examine abnormal pauses, specifically their durations, for improving the detection performance. Inspired by the proven performance of the Transformer-based models in dementia detection, we opted for integrating the abnormal pauses into these models. Specifically, we enriched the inputs for the Transformer-based models by fusing between-segment pause context into the automated transcriptions. We performed the experiments on our Cantonese elderly corpus called CU-Marvel. To improve the detection performance, we optimized the pause durations when infusing the pause context into the transcriptions. Our findings suggest that the between-segment pauses could also serve as promising biomarkers. We emphasize the importance of optimizing pause patterns across different languages or datasets. Our findings indicate that various classification tasks prefer distinct patterns of pause infusing.},
   langid = {english},
   keywords = {Fine-tuning}
 }
@@ -105,6 +341,89 @@
   pmid = {36791255}
 }
 
+@article{latifDeepEnsembleLearning2025,
+  title = {Deep Ensemble Learning with Transformer Models for Enhanced {{Alzheimer}}'s Disease Detection},
+  author = {Latif, Shiza and Islam, Naeem Ul and Uddin, Zaki and Cheema, Khalid Mehmood and Ahmed, Syed Sohail and Khan, Muhammad Farhan},
+  year = 2025,
+  month = jul,
+  journal = {Scientific Reports},
+  volume = {15},
+  pages = {24720},
+  issn = {2045-2322},
+  doi = {10.1038/s41598-025-08362-y},
+  abstract = {The progression of Alzheimer's disease is relentless, leading to a worsening of mental faculties over time. Currently, there is no remedy for this illness. Accurate detection and prompt intervention are pivotal in mitigating the progression of the disease. Recently, researchers have been developing new methods for detecting Alzheimer's at earlier stages, including genetic testing, blood tests for biomarkers, and cognitive assessments. Cognitive assessments involve a series of tests to measure memory, language, attention, and other brain functions. For disease detection, optimal performance necessitates enhanced accuracy and efficient computational capabilities. Our proposition involves the data augmentation of textual data; after this, we deploy our proposed BERT-based deep learning model to make use of its advanced capabilities for improved feature extraction and text comprehension. Our proposed model is a two-branch network. The first branch is based on the BERT encoder, which is used to encode the text data into a fixed-length vector; the BERT output is fed into the convolution layer, followed by the LSTM layer, and finally, the fully connected layer to predict whether a patient has AD or not. The second branch is based on the recurrent convolutional neural network. The recurrent convolutional neural network also takes text data as input and generates the final classification output. Finally, these branches are fused using the ensemble learning approach to give a more robust and accurate output. The proposed model is trained on a corpus of clinical notes from patients with AD and healthy control subjects. Evaluated on the Cookie Theft subset of the DementiaBank Pitt Corpus, our ensemble achieves 94.98\% accuracy, 0.9523 F1-score, and 0.93 AUC. The results show that the proposed model outperforms state-of-the-art models for the early diagnosis of AD from text.},
+  pmcid = {PMC12241610},
+  pmid = {40634379}
+}
+
+@article{leeMultimodalAlzheimersDisease2025,
+  title = {Multimodal {{Alzheimer}}'s Disease Recognition from Image, Text and Audio},
+  author = {Lee, Byounghwa and Song, Hwa Jeon and Park, Young-Jin and Kang, Byung Ok},
+  year = 2025,
+  month = aug,
+  journal = {Scientific Reports},
+  volume = {15},
+  number = {1},
+  pages = {29038},
+  publisher = {Nature Publishing Group},
+  issn = {2045-2322},
+  doi = {10.1038/s41598-025-14998-7},
+  abstract = {Alzheimer's disease (AD) is a progressive neurodegenerative disorder that significantly affects cognitive function. One widely used diagnostic approach involves analyzing patients' verbal descriptions of pictures. While prior studies have primarily focused on speech- and text-based models, the integration of visual context is still at an early stage. This study proposes a novel multimodal AD prediction model that integrates image, text, and audio modalities. The image and text modalities are processed using a vision-language model and structured as a bipartite graph before fusion, while all three modalities are integrated through a combination of co-attention-based intermediate fusion and late fusion, enabling effective inter-modality cooperation. The proposed model achieves an accuracy of 90.61\%, outperforming state-of-the-art models. Furthermore, an ablation study quantifies the contribution of each modality using Shapley values, which serve as the foundation for a novel auxiliary loss function that adaptively adjusts modality importance during training. The findings indicate that integrating image, text, and audio modalities via a co-attention-based intermediate fusion enhances AD classification performance. Additionally, this study analyzes modality-specific attention patterns and key linguistic tokens, demonstrating that audio and text provide complementary cues for AD classification.},
+  copyright = {2025 The Author(s)},
+  langid = {english},
+  keywords = {Multimodal}
+}
+
+@article{linMultimodalDeepLearning2024,
+  title = {Multimodal Deep Learning for Dementia Classification Using Text and Audio},
+  author = {Lin, Kaiying and Washington, Peter Y.},
+  year = 2024,
+  month = jun,
+  journal = {Scientific Reports},
+  volume = {14},
+  number = {1},
+  pages = {13887},
+  publisher = {Nature Publishing Group},
+  issn = {2045-2322},
+  doi = {10.1038/s41598-024-64438-1},
+  abstract = {Dementia is a progressive neurological disorder that affects the daily lives of older adults, impacting their verbal communication and cognitive function. Early diagnosis is important to enhance the lifespan and quality of life for affected individuals. Despite its importance, diagnosing dementia is a complex process. Automated machine learning solutions involving multiple types of data have the potential to improve the process of automated dementia screening. In this study, we build deep learning models to classify dementia cases from controls using the Pitt Cookie Theft dataset from DementiaBank, a database of short~participant responses to~the structured task of describing a picture of a cookie theft. We fine-tune Wav2vec and Word2vec baseline models to make binary~predictions of dementia~from audio recordings and text transcripts, respectively. We conduct experiments with four versions of the dataset: (1) the original data, (2) the data with short sentences removed, (3) text-based augmentation of the original data, and (4) text-based augmentation of the data with short sentences removed. Our results indicate that synonym-based text data augmentation generally enhances the performance of models that incorporate the text modality. Without data augmentation, models using the text modality achieve around 60\% accuracy and 70\% AUROC scores, and with data augmentation, the models achieve around 80\% accuracy and 90\% AUROC scores. We do not observe significant improvements in performance with the addition of audio or timestamp information into the model. We include a qualitative error analysis of the sentences that are misclassified under each study condition. This study provides preliminary insights into the effects of both text-based data augmentation and multimodal deep learning for automated dementia classification.},
+  copyright = {2024 This is a U.S. Government work and not under copyright protection in the US; foreign copyright protection may apply},
+  langid = {english},
+  keywords = {Data Augmentation,Multimodal}
+}
+
+@misc{linParalinguisticsEnhancedLargeLanguage2024,
+  title = {Paralinguistics-{{Enhanced Large Language Modeling}} of {{Spoken Dialogue}}},
+  author = {Lin, Guan-Ting and Shivakumar, Prashanth Gurunath and Gandhe, Ankur and Yang, Chao-Han Huck and Gu, Yile and Ghosh, Shalini and Stolcke, Andreas and Lee, Hung-yi and Bulyko, Ivan},
+  year = 2024,
+  month = jan,
+  number = {arXiv:2312.15316},
+  eprint = {2312.15316},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2312.15316},
+  abstract = {Large Language Models (LLMs) have demonstrated superior abilities in tasks such as chatting, reasoning, and question-answering. However, standard LLMs may ignore crucial paralinguistic information, such as sentiment, emotion, and speaking style, which are essential for achieving natural, human-like spoken conversation, especially when such information is conveyed by acoustic cues. We therefore propose Paralinguistics-enhanced Generative Pretrained Transformer (ParalinGPT), an LLM that utilizes text and speech modalities to better model the linguistic content and paralinguistic attributes of spoken dialogue. The model takes the conversational context of text, speech embeddings, and paralinguistic attributes as input prompts within a serialized multitasking multimodal framework. Specifically, our framework serializes tasks in the order of current paralinguistic attribute prediction, response paralinguistic attribute prediction, and response text generation with autoregressive conditioning. We utilize the Switchboard-1 corpus, including its sentiment labels as the paralinguistic attribute, as our spoken dialogue dataset. Experimental results indicate the proposed serialized multitasking method outperforms typical sequence classification techniques on current and response sentiment classification. Furthermore, leveraging conversational context and speech embeddings significantly improves both response text generation and sentiment prediction. Our proposed framework achieves relative improvements of 6.7\%, 12.0\%, and 3.5\% in current sentiment accuracy, response sentiment accuracy, and response text BLEU score, respectively.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Computation and Language,Electrical Engineering and Systems Science - Audio and Speech Processing}
+}
+
+@misc{liThereAnythingElse2025,
+  title = {"{{Is There Anything Else}}?'': {{Examining Administrator Influence}} on {{Linguistic Features}} from the {{Cookie Theft Picture Description Cognitive Test}}},
+  shorttitle = {"{{Is There Anything Else}}?},
+  author = {Li, Changye and Sheng, Zhecheng and Cohen, Trevor and Pakhomov, Serguei},
+  year = 2025,
+  month = mar,
+  number = {arXiv:2503.20104},
+  eprint = {2503.20104},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2503.20104},
+  abstract = {Alzheimer's Disease (AD) dementia is a progressive neurodegenerative disease that negatively impacts patients' cognitive ability. Previous studies have demonstrated that changes in naturalistic language samples can be useful for early screening of AD dementia. However, the nature of language deficits often requires test administrators to use various speech elicitation techniques during spontaneous language assessments to obtain enough propositional utterances from dementia patients. This could lead to the ``observer's effect'' on the downstream analysis that has not been fully investigated. Our study seeks to quantify the influence of test administrators on linguistic features in dementia assessment with two English corpora the ``Cookie Theft'' picture description datasets collected at different locations and test administrators show different levels of administrator involvement. Our results show that the level of test administrator involvement significantly impacts observed linguistic features in patient speech. These results suggest that many of significant linguistic features in the downstream classification task may be partially attributable to differences in the test administration practices rather than solely to participants' cognitive status. The variations in test administrator behavior can lead to systematic biases in linguistic data, potentially confounding research outcomes and clinical assessments. Our study suggests that there is a need for a more standardized test administration protocol in the development of responsible clinical speech analytics frameworks.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Computation and Language}
+}
+
 @misc{liuCleverHansEffect2024,
   title = {Clever {{Hans Effect Found}} in {{Automatic Detection}} of {{Alzheimer}}'s {{Disease}} through {{Speech}}},
   author = {Liu, Yin-Long and Feng, Rui and Yuan, Jia-Hong and Ling, Zhen-Hua},
@@ -119,6 +438,33 @@
   archiveprefix = {arXiv},
   langid = {english},
   keywords = {Electrical Engineering and Systems Science - Audio and Speech Processing}
+}
+
+@inproceedings{liuDetectingAlzheimersDisease2021,
+  title = {Detecting {{Alzheimer}}'s {{Disease}} from {{Speech Using Neural Networks}} with {{Bottleneck Features}} and {{Data Augmentation}}},
+  booktitle = {{{ICASSP}} 2021 - 2021 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Liu, Zhaoci and Guo, Zhiqiang and Ling, Zhenhua and Li, Yunxia},
+  year = 2021,
+  month = jun,
+  pages = {7323--7327},
+  issn = {2379-190X},
+  doi = {10.1109/ICASSP39728.2021.9413566},
+  abstract = {This paper presents a method of detecting Alzheimer's disease (AD) from the spontaneous speech of subjects in a picture description task using neural networks. This method does not rely on the manual transcriptions and annotations of a subject's speech, but utilizes the bottleneck features extracted from audio using an ASR model. The neural network contains convolutional neural network (CNN) layers for local context modeling, bidirectional long shortterm memory (BiLSTM) layers for global context modeling and an attention pooling layer for classification. Furthermore, a masking- based data augmentation method is designed to deal with the data scarcity problem. Experiments on the DementiaBank dataset show that the detection accuracy of our proposed method is 82.59\%, which is better than the baseline method based on manually-designed acoustic features and support vector machines (SVM), and achieves the state-of-the-art performance of detecting AD using only audio data on this dataset.},
+  keywords = {Acoustics,Alzheimer's disease,bottleneck features,data augmentation,Data Augmentation,Feature extraction,Manuals,neural networks,Signal processing,speech analysis,Support vector machines,Task analysis}
+}
+
+@inproceedings{liWhisperBasedTransferLearning2024,
+  title = {Whisper-{{Based Transfer Learning}} for {{Alzheimer Disease Classification}}: {{Leveraging Speech Segments}} with {{Full Transcripts}} as {{Prompts}}},
+  shorttitle = {Whisper-{{Based Transfer Learning}} for {{Alzheimer Disease Classification}}},
+  booktitle = {{{ICASSP}} 2024 - 2024 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Li, Jinpeng and Zhang, Wei-Qiang},
+  year = 2024,
+  month = apr,
+  pages = {11211--11215},
+  issn = {2379-190X},
+  doi = {10.1109/ICASSP48485.2024.10448004},
+  abstract = {Alzheimer's disease (AD) is a neurodegenerative disorder that can lead to speech impairments. Early diagnosis is crucial for effective treatment, and speech-based diagnosis is currently a hot research topic. In this study, we explore the feasibility of transfer learning for Alzheimer's disease detection using the state-of-the-art multilingual speech recognition and translation model: Whisper. In order to address the limitation of Whisper's narrow perspective caused by the restricted audio segment length during fine-tuning, we propose an innovative method to overcome this problem by using the full transcript as a prompt to assist in training speech segments. This approach results in a relative performance improvement of 9\%-12\% for models with a higher number of parameters. On the ADReSSo test set, the accuracy and F1 score achieved are 84.51\% and 84.50\% respectively, surpassing both the baseline system and commonly used speech recognition-language model cascade methods, demonstrating its effectiveness.},
+  keywords = {Fine-tuning}
 }
 
 @misc{luzAlzheimersDementiaRecognition2020,
@@ -156,6 +502,20 @@
   abstract = {The ADReSS-M Signal Processing Grand Challenge was held at the 2023 IEEE International Conference on Acoustics, Speech and Signal Processing, ICASSP 2023. The challenge targeted difficult automatic prediction problems of great societal and medical relevance, namely, the detection of Alzheimer's Dementia (AD) and the estimation of cognitive test scoress. Participants were invited to create models for the assessment of cognitive function based on spontaneous speech data. Most of these models employed signal processing and machine learning methods. The ADReSS-M challenge was designed to assess the extent to which predictive models built based on speech in one language generalise to another language. The language data compiled and made available for ADReSS-M comprised English, for model training, and Greek, for model testing and validation. To the best of our knowledge no previous shared research task investigated acoustic features of the speech signal or linguistic characteristics in the context of multilingual AD detection. This paper describes the context of the ADReSS-M challenge, its data sets, its predictive tasks, the evaluation methodology we employed, our baseline models and results, and the top five submissions. The paper concludes with a summary discussion of the ADReSS-M results, and our critical assessment of the future outlook in this field.}
 }
 
+@article{martincTemporalIntegrationText2021,
+  title = {Temporal {{Integration}} of {{Text Transcripts}} and {{Acoustic Features}} for {{Alzheimer}}'s {{Diagnosis Based}} on {{Spontaneous Speech}}},
+  author = {Martinc, Matej and Haider, Fasih and Pollak, Senja and Luz, Saturnino},
+  year = 2021,
+  month = jun,
+  journal = {Frontiers in Aging Neuroscience},
+  volume = {13},
+  pages = {642647},
+  issn = {1663-4365},
+  doi = {10.3389/fnagi.2021.642647},
+  abstract = {Background: Advances in machine learning (ML) technology have opened new avenues for detection and monitoring of cognitive decline. In this study, a multimodal approach to Alzheimer's dementia detection based on the patient's spontaneous speech is presented. This approach was tested on a standard, publicly available Alzheimer's speech dataset for comparability. The data comprise voice samples from 156 participants (1:1 ratio of Alzheimer's to control), matched by age and gender. Materials and Methods: A recently developed Active Data Representation (ADR) technique for voice processing was employed as a framework for fusion of acoustic and textual features at sentence and word level. Temporal aspects of textual features were investigated in conjunction with acoustic features in order to shed light on the temporal interplay between paralinguistic (acoustic) and linguistic (textual) aspects of Alzheimer's speech. Combinations between several configurations of ADR features and more traditional bag-of-n-grams approaches were used in an ensemble of classifiers built and evaluated on a standardised dataset containing recorded speech of scene descriptions and textual transcripts. Results: Employing only semantic bag-of-n-grams features, an accuracy of 89.58\% was achieved in distinguishing between Alzheimer's patients and healthy controls. Adding temporal and structural information by combining bag-of-n-grams features with ADR audio/textual features, the accuracy could be improved to 91.67\% on the test set. An accuracy of 93.75\% was achieved through late fusion of the three best feature configurations, which corresponds to a 4.7\% improvement over the best result reported in the literature for this dataset. Conclusion: The proposed combination of ADR audio and textual features is capable of successfully modelling temporal aspects of the data. The machine learning approach toward dementia detection achieves best performance when ADR features are combined with strong semantic bag-of-n-grams features. This combination leads to state-of-the-art performance on the AD classification task.},
+  langid = {english}
+}
+
 @article{nicholsEstimationGlobalPrevalence2022,
   title = {Estimation of the Global Prevalence of Dementia in 2019 and Forecasted Prevalence in 2050: An Analysis for the {{Global Burden}} of {{Disease Study}} 2019},
   shorttitle = {Estimation of the Global Prevalence of Dementia in 2019 and Forecasted Prevalence in 2050},
@@ -172,6 +532,82 @@
   langid = {english}
 }
 
+@incollection{ntampakisNeuroXVocalDetectionExplanation2026,
+  title = {{{NeuroXVocal}}: {{Detection}} and {{Explanation}} of {{Alzheimer}}'s {{Disease}} through {{Non-invasive Analysis}} of {{Picture-prompted Speech}}},
+  shorttitle = {{{NeuroXVocal}}},
+  author = {Ntampakis, Nikolaos and Diamantaras, Konstantinos and Chouvarda, Ioanna and Tsolaki, Magda and Argyriou, Vasileios and Sarigianndis, Panagiotis},
+  year = 2026,
+  volume = {15973},
+  eprint = {2502.10108},
+  primaryclass = {cs},
+  pages = {410--419},
+  doi = {10.1007/978-3-032-05185-1_40},
+  abstract = {The early diagnosis of Alzheimer's Disease (AD) through non invasive methods remains a significant healthcare challenge. We present NeuroXVocal, a novel dual-component system that not only classifies but also explains potential AD cases through speech analysis. The classification component (Neuro) processes three distinct data streams: acoustic features capturing speech patterns and voice characteristics, textual features extracted from speech transcriptions, and precomputed embeddings representing linguistic patterns. These streams are fused through a custom transformer-based architecture that enables robust cross-modal interactions. The explainability component (XVocal) implements a Retrieval-Augmented Generation (RAG) approach, leveraging Large Language Models combined with a domain-specific knowledge base of AD research literature. This architecture enables XVocal to retrieve relevant clinical studies and research findings to generate evidence-based context-sensitive explanations of the acoustic and linguistic markers identified in patient speech. Using the IS2021 ADReSSo Challenge benchmark dataset, our system achieved state-of-the-art performance with 95.77\% accuracy in AD classification, significantly outperforming previous approaches. The explainability component was qualitatively evaluated using a structured questionnaire completed by medical professionals, validating its clinical relevance. NeuroXVocal's unique combination of high-accuracy classification and interpretable, literaturegrounded explanations demonstrates its potential as a practical tool for supporting clinical AD diagnosis.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Machine Learning,Quantitative Biology - Neurons and Cognition}
+}
+
+@misc{panSwinBERTFeatureFusion2024,
+  title = {Swin-{{BERT}}: {{A Feature Fusion System}} Designed for {{Speech-based Alzheimer}}'s {{Dementia Detection}}},
+  shorttitle = {Swin-{{BERT}}},
+  author = {Pan, Yilin and Shi, Yanpei and Zhang, Yijia and Lu, Mingyu},
+  year = 2024,
+  month = oct,
+  number = {arXiv:2410.07277},
+  eprint = {2410.07277},
+  primaryclass = {eess},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2410.07277},
+  abstract = {Speech is usually used for constructing an automatic Alzheimer's dementia (AD) detection system, as the acoustic and linguistic abilities show a decline in people living with AD at the early stages. However, speech includes not only AD-related local and global information but also other information unrelated to cognitive status, such as age and gender. In this paper, we propose a speech-based system named Swin-BERT for automatic dementia detection. For the acoustic part, the shifted windows multi-head attention that proposed to extract local and global information from images, is used for designing our acoustic-based system. To decouple the effect of age and gender on acoustic feature extraction, they are used as an extra input of the designed acoustic system. For the linguistic part, the rhythm-related information, which varies significantly between people living with and without AD, is removed while transcribing the audio recordings into transcripts. To compensate for the removed rhythm-related information, the character-level transcripts are proposed to be used as the extra input of a word-level BERT-style system. Finally, the Swin-BERT combines the acoustic features learned from our proposed acoustic-based system with our linguistic-based system. The experiments are based on the two datasets provided by the international dementia detection challenges: the ADReSS and ADReSSo. The results show that both the proposed acoustic and linguistic systems can be better or comparable with previous research on the two datasets. Superior results are achieved by the proposed Swin-BERT system on the ADReSS and ADReSSo datasets, which are 85.58\textbackslash\% F-score and 87.32\textbackslash\% F-score respectively.},
+  archiveprefix = {arXiv},
+  keywords = {Multimodal}
+}
+
+@misc{paraskevopoulosSampleEfficientUnsupervisedDomain2022,
+  title = {Sample-{{Efficient Unsupervised Domain Adaptation}} of {{Speech Recognition Systems A}} Case Study for {{Modern Greek}}},
+  author = {Paraskevopoulos, Georgios and Kouzelis, Theodoros and Rouvalis, Georgios and Katsamanis, Athanasios and Katsouros, Vassilis and Potamianos, Alexandros},
+  year = 2022,
+  month = dec,
+  number = {arXiv:2301.00304},
+  eprint = {2301.00304},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2301.00304},
+  abstract = {Modern speech recognition systems exhibits rapid performance degradation under domain shift. This issue is especially prevalent in data-scarce settings, such as low-resource languages, where diversity of training data is limited. In this work we propose M2DS2, a simple and sample-efficient finetuning strategy for large pretrained speech models, based on mixed source and target domain self-supervision. We find that including source domain self-supervision stabilizes training and avoids mode collapse of the latent representations. For evaluation, we collect HParl, a 120 hour speech corpus for Greek, consisting of plenary sessions in the Greek Parliament. We merge HParl with two popular Greek corpora to create GREC-MD, a testbed for multi-domain evaluation of Greek ASR systems. In our experiments we find that, while other Unsupervised Domain Adaptation baselines fail in this resource-constrained environment, M2DS2 yields significant improvements for cross-domain adaptation, even when a only a few hours of in-domain audio are available. When we relax the problem in a weakly supervised setting, we find that independent adaptation for audio using M2DS2 and language using simple LM augmentation techniques is particularly effective, yielding word error rates comparable to the fully supervised baselines.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Computation and Language,Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing},
+  annotation = {12 citations (Semantic Scholar/arXiv) [2025-12-24]\\
+GSCC: 0000013 2025-12-23T15:13:28.052Z 0.08}
+}
+
+@article{parkReasoningBasedApproachChainofThought,
+  title = {Reasoning-{{Based Approach}} with {{Chain-of-Thought}} for {{Alzheimer}}'s {{Detection Using Speech}} and {{Large Language Models}}},
+  author = {Park, Chanwoo and Choi, Anna Seo Gyeong and Cho, Sunghye and Kim, Chanwoo},
+  abstract = {Societies worldwide are rapidly entering a super-aged era, making elderly health a pressing concern. The aging population is increasing the burden on national economies and households. Dementia cases are rising significantly with this demographic shift. Recent research using voice-based models and large language models (LLM) offers new possibilities for dementia diagnosis and treatment. Our Chain-of-Thought (CoT) reasoning method combines speech and language models. The process starts with automatic speech recognition to convert speech to text. We add a linear layer to an LLM for Alzheimer's disease (AD) and non-AD classification, using supervised fine-tuning (SFT) with CoT reasoning and cues. This approach showed an 16.7\% relative performance improvement compared to methods without CoT prompt reasoning. To the best of our knowledge, our proposed method achieved state-of-the-art performance in CoT approaches.},
+  langid = {english},
+  keywords = {Fine-tuning}
+}
+
+@inproceedings{parkSpecAugmentSimpleData2019,
+  title = {{{SpecAugment}}: {{A Simple Data Augmentation Method}} for {{Automatic Speech Recognition}}},
+  shorttitle = {{{SpecAugment}}},
+  booktitle = {Interspeech 2019},
+  author = {Park, Daniel S. and Chan, William and Zhang, Yu and Chiu, Chung-Cheng and Zoph, Barret and Cubuk, Ekin D. and Le, Quoc V.},
+  year = 2019,
+  month = sep,
+  eprint = {1904.08779},
+  primaryclass = {eess},
+  pages = {2613--2617},
+  doi = {10.21437/Interspeech.2019-2680},
+  abstract = {We present SpecAugment, a simple data augmentation method for speech recognition. SpecAugment is applied directly to the feature inputs of a neural network (i.e., filter bank coefficients). The augmentation policy consists of warping the features, masking blocks of frequency channels, and masking blocks of time steps. We apply SpecAugment on Listen, Attend and Spell networks for end-to-end speech recognition tasks. We achieve state-of-the-art performance on the LibriSpeech 960h and Swichboard 300h tasks, outperforming all prior work. On LibriSpeech, we achieve 6.8\% WER on test-other without the use of a language model, and 5.8\% WER with shallow fusion with a language model. This compares to the previous stateof-the-art hybrid system of 7.5\% WER. For Switchboard, we achieve 7.2\%/14.6\% on the Switchboard/CallHome portion of the Hub5'00 test set without the use of a language model, and 6.8\%/14.1\% with shallow fusion, which compares to the previous state-of-the-art hybrid system at 8.3\%/17.3\% WER.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Computation and Language,Computer Science - Machine Learning,Computer Science - Sound,Data Augmentation,Electrical Engineering and Systems Science - Audio and Speech Processing,Statistics - Machine Learning},
+  annotation = {GSCC: 0005059 2025-12-23T13:30:22.150Z 15.42}
+}
+
 @article{rundeOptimizationNaturalLanguage2024,
   title = {The {{Optimization}} of a {{Natural Language Processing Approach}} for the {{Automatic Detection}} of {{Alzheimer}}'s {{Disease Using GPT Embeddings}}},
   author = {Runde, Benjamin S. and Alapati, Ajit and Bazan, Nicolas G.},
@@ -186,6 +622,18 @@
   langid = {english},
   pmid = {38539600},
   keywords = {Data Augmentation,Fine-tuning}
+}
+
+@misc{shahinZeroShotCognitiveImpairment2025,
+  title = {Zero-{{Shot Cognitive Impairment Detection}} from {{Speech Using AudioLLM}}},
+  author = {Shahin, Mostafa and Ahmed, Beena and Epps, Julien},
+  year = 2025,
+  publisher = {arXiv},
+  doi = {10.48550/ARXIV.2506.17351},
+  abstract = {Cognitive impairment (CI) is of growing public health concern, and early detection is vital for effective intervention. Speech has gained attention as a non-invasive and easily collectible biomarker for assessing cognitive decline. Traditional CI detection methods typically rely on supervised models trained on acoustic and linguistic features extracted from speech, which often require manual annotation and may not generalize well across datasets and languages. In this work, we propose the first zero-shot speech-based CI detection method using the Qwen2Audio AudioLLM---a model capable of processing both audio and text inputs. By designing prompt-based instructions, we guide the model to classify speech samples as indicative of normal cognition or cognitive impairment. We evaluate our approach on two datasets: one in English and another multilingual, spanning different cognitive assessment tasks. Our results show that the zeroshot AudioLLM approach achieves performance comparable to supervised methods, and exhibits promising generalizability and consistency across languages, tasks, and datasets.},
+  copyright = {Creative Commons Attribution 4.0 International},
+  langid = {english},
+  keywords = {Artificial Intelligence (cs.AI),Audio and Speech Processing (eess.AS),Computation and Language (cs.CL),Fine-tuning,FOS: Computer and information sciences,FOS: Electrical engineering electronic engineering information engineering,Multimedia (cs.MM),Multimodal,Sound (cs.SD)}
 }
 
 @misc{shakeriMultiConADUnifiedMultilingual2025,
@@ -239,6 +687,20 @@
   pmid = {31072403}
 }
 
+@inproceedings{syedTacklingADRESSOChallenge2021,
+  title = {Tackling the {{ADRESSO Challenge}} 2021: {{The MUET-RMIT System}} for {{Alzheimer}}\&\#8217;s {{Dementia Recognition}} from {{Spontaneous Speech}}},
+  shorttitle = {Tackling the {{ADRESSO Challenge}} 2021},
+  booktitle = {Interspeech 2021},
+  author = {Syed, Zafi Sherhan and Syed, Muhammad Shehram Shah and Lech, Margaret and Pirogova, Elena},
+  year = 2021,
+  month = aug,
+  pages = {3815--3819},
+  publisher = {ISCA},
+  doi = {10.21437/Interspeech.2021-1572},
+  abstract = {This paper addresses the Interspeech Alzheimer's Dementia Recognition through Spontaneous Speech only (ADReSSo) challenge 2021. The objective of our study is to propose the approach to a three task automated screening that will aid in distinguishing between healthy individuals and subjects with dementia. The first task is to differentiate between speech recordings from individuals with dementia. The second task requires participants to estimate the Mini-Mental State Examination (MMSE) score based on an individual's speech. The third task requires participants to leverage speech recordings to identify whether individuals have suffered from cognitive decline. Here, we propose a system based on functionals of deep textual embeddings with special preprocessing steps integrating the effect of silence segments. We report that the developed system outperforms the challenge baseline for all three tasks. For Task 1, we achieve an accuracy of 84.51\% compared to the baseline of 77.46\%, for Task 2, we achieve a root-mean-squareerror (RMSE) of 4.35 compared to the baseline of 5.28, and for Task 3, we achieve an average-f1score of 73.80\% compared to the baseline of 66.67\%. These results are a testament of the effectiveness of our proposed system.},
+  langid = {english}
+}
+
 @misc{taoEarlyDementiaDetection2024,
   title = {Early {{Dementia Detection Using Multiple Spontaneous Speech Prompts}}: {{The PROCESS Challenge}}},
   shorttitle = {Early {{Dementia Detection Using Multiple Spontaneous Speech Prompts}}},
@@ -268,7 +730,36 @@
   abstract = {We propose a deep architecture for depression detection from social media posts. The proposed architecture builds upon BERT to extract language representations from social media posts and combines these representations using an attentive bidirectional GRU network. We incorporate affective information, by augmenting the text representations with features extracted from a pretrained emotion classifier. Motivated by psychological literature we propose to incorporate profanity and morality features of posts and words in our architecture using a late fusion scheme. Our analysis indicates that morality and profanity can be important features for depression detection. We apply our model for depression detection on Reddit posts on the Pirina dataset, and further consider the setting of detecting depressed users, given multiple posts per user, proposed in the Reddit RSDD dataset. The inclusion of the proposed features yields state-of-the-art results in both settings, namely 2.65\% and 6.73\% absolute improvement in F1 score respectively.},
   archiveprefix = {arXiv},
   langid = {english},
-  keywords = {Depression Detection}
+  keywords = {Depression Detection},
+  annotation = {2 citations (Semantic Scholar/DOI) [2025-12-24]}
+}
+
+@article{williamsDementiaPrevalenceWisconsin2025,
+  title = {Dementia Prevalence in the {{Wisconsin Longitudinal Study}}},
+  author = {Williams, Victoria and Trane, Ralph and Sicinski, Kamil and Roan, Carol and Lange, Kate and DiLoreto, Kerryann and Strait, Brittani and Fischer, Anne and Wichmann, Grete and Wartenweiler, Garrett and Cooke, Nicole and Henning, Emma and Johnson, Sterling and Engelman, Michal and Herd, Pamela and Asthana, Sanjay},
+  year = 2025,
+  month = sep,
+  journal = {Alzheimer's \& Dementia},
+  volume = {21},
+  doi = {10.1002/alz.70714},
+  abstract = {INTRODUCTION While there is growing appreciation of the importance of sociobiological determinants of dementia, few lifespan cohorts offer well-characterized dementia outcomes to explore these aims. We sought to identify dementia prevalence in the Wisconsin Longitudinal Study (WLS), one of the most comprehensive lifespan cohort studies in the United States. Highlights We found dementia prevalence in the WLS to be 8.9\% when this large population-based cohort was sampled at a mean age of 81. Of the identified dementia cases, 79\% were clinically determined to be due to a presumed underlying etiology of AD. The targeted multiphased assessment approach used to classify dementia in WLS will be iteratively repeated over time to capture new dementia incidence, complemented by parallel efforts to link WLS with Medicare claims data to identify additional dementia cases among non-respondents or those not selected into the ILIAD sampling frame. Ongoing data collection efforts include in-home blood collection efforts to characterize plasma levels of AD biomarkers in the WLS cohort. When resultant dementia classifications are combined with the robust prospectively collected life course data covering a wide array of socioeconomic, educational, occupational, social, behavioral, and physical health variables, the WLS dataset offers an unparalleled opportunity to investigate the sociobiological determinants of late-life dementia. METHODS Using a targeted multiphased assessment approach, participants were first screened for dementia risk using a phone-based cognitive assessment. Those scoring below cut-off underwent additional cognitive/medical assessment to determine a consensus-based cognitive diagnosis and suspected underlying etiology. RESULTS Cognitive status was determined for 5414 participants, with a dementia prevalence of 8.9\% when assessed at a mean age of 81 years. DISCUSSION The WLS offers prospectively collected data covering nearly every facet of participant's lives from high school to late life. When combined with newly defined dementia outcomes, the WLS dataset offers a valuable resource to explore full life course determinants of dementia.}
+}
+
+@misc{wuMultimodalEmotionRecognition2025,
+  title = {Multimodal {{Emotion Recognition}} in {{Conversations}}: {{A Survey}} of {{Methods}}, {{Trends}}, {{Challenges}} and {{Prospects}}},
+  shorttitle = {Multimodal {{Emotion Recognition}} in {{Conversations}}},
+  author = {Wu, Chengyan and Cai, Yiqiang and Liu, Yang and Zhu, Pengxu and Xue, Yun and Gong, Ziwei and Hirschberg, Julia and Ma, Bolei},
+  year = 2025,
+  month = sep,
+  number = {arXiv:2505.20511},
+  eprint = {2505.20511},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2505.20511},
+  abstract = {While text-based emotion recognition methods have achieved notable success, real-world dialogue systems often demand a more nuanced emotional understanding than any single modality can offer. Multimodal Emotion Recognition in Conversations (MERC) has thus emerged as a crucial direction for enhancing the naturalness and emotional understanding of humancomputer interaction. Its goal is to accurately recognize emotions by integrating information from various modalities such as text, speech, and visual signals. This survey offers a systematic overview of MERC, including its motivations, core tasks, representative methods, and evaluation strategies. We further examine recent trends, highlight key challenges, and outline future directions. As interest in emotionally intelligent systems grows, this survey provides timely guidance for advancing MERC research.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Computation and Language,Review}
 }
 
 @misc{xezonakiAffectiveConditioningHierarchical2020a,
@@ -295,6 +786,20 @@
   keywords = {Acoustics,Biomarkers,cognitive decline,Dementia,digital linguistic biomarker,Feature extraction,Linguistics,Pipelines,Production,Signal processing,Speech enhancement,Speech recognition,speech signal processing}
 }
 
+@inproceedings{zhuDomainawareIntermediatePretraining2022a,
+  title = {Domain-Aware {{Intermediate Pretraining}} for {{Dementia Detection}} with {{Limited Data}}},
+  booktitle = {Interspeech 2022},
+  author = {Zhu, Youxiang and Liang, Xiaohui and Batsis, John A. and Roth, Robert M.},
+  year = 2022,
+  month = sep,
+  pages = {2183--2187},
+  publisher = {ISCA},
+  doi = {10.21437/Interspeech.2022-10862},
+  abstract = {Detecting dementia using human speech is promising but faces a limited data challenge. While recent research has shown general pretrained models (e.g., BERT) can be applied to improve dementia detection, the pretrained model can hardly be fine-tuned with the available small dementia dataset as that would raise the overfitting problem. In this paper, we propose a domainaware intermediate pretraining to enable a pretraining process using a domain-similar dataset that is selected by incorporating the knowledge from the dementia dataset. Specifically, we use pseudoperplexity to find an effective pretraining dataset, and then propose dataset-level and sample-level domain-aware intermediate pretraining techniques. We further employ information units (IU) from previous dementia research and define an IU-pseudo-perplexity to reduce calculation complexity. We confirm the effectiveness of perplexity by showing a strong correlation between perplexity and accuracy using 9 datasets and models from the GLUE benchmark. We show that our domainaware intermediate pretraining improves detection accuracy in almost all cases. Our results suggested that the difference in text-based perplexity values between patients with Alzheimer's Disease (AD) and Healthy Control (HC) is still small, and the perplexity incorporating acoustic features (e.g., pause) may make the pretraining more effective.},
+  langid = {english},
+  keywords = {Fine-tuning}
+}
+
 @article{zolnooriADscreenSpeechProcessingbased2023,
   title = {{{ADscreen}}: {{A Speech Processing-based Screening System}} for {{Automatic Identification}} of {{Patients}} with {{Alzheimer}}'s {{Disease}} and {{Related Dementia}}},
   shorttitle = {{{ADscreen}}},
@@ -309,4 +814,20 @@
   abstract = {Alzheimer's disease and related dementias (ADRD) present a looming public health crisis, affecting roughly 5 million people and 11\% of older adults in the United States. Despite nationwide efforts for timely diagnosis of patients with ADRD, more than 50\% of them are not diagnosed and unaware of their disease. To address this challenge, we developed ADscreen, an innovative speech-processing based ADRD screening algorithm for the protective identification of patients with ADRD. ADscreen consists of five major components: (i) noise reduction for reducing background noises from the audio-recorded patient speech, (ii) modeling the patient's ability in phonetic motor planning using acoustic parameters of the patient's voice, (iii) modeling the patient's ability in semantic and syntactic levels of language organization using linguistic parameters of the patient speech, (iv) extracting vocal and semantic psycholinguistic cues from the patient speech, and (v) building and evaluating the screening algorithm. To identify important speech parameters (features) associated with ADRD, we used the Joint Mutual Information Maximization (JMIM), an effective feature selection method for high dimensional, small sample size datasets. Modeling the relationship between speech parameters and the outcome variable (presence/absence of ADRD) was conducted using three different machine learning (ML) architectures with the capability of joining informative acoustic and linguistic with contextual word embedding vectors obtained from the DistilBERT (Bidirectional Encoder Representations from Transformers). We evaluated the performance of the ADscreen on an audio-recorded patients' speech (verbal description) for the Cookie-Theft picture description task, which is publicly available in the dementia databank. The joint fusion of acoustic and linguistic parameters with contextual word embedding vectors of DistilBERT achieved F1-score = 84.64 (standard deviation [std] = \textpm{} 3.58) and AUC-ROC = 92.53 (std = \textpm{} 3.34) for training dataset, and F1-score = 89.55 and AUC-ROC = 93.89 for the test dataset. In summary, ADscreen has a strong potential to be integrated with clinical workflow to address the need for an ADRD screening tool so that patients with cognitive impairment can receive appropriate and timely care.,},
   pmcid = {PMC10483114},
   pmid = {37673583}
+}
+
+@article{zolnourLLMCAREEarlyDetection2025,
+  title = {{{LLMCARE}}: Early Detection of Cognitive Impairment via Transformer Models Enhanced by {{LLM-generated}} Synthetic Data},
+  shorttitle = {{{LLMCARE}}},
+  author = {Zolnour, Ali and Azadmaleki, Hossein and Haghbin, Yasaman and Taherinezhad, Fatemeh and Nezhad, Mohamad Javad Momeni and Rashidi, Sina and Khani, Masoud and Taleban, AmirSajjad and Sani, Samin Mahdizadeh and Dadkhah, Maryam and Noble, James M. and Bakken, Suzanne and Yaghoobzadeh, Yadollah and Vahabie, Abdol-Hossein and Rouhizadeh, Masoud and Zolnoori, Maryam},
+  year = 2025,
+  month = nov,
+  journal = {Frontiers in Artificial Intelligence},
+  volume = {8},
+  publisher = {Frontiers},
+  issn = {2624-8212},
+  doi = {10.3389/frai.2025.1669896},
+  abstract = {BackgroundAlzheimer's disease and related dementias (ADRD) affect nearly five million older adults in the United States, yet more than half remain undiagnosed. Speech-based natural language processing (NLP) provides a scalable approach to identify early cognitive decline by detecting subtle linguistic markers that may precede clinical diagnosis.ObjectiveThis study aims to develop and evaluate a speech-based screening pipeline that integrates transformer-based embeddings with handcrafted linguistic features, incorporates synthetic augmentation using large language models (LLMs), and benchmarks unimodal and multimodal LLM classifiers. External validation was performed to assess generalizability to an MCI-only cohort.MethodsTranscripts were obtained from the ADReSSo 2021 benchmark dataset (n = 237; derived from the Pitt Corpus, DementiaBank) and the DementiaBank Delaware corpus (n = 205; clinically diagnosed mild cognitive impairment [MCI] vs. controls). Audio was automatically transcribed using Amazon Web Services Transcribe (general model). Ten transformer models were evaluated under three fine-tuning strategies. A late-fusion model combined embeddings from the best-performing transformer with 110 linguistically derived features. Five LLMs (LLaMA-8B/70B, MedAlpaca-7B, Ministral-8B, GPT-4o) were fine-tuned to generate label-conditioned synthetic speech for data augmentation. Three multimodal LLMs (GPT-4o, Qwen-Omni, Phi-4) were tested in zero-shot and fine-tuned settings.ResultsOn the ADReSSo dataset, the fusion model achieved an F1-score of 83.32 (AUC = 89.48), outperforming both transformer-only and linguistic-only baselines. Augmentation with MedAlpaca-7B synthetic speech improved performance to F1 = 85.65 at 2 \texttimes{} scale, whereas higher augmentation volumes reduced gains. Fine-tuning improved unimodal LLM classifiers (e.g., MedAlpaca-7B, F1 = 47.73 {$\rightarrow$} 78.69), while multimodal models demonstrated lower performance (Phi-4 = 71.59; GPT-4o omni = 67.57). On the Delaware corpus, the pipeline generalized to an MCI-only cohort, with the fusion model plus 1 \texttimes{} MedAlpaca-7B augmentation achieving F1 = 72.82 (AUC = 69.57).ConclusionIntegrating transformer embeddings with handcrafted linguistic features enhances ADRD detection from speech. Distributionally aligned LLM-generated narratives provide effective but bounded augmentation, while current multimodal models remain limited. Crucially, validation on the Delaware corpus demonstrates that the proposed pipeline generalizes to early-stage impairment, supporting its potential as a scalable approach for clinically relevant early screening. All codes for LLMCARE are publicly available at: GitHub.},
+  langid = {english},
+  keywords = {Alzheimer's disease,data augmentation,Data Augmentation,Fine-tuning,large language models,mild cognitive impairment (MCI),natural language processing,transformers}
 }
