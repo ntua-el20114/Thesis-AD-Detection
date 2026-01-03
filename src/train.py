@@ -38,8 +38,7 @@ def evaluate(model, test_loader, criterion, device):
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
             # Move batch tensors to device
-            batch['audio'] = batch['audio'].to(device)
-            batch['audio_lengths'] = batch['audio_lengths'].to(device)
+            batch = batch.to(device)
             
             label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
             labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
