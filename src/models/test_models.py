@@ -38,7 +38,7 @@ class LinearFusionModel(nn.Module):
             nn.Linear(hidden_dim, num_classes)
         )
 
-    def forward(self, data):
+    def forward(self, data, device):
         """
         Args:
             data: Dictionary containing 'egemaps' and 'bert' keys
@@ -46,8 +46,6 @@ class LinearFusionModel(nn.Module):
         Returns:
             output: Tensor of shape (batch_size, num_classes)
         """
-        device = next(self.parameters()).device
-        
         egemaps = torch.tensor(data["egemaps"], dtype=torch.float32, device=device)
         bert = torch.tensor(data["bert"], dtype=torch.float32, device=device)
 

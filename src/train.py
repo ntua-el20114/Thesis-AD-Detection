@@ -19,7 +19,7 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
         labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
         
         optimizer.zero_grad()
-        logits = model(batch)
+        logits = model(batch, device)
         loss = criterion(logits, labels)
         loss.backward()
         optimizer.step()
@@ -44,7 +44,7 @@ def evaluate(model, test_loader, criterion, device):
             label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
             labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
             
-            logits = model(batch)
+            logits = model(batch, device)
             loss = criterion(logits, labels)
             total_loss += loss.item()
             
