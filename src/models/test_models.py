@@ -38,17 +38,10 @@ class LinearFusionModel(nn.Module):
             nn.Linear(hidden_dim, num_classes)
         )
 
-    def forward(self, data, device):
-        """
-        Args:
-            data: Dictionary containing 'egemaps' and 'bert' keys
-
-        Returns:
-            output: Tensor of shape (batch_size, num_classes)
-        """
-        egemaps = torch.tensor(data["egemaps"], dtype=torch.float32, device=device)
-        bert = torch.tensor(data["bert"], dtype=torch.float32, device=device)
-
+    def forward(self, data):
+        egemaps = data["egemaps"]
+        bert = data["bert"]
+        
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)
         bert_encoded = self.bert_encoder(bert)
