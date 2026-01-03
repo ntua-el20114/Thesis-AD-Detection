@@ -13,12 +13,12 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
         # Move batch tensors to device
         batch['audio'] = batch['audio'].to(device)
         batch['audio_lengths'] = batch['audio_lengths'].to(device)
-        batch['egemaps'] = torch.tensor(batch['egemaps'], dtype=torch.float32, device=device)
-        batch['bert'] = torch.tensor(batch['bert'], dtype=torch.float32, device=device)
+        batch['egemaps'] = torch.as_tensor(batch['egemaps'], dtype=torch.float32).to(device)
+        batch['bert'] = torch.as_tensor(batch['bert'], dtype=torch.float32).to(device)
         
         # Convert diagnosis to labels (HC=0, MCI=1, Dementia=2)
         label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-        labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
+        labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']], dtype=torch.long, device=device)
         
         optimizer.zero_grad()
         logits = model(batch)
@@ -42,11 +42,11 @@ def evaluate(model, test_loader, criterion, device):
             # Move batch tensors to device
             batch['audio'] = batch['audio'].to(device)
             batch['audio_lengths'] = batch['audio_lengths'].to(device)
-            batch['egemaps'] = torch.tensor(batch['egemaps'], dtype=torch.float32, device=device)
-            batch['bert'] = torch.tensor(batch['bert'], dtype=torch.float32, device=device)
+            batch['egemaps'] = torch.as_tensor(batch['egemaps'], dtype=torch.float32).to(device)
+            batch['bert'] = torch.as_tensor(batch['bert'], dtype=torch.float32).to(device)
             
             label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-            labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
+            labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']], dtype=torch.long, device=device)
             
             logits = model(batch)
             loss = criterion(logits, labels)
