@@ -46,8 +46,8 @@ class LinearFusionModel(nn.Module):
         Returns:
             output: Tensor of shape (batch_size, num_classes)
         """
-        egemaps = data["egemaps"]
-        bert = data["bert"]
+        egemaps = torch.tensor(data["egemaps"], dtype=torch.float32)
+        bert = torch.tensor(data["bert"], dtype=torch.float32)
 
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)
