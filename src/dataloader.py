@@ -74,7 +74,18 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
     }
     
     for key in batch[0].keys():
-        if key != 'audio':
+        if key == 'audio':
+            continue
+        elif key == 'egemaps':
+            # Convert list of float lists to tensor
+            egemaps_list = [torch.tensor(sample[key], dtype=torch.float32) for sample in batch]
+            output[key] = torch.stack(egemaps_list)
+        elif key == 'bert':
+            # Convert list of float lists to tensor
+            bert_list = [torch.tensor(sample[key], dtype=torch.float32) for sample in batch]
+            output[key] = torch.stack(bert_list)
+        else:
+            # Keep other fields as lists (metadata)
             output[key] = [sample[key] for sample in batch]
     
     return output

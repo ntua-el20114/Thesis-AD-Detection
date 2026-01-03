@@ -38,10 +38,10 @@ class LinearFusionModel(nn.Module):
             nn.Linear(hidden_dim, num_classes)
         )
 
-    def forward(self, egemaps, bert):
-        # egemaps = data["egemaps"]
-        # bert = data["bert"]
-
+    def forward(self, data):
+        egemaps = data["egemaps"]
+        bert = data["bert"]
+        
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)
         bert_encoded = self.bert_encoder(bert)
