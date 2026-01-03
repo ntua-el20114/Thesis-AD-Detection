@@ -42,12 +42,12 @@ class LinearFusionModel(nn.Module):
         """
         Args:
             data: Dictionary containing 'egemaps' and 'bert' keys
-            
+
         Returns:
             output: Tensor of shape (batch_size, num_classes)
         """
-        egemaps = data("egemaps")
-        bert = data("bert")
+        egemaps = data["egemaps"]
+        bert = data["bert"]
 
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)
