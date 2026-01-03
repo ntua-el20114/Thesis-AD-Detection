@@ -85,7 +85,14 @@ def train(
     Returns:
         Tuple of (model, history dictionary, test metrics dictionary)
     """
+    # Ensure device is a torch.device object
+    if isinstance(device, str):
+        device = torch.device(device)
+    
     model = model.to(device)
+    print(f"Model moved to device: {device}")
+    print(f"Model device check: {next(model.parameters()).device}")
+    
     optimizer = AdamW(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
     

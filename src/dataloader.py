@@ -57,8 +57,11 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
     
     audio_batch = []
     audio_lengths = []
+    egemaps_batch = []
+    bert_batch = []
     
     for sample in batch:
+        # Process audio
         audio = sample['audio'].squeeze(0)
         audio_len = audio.shape[0]
         audio_lengths.append(audio_len)
@@ -67,25 +70,21 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
             audio = torch.nn.functional.pad(audio, (0, max_audio_length - audio_len))
         
         audio_batch.append(audio)
+        
+        # Process egemaps and bert (convert to tensors)
+        egemaps_batch.append(torch.as_tensor(sample['egemaps'], dtype=torch.float32))
+        bert_batch.append(torch.as_tensor(sample['bert'], dtype=torch.float32))
     
     output = {
         'audio': torch.stack(audio_batch),
         'audio_lengths': torch.tensor(audio_lengths, dtype=torch.long),
+        'egemaps': torch.stack(egemaps_batch),
+        'bert': torch.stack(bert_batch),
     }
     
+    # Add all other fields (as lists for metadata)
     for key in batch[0].keys():
-        if key == 'audio':
-            continue
-        elif key == 'egemaps':
-            # Convert list of float lists to tensor
-            egemaps_list = [torch.tensor(sample[key], dtype=torch.float32) for sample in batch]
-            output[key] = torch.stack(egemaps_list)
-        elif key == 'bert':
-            # Convert list of float lists to tensor
-            bert_list = [torch.tensor(sample[key], dtype=torch.float32) for sample in batch]
-            output[key] = torch.stack(bert_list)
-        else:
-            # Keep other fields as lists (metadata)
+        if key not in ['audio', 'egemaps', 'bert']:
             output[key] = [sample[key] for sample in batch]
     
     return output
