@@ -121,7 +121,7 @@ def create_dataloaders(
     train_records_split, val_records_split = train_test_split(
         train_records,
         test_size=val_split,
-        stratify=['AD', 'MCI', 'HC'],
+        stratify=['Dementia', 'MCI', 'HC'],
         random_state=TRAIN_VAL_SPLIT_SEED,
     )
     
