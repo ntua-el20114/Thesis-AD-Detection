@@ -60,6 +60,7 @@ def evaluate(model, test_loader, criterion, device):
 def train(
     model,
     train_loader: DataLoader,
+    val_loader: DataLoader,
     test_loader: DataLoader,
     num_epochs: int = 5,
     learning_rate: float = 2e-5,
@@ -71,28 +72,39 @@ def train(
     Args:
         model: Model to train
         train_loader: Training dataloader
+        val_loader: Validation dataloader
         test_loader: Test dataloader
         num_epochs: Number of epochs
         learning_rate: Learning rate
         device: Device to use
     
     Returns:
-        Dictionary with training history
+        Tuple of (model, history dictionary, test metrics dictionary)
     """
     model = model.to(device)
     optimizer = AdamW(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
     
-    history = {'train_loss': [], 'test_loss': [], 'test_accuracy': []}
+    history = {'train_loss': [], 'val_loss': [], 'val_accuracy': []}
     
     for epoch in range(num_epochs):
         train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
-        test_loss, test_acc = evaluate(model, test_loader, criterion, device)
+        val_loss, val_acc = evaluate(model, val_loader, criterion, device)
         
         history['train_loss'].append(train_loss)
-        history['test_loss'].append(test_loss)
-        history['test_accuracy'].append(test_acc)
+        history['val_loss'].append(val_loss)
+        history['val_accuracy'].append(val_acc)
         
-        print(f"Epoch {epoch+1}/{num_epochs}: train_loss={train_loss:.4f}, test_loss={test_loss:.4f}, test_acc={test_acc:.4f}")
+        print(f"Epoch {epoch+1}/{num_epochs}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_acc={val_acc:.4f}")
     
-    return model, history
+    # Evaluate on test set at the end
+    print("\n" + "="*50)
+    print("Test Set Evaluation")
+    print("="*50)
+    test_loss, test_acc = evaluate(model, test_loader, criterion, device)
+    test_metrics = {'test_loss': test_loss, 'test_accuracy': test_acc}
+    print(f"Test Loss: {test_loss:.4f}")
+    print(f"Test Accuracy: {test_acc:.4f}")
+    print("="*50 + "\n")
+    
+    return model, history, test_metrics

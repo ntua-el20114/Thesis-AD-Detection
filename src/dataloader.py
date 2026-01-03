@@ -80,19 +80,29 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
 
 def create_dataloaders(
     train_jsonl: Union[str, Path],
+    val_jsonl: Union[str, Path],
     test_jsonl: Union[str, Path],
     audio_dir: Union[str, Path],
     batch_size: int = 32,
     num_workers: int = 0,
     sample_rate: int = 16000,
-) -> Tuple[DataLoader, DataLoader]:
+) -> Tuple[DataLoader, DataLoader, DataLoader]:
     train_dataset = MultiConAD_Dataset(train_jsonl, audio_dir, sample_rate)
+    val_dataset = MultiConAD_Dataset(val_jsonl, audio_dir, sample_rate)
     test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate)
     
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,
         shuffle=True,
+        num_workers=num_workers,
+        collate_fn=collate_fn_pad,
+    )
+    
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
         num_workers=num_workers,
         collate_fn=collate_fn_pad,
     )
@@ -105,4 +115,4 @@ def create_dataloaders(
         collate_fn=collate_fn_pad,
     )
     
-    return train_loader, test_loader
+    return train_loader, val_loader, test_loader
