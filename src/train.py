@@ -10,16 +10,16 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
     total_loss = 0
     
     for batch in tqdm(train_loader, desc="Training"):
-        audio = batch['audio'].to(device)
-        audio_lengths = batch['audio_lengths'].to(device)
-        diagnosis = batch['Diagnosis']
+        # Move batch tensors to device
+        batch['audio'] = batch['audio'].to(device)
+        batch['audio_lengths'] = batch['audio_lengths'].to(device)
         
         # Convert diagnosis to labels (HC=0, MCI=1, Dementia=2)
         label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-        labels = torch.tensor([label_map.get(d, 0) for d in diagnosis]).to(device)
+        labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
         
         optimizer.zero_grad()
-        logits = model(audio, audio_lengths)
+        logits = model(batch)
         loss = criterion(logits, labels)
         loss.backward()
         optimizer.step()
@@ -37,14 +37,14 @@ def evaluate(model, test_loader, criterion, device):
     
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
-            audio = batch['audio'].to(device)
-            audio_lengths = batch['audio_lengths'].to(device)
-            diagnosis = batch['Diagnosis']
+            # Move batch tensors to device
+            batch['audio'] = batch['audio'].to(device)
+            batch['audio_lengths'] = batch['audio_lengths'].to(device)
             
             label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-            labels = torch.tensor([label_map.get(d, 0) for d in diagnosis]).to(device)
+            labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']]).to(device)
             
-            logits = model(audio, audio_lengths)
+            logits = model(batch)
             loss = criterion(logits, labels)
             total_loss += loss.item()
             

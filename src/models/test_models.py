@@ -37,16 +37,18 @@ class LinearFusionModel(nn.Module):
             nn.Dropout(0.3),
             nn.Linear(hidden_dim, num_classes)
         )
-    
-    def forward(self, egemaps, bert):
+
+    def forward(self, data):
         """
         Args:
-            egemaps: Tensor of shape (batch_size, egemaps_dim)
-            bert: Tensor of shape (batch_size, bert_dim)
-        
+            data: Dictionary containing 'egemaps' and 'bert' keys
+            
         Returns:
             output: Tensor of shape (batch_size, num_classes)
         """
+        egemaps = data("egemaps")
+        bert = data("bert")
+
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)
         bert_encoded = self.bert_encoder(bert)

@@ -124,7 +124,7 @@ def main(
         # Create model for this repetition
         print(f"Creating {model} model...")
         if model == 'wavlm':
-            model = WavLMClassifier(num_classes=2)
+            model = WavLMClassifier(num_classes=3)
         elif model == 'test_linear':
             model = LinearFusionModel()
         else:

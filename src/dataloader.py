@@ -112,12 +112,7 @@ def create_dataloaders(
         for line in f:
             if line.strip():
                 train_records.append(json.loads(line))
-    
-    # Stratified train/val split by class (primary) and dataset (secondary)
-    # stratify_labels = [
-    #     f"{record['Diagnosis']}_{record['Dataset']}"
-    #     for record in train_records
-    # ]
+
     classes = [record['Diagnosis'] for record in train_records]
     train_records_split, val_records_split = train_test_split(
         train_records,

@@ -4,7 +4,7 @@ from transformers import WavLMModel
 
 
 class WavLMClassifier(nn.Module):
-    def __init__(self, num_classes: int = 2, freeze_backbone: bool = False):
+    def __init__(self, num_classes: int = 3, freeze_backbone: bool = False):
         super().__init__()
         self.wavlm = WavLMModel.from_pretrained("microsoft/wavlm-base-plus")
         
