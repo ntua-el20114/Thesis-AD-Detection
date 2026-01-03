@@ -5,7 +5,9 @@ from typing import Dict, List, Tuple, Union
 import torch
 import torchaudio
 from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import train_test_split
 
+TRAIN_VAL_SPLIT_SEED = 42
 
 class MultiConAD_Dataset(Dataset):
     def __init__(
@@ -80,17 +82,65 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
 
 def create_dataloaders(
     train_jsonl: Union[str, Path],
-    val_jsonl: Union[str, Path],
     test_jsonl: Union[str, Path],
     audio_dir: Union[str, Path],
     batch_size: int = 32,
     num_workers: int = 0,
     sample_rate: int = 16000,
+    val_split: float = 0.2,
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
-    train_dataset = MultiConAD_Dataset(train_jsonl, audio_dir, sample_rate)
-    val_dataset = MultiConAD_Dataset(val_jsonl, audio_dir, sample_rate)
+    """
+    Create train, validation, and test dataloaders.
+    
+    The validation set is extracted from the training data.
+    
+    Args:
+        train_jsonl: Path to training JSONL file
+        test_jsonl: Path to test JSONL file
+        audio_dir: Path to audio directory
+        batch_size: Batch size for dataloaders
+        num_workers: Number of workers for dataloaders
+        sample_rate: Sample rate for audio
+        val_split: Fraction of training data to use for validation
+    
+    Returns:
+        Tuple of (train_loader, val_loader, test_loader)
+    """
+    # Load training records
+    train_records = []
+    with open(train_jsonl, 'r') as f:
+        for line in f:
+            if line.strip():
+                train_records.append(json.loads(line))
+    
+    # Stratified train/val split by class (primary) and dataset (secondary)
+    # stratify_labels = [
+    #     f"{record['Diagnosis']}_{record['Dataset']}"
+    #     for record in train_records
+    # ]
+    train_records_split, val_records_split = train_test_split(
+        train_records,
+        test_size=val_split,
+        stratify=['AD', 'MCI', 'HC'],
+        random_state=TRAIN_VAL_SPLIT_SEED,
+    )
+    
+    # Create datasets
+    train_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
+    train_dataset.jsonl_path = Path(train_jsonl)
+    train_dataset.audio_dir = Path(audio_dir)
+    train_dataset.sample_rate = sample_rate
+    train_dataset.records = train_records_split
+    
+    val_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
+    val_dataset.jsonl_path = Path(train_jsonl)
+    val_dataset.audio_dir = Path(audio_dir)
+    val_dataset.sample_rate = sample_rate
+    val_dataset.records = val_records_split
+    
     test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate)
     
+    # Create dataloaders
     train_loader = DataLoader(
         train_dataset,
         batch_size=batch_size,

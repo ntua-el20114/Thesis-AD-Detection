@@ -49,6 +49,7 @@ def main(
     num_epochs: int,
     learning_rate: float,
     num_repetitions: int = 5,
+    val_split: float = 0.1,
     results_dir: str = 'results',
 ):
     """
@@ -60,6 +61,7 @@ def main(
         num_epochs: Number of epochs
         learning_rate: Learning rate
         num_repetitions: Number of experiment repetitions (default=5)
+        val_split: Fraction of training data to use for validation (default=0.1)
         results_dir: Directory to save results
     """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -68,12 +70,13 @@ def main(
     # Create dataloaders
     print("Loading data...")
     data_dir = Path("data/MultiConAD")
-    train_loader, test_loader = create_dataloaders(
+    train_loader, val_loader, test_loader = create_dataloaders(
         train_jsonl=data_dir / "train_English.jsonl",
         test_jsonl=data_dir / "test_English.jsonl",
         audio_dir=data_dir / "Audio",
         batch_size=batch_size,
         sample_rate=SAMPLE_RATE,
+        val_split=val_split,
     )
     
     # Create experiment directory
@@ -90,6 +93,7 @@ def main(
         'model': model,
         'comment': comment,
         'num_repetitions': num_repetitions,
+        'val_split': val_split,
         'seeds': seeds,
         'device': device,
         'timestamp': timestamp,
@@ -128,9 +132,10 @@ def main(
         
         # Train
         print("Starting training...")
-        model, history = train(
+        model, history, test_metrics = train(
             model,
             train_loader,
+            val_loader,
             test_loader,
             num_epochs=num_epochs,
             learning_rate=learning_rate,
@@ -143,7 +148,7 @@ def main(
             json.dump(history, f, indent=2)
         
         # Extract final metrics from this repetition
-        final_accuracy = history['test_accuracy'][-1]
+        final_accuracy = test_metrics['test_accuracy']
         
         # For now, we'll use accuracy as primary metric
         # F1 and AUR would need to be computed with actual predictions
@@ -151,8 +156,8 @@ def main(
             'repetition': rep + 1,
             'seed': seed,
             'accuracy': final_accuracy,
-            'f1': final_accuracy,  # Placeholder - would need actual predictions
-            'aur': final_accuracy,  # Placeholder - would need actual predictions
+            'f1': final_accuracy,  
+            'aur': final_accuracy,  
         }
         all_metrics.append(metrics)
         
@@ -209,6 +214,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_epochs', type=int, required=True, help='Number of epochs')
     parser.add_argument('--learning_rate', type=float, required=True, help='Learning rate')
     parser.add_argument('--num_repetitions', type=int, default=5, help='Number of experiment repetitions')
+    parser.add_argument('--val_split', type=float, default=0.2, help='Fraction of training data to use for validation')
     parser.add_argument('--results_dir', type=str, default='results', help='Results directory')
     
     args = parser.parse_args()
@@ -220,5 +226,6 @@ if __name__ == '__main__':
         num_epochs=args.num_epochs,
         learning_rate=args.learning_rate,
         num_repetitions=args.num_repetitions,
+        val_split=args.val_split,
         results_dir=args.results_dir,
     )
