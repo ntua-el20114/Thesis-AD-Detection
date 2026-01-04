@@ -41,6 +41,7 @@ class LinearFusionModel(nn.Module):
     def forward(self, data):
         egemaps = data["egemaps"]
         bert = data["bert"]
+        del data
         
         # Encode each modality
         egemaps_encoded = self.egemaps_encoder(egemaps)

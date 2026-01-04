@@ -16,29 +16,38 @@ class MultiConAD_Dataset(Dataset):
         jsonl_path: Union[str, Path],
         audio_dir: Union[str, Path],
         sample_rate: int = 16000,
+        cache_audio: bool = False,
     ):
         self.jsonl_path = Path(jsonl_path)
         self.audio_dir = Path(audio_dir)
         self.sample_rate = sample_rate
+        self.cache_audio = cache_audio
+        self.audio_cache = {}  # {idx: waveform_tensor}
         
         self.records = []
         with open(self.jsonl_path, 'r') as f:
             for line in f:
                 if line.strip():
                     self.records.append(json.loads(line))
+        
+        # Pre-load all audio if caching enabled
+        if self.cache_audio:
+            print(f"Caching {len(self.records)} audio files into memory...")
+            for idx in range(len(self.records)):
+                self._load_and_cache_audio(idx)
+            print(f"Audio cache complete: {len(self.audio_cache)} files cached")
     
-    def __len__(self) -> int:
-        return len(self.records)
-    
-    def __getitem__(self, idx: int) -> Dict:
+    def _load_and_cache_audio(self, idx: int):
+        """Load audio file and cache it."""
+        if idx in self.audio_cache:
+            return
+        
         record = self.records[idx]
         audio_filename = record['Audio_file']
-        # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
         if audio_filename.startswith('Audio/'):
             audio_filename = audio_filename[6:]
         audio_path = self.audio_dir / audio_filename
         
-        # torchaudio.load() handles MP3, WAV, FLAC, etc.
         waveform, sr = torchaudio.load(str(audio_path))
         
         if sr != self.sample_rate:
@@ -46,6 +55,33 @@ class MultiConAD_Dataset(Dataset):
         
         if waveform.shape[0] > 1:
             waveform = waveform.mean(dim=0, keepdim=True)
+        
+        self.audio_cache[idx] = waveform
+    
+    def __len__(self) -> int:
+        return len(self.records)
+    
+    def __getitem__(self, idx: int) -> Dict:
+        record = self.records[idx]
+        
+        # Use cached audio if available, otherwise load from disk
+        if idx in self.audio_cache:
+            waveform = self.audio_cache[idx]
+        else:
+            audio_filename = record['Audio_file']
+            # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
+            if audio_filename.startswith('Audio/'):
+                audio_filename = audio_filename[6:]
+            audio_path = self.audio_dir / audio_filename
+            
+            # torchaudio.load() handles MP3, WAV, FLAC, etc.
+            waveform, sr = torchaudio.load(str(audio_path))
+            
+            if sr != self.sample_rate:
+                waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
+            
+            if waveform.shape[0] > 1:
+                waveform = waveform.mean(dim=0, keepdim=True)
         
         return {
             **record,
@@ -99,6 +135,7 @@ def create_dataloaders(
     num_workers: int = NUM_CPU_WORKERS,
     sample_rate: int = 16000,
     val_split: float = 0.2,
+    cache_audio: bool = True,
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train, validation, and test dataloaders.
@@ -137,15 +174,33 @@ def create_dataloaders(
     train_dataset.jsonl_path = Path(train_jsonl)
     train_dataset.audio_dir = Path(audio_dir)
     train_dataset.sample_rate = sample_rate
+    train_dataset.cache_audio = cache_audio
+    train_dataset.audio_cache = {}
     train_dataset.records = train_records_split
+    
+    # Pre-cache training audio if enabled
+    if cache_audio:
+        print("Pre-caching training audio files...")
+        for idx in range(len(train_dataset.records)):
+            train_dataset._load_and_cache_audio(idx)
+        print(f"Training audio cache complete: {len(train_dataset.audio_cache)} files cached")
     
     val_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
     val_dataset.jsonl_path = Path(train_jsonl)
     val_dataset.audio_dir = Path(audio_dir)
     val_dataset.sample_rate = sample_rate
+    val_dataset.cache_audio = cache_audio
+    val_dataset.audio_cache = {}
     val_dataset.records = val_records_split
     
-    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate)
+    # Pre-cache validation audio if enabled
+    if cache_audio:
+        print("Pre-caching validation audio files...")
+        for idx in range(len(val_dataset.records)):
+            val_dataset._load_and_cache_audio(idx)
+        print(f"Validation audio cache complete: {len(val_dataset.audio_cache)} files cached")
+    
+    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate, cache_audio=cache_audio)
     
     # Create dataloaders
     train_loader = DataLoader(
@@ -154,6 +209,7 @@ def create_dataloaders(
         shuffle=True,
         num_workers=num_workers,
         collate_fn=collate_fn_pad,
+        pin_memory=True,
     )
     
     val_loader = DataLoader(
@@ -162,6 +218,7 @@ def create_dataloaders(
         shuffle=False,
         num_workers=num_workers,
         collate_fn=collate_fn_pad,
+        pin_memory=True,
     )
     
     test_loader = DataLoader(
@@ -170,6 +227,7 @@ def create_dataloaders(
         shuffle=False,
         num_workers=num_workers,
         collate_fn=collate_fn_pad,
+        pin_memory=True,
     )
     
     return train_loader, val_loader, test_loader
