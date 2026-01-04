@@ -16,6 +16,12 @@ import argparse
 SAMPLE_RATE = 16000
 BASE_SEED = 42
 
+def get_model_info(model):
+    """Get model parameter count and architecture string."""
+    num_params = sum(p.numel() for p in model.parameters())
+    architecture = str(model)
+    return num_params, architecture
+
 def generate_seeds(num_seeds: int, base_seed: str = BASE_SEED) -> list:
     """
     Generate seeds deterministically based on a base seed string.
@@ -43,7 +49,7 @@ def main(
     # batch_size: int = 4,
     # num_epochs: int = 5,
     # learning_rate: float = 2e-5,
-    model: str,
+    model_name: str,
     comment: str,
     batch_size: int,
     num_epochs: int,
@@ -81,16 +87,26 @@ def main(
     
     # Create experiment directory
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    exp_name = f"{model}_{timestamp}"
+    exp_name = f"{model_name}_{timestamp}"
     exp_dir = Path(results_dir) / exp_name
     exp_dir.mkdir(parents=True, exist_ok=True)
     
     # Generate seeds deterministically
     seeds = generate_seeds(num_repetitions, base_seed=timestamp)
     
+    # Create a model instance to get architecture and parameter count
+    if model_name == 'wavlm':
+        sample_model = WavLMClassifier(num_classes=3)
+    elif model_name == 'test_linear':
+        sample_model = LinearFusionModel()
+    else:
+        raise ValueError(f"Unknown model: {model_name}")
+    
+    num_params, architecture = get_model_info(sample_model)
+    
     # Save hyperparameters
     config = {
-        'model': model,
+        'model': model_name,
         'comment': comment,
         'num_repetitions': num_repetitions,
         'val_split': val_split,
@@ -100,9 +116,21 @@ def main(
         'num_epochs': num_epochs,
         'batch_size': batch_size,
         'learning_rate': learning_rate,
+        'num_parameters': num_params,
+        'model_architecture': architecture,
     }
     with open(exp_dir / 'config.json', 'w') as f:
         json.dump(config, f, indent=2)
+    
+    # Save model architecture to separate text file for easy viewing
+    with open(exp_dir / 'model_architecture.txt', 'w') as f:
+        f.write(f"Model: {model_name}\n")
+        f.write(f"Total Parameters: {num_params:,}\n")
+        f.write(f"Trainable Parameters: {sum(p.numel() for p in sample_model.parameters() if p.requires_grad):,}\n\n")
+        f.write("Architecture:\n")
+        f.write("=" * 80 + "\n")
+        f.write(architecture)
+    
     print(f"Experiment: {exp_name}")
     
     # Track metrics across repetitions
@@ -122,18 +150,18 @@ def main(
         print(f"Seed: {seed}")
 
         # Create model for this repetition
-        print(f"Creating {model} model...")
-        if model == 'wavlm':
-            model = WavLMClassifier(num_classes=3)
-        elif model == 'test_linear':
-            model = LinearFusionModel()
+        print(f"Creating {model_name} model...")
+        if model_name == 'wavlm':
+            current_model = WavLMClassifier(num_classes=3)
+        elif model_name == 'test_linear':
+            current_model = LinearFusionModel()
         else:
-            raise ValueError(f"Unknown model: {model}")
+            raise ValueError(f"Unknown model: {model_name}")
         
         # Train
         print("Starting training...")
-        model, history, test_metrics = train(
-            model,
+        current_model, history, test_metrics = train(
+            current_model,
             train_loader,
             val_loader,
             test_loader,
@@ -165,7 +193,7 @@ def main(
         
         # Save model for this repetition
         model_file = exp_dir / f'model_rep{rep+1:03d}.pt'
-        torch.save(model.state_dict(), model_file)
+        torch.save(current_model.state_dict(), model_file)
     
     # Save metrics CSV with averages and standard deviations
     if all_metrics:
@@ -220,7 +248,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     main(
-        model=args.model,
+        model_name=args.model,
         comment=args.comment,
         batch_size=args.batch_size,
         num_epochs=args.num_epochs,

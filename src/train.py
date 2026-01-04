@@ -4,6 +4,11 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
+
+def _convert_diagnosis_to_labels(diagnosis_list, device):
+    """Efficiently convert diagnosis strings to label tensor."""
+    return torch.tensor([LABEL_MAP.get(d, 0) for d in diagnosis_list], dtype=torch.long, device=device)
 
 def train_epoch(model, train_loader, optimizer, criterion, device):
     model.train()
@@ -17,8 +22,7 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
         batch['bert'] = batch['bert'].to(device)
         
         # Convert diagnosis to labels (HC=0, MCI=1, Dementia=2)
-        label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-        labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']], dtype=torch.long, device=device)
+        labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
         
         optimizer.zero_grad()
         logits = model(batch)
@@ -45,8 +49,7 @@ def evaluate(model, test_loader, criterion, device):
             batch['egemaps'] = batch['egemaps'].to(device)
             batch['bert'] = batch['bert'].to(device)
             
-            label_map = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-            labels = torch.tensor([label_map.get(d, 0) for d in batch['Diagnosis']], dtype=torch.long, device=device)
+            labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
             
             logits = model(batch)
             loss = criterion(logits, labels)
