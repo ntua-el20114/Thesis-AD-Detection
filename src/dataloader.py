@@ -8,7 +8,6 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 
 TRAIN_VAL_SPLIT_SEED = 42
-NUM_CPU_WORKERS = 4
 
 class MultiConAD_Dataset(Dataset):
     def __init__(
@@ -103,7 +102,6 @@ def create_dataloaders(
     test_jsonl: Union[str, Path],
     audio_dir: Union[str, Path],
     batch_size: int = 32,
-    num_workers: int = NUM_CPU_WORKERS,
     sample_rate: int = 16000,
     val_split: float = 0.2,
     load_audio: bool = True,
@@ -118,7 +116,6 @@ def create_dataloaders(
         test_jsonl: Path to test JSONL file
         audio_dir: Path to audio directory
         batch_size: Batch size for dataloaders
-        num_workers: Number of workers for dataloaders
         sample_rate: Sample rate for audio
         val_split: Fraction of training data to use for validation
         load_audio: Whether to load audio files (default=True)
@@ -163,7 +160,7 @@ def create_dataloaders(
         train_dataset,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=num_workers,
+        num_workers=0,
         collate_fn=collate_fn_pad,
     )
     
@@ -171,7 +168,7 @@ def create_dataloaders(
         val_dataset,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=num_workers,
+        num_workers=0,
         collate_fn=collate_fn_pad,
     )
     
@@ -179,7 +176,7 @@ def create_dataloaders(
         test_dataset,
         batch_size=batch_size,
         shuffle=False,
-        num_workers=num_workers,
+        num_workers=0,
         collate_fn=collate_fn_pad,
     )
     
