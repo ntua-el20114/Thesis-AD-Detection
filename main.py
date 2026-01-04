@@ -57,6 +57,7 @@ def main(
     num_repetitions: int = 5,
     val_split: float = 0.1,
     results_dir: str = 'results',
+    load_audio: bool = True,
 ):
     """
     Main training script with multiple experiment repetitions.
@@ -69,6 +70,7 @@ def main(
         num_repetitions: Number of experiment repetitions (default=5)
         val_split: Fraction of training data to use for validation (default=0.1)
         results_dir: Directory to save results
+        load_audio: Whether to load audio files (default=True)
     """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
@@ -83,6 +85,7 @@ def main(
         batch_size=batch_size,
         sample_rate=SAMPLE_RATE,
         val_split=val_split,
+        load_audio=load_audio,
     )
     
     # Create experiment directory
@@ -116,6 +119,7 @@ def main(
         'num_epochs': num_epochs,
         'batch_size': batch_size,
         'learning_rate': learning_rate,
+        'load_audio': load_audio,
         'num_parameters': num_params,
         'model_architecture': architecture,
     }
@@ -244,6 +248,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_repetitions', type=int, default=5, help='Number of experiment repetitions')
     parser.add_argument('--val_split', type=float, default=0.2, help='Fraction of training data to use for validation')
     parser.add_argument('--results_dir', type=str, default='results', help='Results directory')
+    parser.add_argument('--load_audio', type=bool, default=True, help='Whether to load audio files')
     
     args = parser.parse_args()
     
@@ -256,4 +261,5 @@ if __name__ == '__main__':
         num_repetitions=args.num_repetitions,
         val_split=args.val_split,
         results_dir=args.results_dir,
+        load_audio=args.load_audio,
     )
