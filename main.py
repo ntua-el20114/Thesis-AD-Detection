@@ -248,7 +248,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_repetitions', type=int, default=5, help='Number of experiment repetitions')
     parser.add_argument('--val_split', type=float, default=0.2, help='Fraction of training data to use for validation')
     parser.add_argument('--results_dir', type=str, default='results', help='Results directory')
-    parser.add_argument('--load_audio', type=bool, default=True, help='Whether to load audio files')
+    parser.add_argument('--load_audio', type=bool, default=True, help='If you are not using raw waveforms set this to False')
     
     args = parser.parse_args()
     

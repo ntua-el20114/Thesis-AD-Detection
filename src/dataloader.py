@@ -35,8 +35,6 @@ class MultiConAD_Dataset(Dataset):
     def __getitem__(self, idx: int) -> Dict:
         record = self.records[idx]
         
-        output = {**record}
-        
         if self.load_audio:
             audio_filename = record['Audio_file']
             # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
@@ -52,18 +50,18 @@ class MultiConAD_Dataset(Dataset):
             
             if waveform.shape[0] > 1:
                 waveform = waveform.mean(dim=0, keepdim=True)
-            
-            output['audio'] = waveform
+        else:
+            # Return an empty tensor if not loading audio
+            waveform = torch.zeros((1, 1), dtype=torch.float32)
         
-        return output
+        return {
+            **record,
+            'audio': waveform,
+        }
 
 
 def collate_fn_pad(batch: List[Dict]) -> Dict:
-    # Check if audio is present in batch
-    has_audio = 'audio' in batch[0]
-    
-    if has_audio:
-        max_audio_length = max(sample['audio'].shape[1] for sample in batch)
+    max_audio_length = max(sample['audio'].shape[1] for sample in batch)
     
     audio_batch = []
     audio_lengths = []
@@ -71,37 +69,30 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
     bert_batch = []
     
     for sample in batch:
-        if has_audio:
-            # Process audio
-            audio = sample['audio'].squeeze(0)
-            audio_len = audio.shape[0]
-            audio_lengths.append(audio_len)
-            
-            if audio_len < max_audio_length:
-                audio = torch.nn.functional.pad(audio, (0, max_audio_length - audio_len))
-            
-            audio_batch.append(audio)
+        # Process audio
+        audio = sample['audio'].squeeze(0)
+        audio_len = audio.shape[0]
+        audio_lengths.append(audio_len)
+        
+        if audio_len < max_audio_length:
+            audio = torch.nn.functional.pad(audio, (0, max_audio_length - audio_len))
+        
+        audio_batch.append(audio)
         
         # Process egemaps and bert (convert to tensors)
         egemaps_batch.append(torch.as_tensor(sample['egemaps'], dtype=torch.float32))
         bert_batch.append(torch.as_tensor(sample['bert'], dtype=torch.float32))
     
     output = {
+        'audio': torch.stack(audio_batch),
+        'audio_lengths': torch.tensor(audio_lengths, dtype=torch.long),
         'egemaps': torch.stack(egemaps_batch),
         'bert': torch.stack(bert_batch),
     }
     
-    if has_audio:
-        output['audio'] = torch.stack(audio_batch)
-        output['audio_lengths'] = torch.tensor(audio_lengths, dtype=torch.long)
-    
     # Add all other fields (as lists for metadata)
-    exclude_keys = ['egemaps', 'bert']
-    if has_audio:
-        exclude_keys.append('audio')
-    
     for key in batch[0].keys():
-        if key not in exclude_keys:
+        if key not in ['audio', 'egemaps', 'bert']:
             output[key] = [sample[key] for sample in batch]
     
     return output
@@ -130,7 +121,7 @@ def create_dataloaders(
         num_workers: Number of workers for dataloaders
         sample_rate: Sample rate for audio
         val_split: Fraction of training data to use for validation
-        load_audio: Whether to load audio files (default: True)
+        load_audio: Whether to load audio files (default=True)
     
     Returns:
         Tuple of (train_loader, val_loader, test_loader)
