@@ -3,6 +3,8 @@ import torch.nn as nn
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+import numpy as np
+from sklearn.metrics import f1_score, recall_score
 
 LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
 
@@ -52,8 +54,8 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
 def evaluate(model, test_loader, criterion, device):
     model.eval()
     total_loss = 0
-    correct = 0
-    total = 0
+    all_preds = []
+    all_labels = []
     
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
@@ -66,12 +68,20 @@ def evaluate(model, test_loader, criterion, device):
             total_loss += loss.item()
             
             predictions = logits.argmax(dim=1)
-            correct += (predictions == labels).sum().item()
-            total += labels.size(0)
+
+            all_preds.extend(predictions.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
     
-    accuracy = correct / total
     avg_loss = total_loss / len(test_loader)
-    return avg_loss, accuracy
+    accuracy = (np.array(all_preds) == np.array(all_labels)).mean()
+    f1 = f1_score(all_labels, all_preds, average='macro')
+    uar = recall_score(all_labels, all_preds, average='macro')
+    return {
+        'test_loss': avg_loss,
+        'test_accuracy': accuracy,
+        'test_f1': f1,
+        'test_uar': uar
+    }
 
 def train(
     model,
@@ -106,10 +116,11 @@ def train(
     print("\n" + "="*50)
     print("Test Set Evaluation")
     print("="*50)
-    test_loss, test_acc = evaluate(model, test_loader, criterion, device)
-    test_metrics = {'test_loss': test_loss, 'test_accuracy': test_acc}
-    print(f"Test Loss: {test_loss:.4f}")
-    print(f"Test Accuracy: {test_acc:.4f}")
+    test_metrics = evaluate(model, test_loader, criterion, device)
+    print(f"Test Loss: {test_metrics['test_loss']:.4f}")
+    print(f"Test Accuracy: {test_metrics['test_accuracy']:.4f}")
+    print(f"Test F1 Score: {test_metrics['test_f1']:.4f}")
+    print(f"Test UAR: {test_metrics['test_uar']:.4f}")
     print("="*50 + "\n")
     
     return model, history, test_metrics

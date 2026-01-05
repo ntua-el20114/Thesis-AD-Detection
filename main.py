@@ -147,13 +147,12 @@ def main(
             json.dump(history, f, indent=2)
         
         final_accuracy = test_metrics['test_accuracy']
-        
         metrics = {
             'repetition': rep + 1,
             'seed': seed,
-            'accuracy': final_accuracy,
-            'f1': final_accuracy,  
-            'aur': final_accuracy,  
+            'accuracy': test_metrics.get('test_accuracy'),
+            'f1': test_metrics.get('test_f1'),
+            'uar': test_metrics.get('test_uar'),
         }
         all_metrics.append(metrics)
         
