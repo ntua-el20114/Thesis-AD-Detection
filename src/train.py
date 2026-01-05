@@ -29,7 +29,9 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
     model.train()
     total_loss = 0
     
-    for batch in tqdm(train_loader, desc=f"Training... batch contents: {list(batch.keys())}"):
+    for batch in tqdm(train_loader, desc="Training"):
+        print(f"Debug: Batch keys - {list(batch.keys())}")
+
         # Extract only the tensors (audio, egemaps, bert, etc.) and move to GPU
         inputs = prepare_batch(batch, device)
         
