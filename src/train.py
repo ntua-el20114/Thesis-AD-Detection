@@ -4,28 +4,41 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+from src.models.test_models import LinearFusionModel
+from src.models.wavlm_model import WavLMClassifier
+
 LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
 
 def _convert_diagnosis_to_labels(diagnosis_list, device):
     """Efficiently convert diagnosis strings to label tensor."""
     return torch.tensor([LABEL_MAP.get(d, 0) for d in diagnosis_list], dtype=torch.long, device=device)
 
+def forward_batch(model, batch, labels, device):
+    """
+    Call the model's forward method, providing the necessary inputs according to the model type.
+    """
+    if isinstance(model, LinearFusionModel):
+        batch['egemaps'] = batch['egemaps'].to(device)
+        batch['bert'] = batch['bert'].to(device)
+        return model(batch['egemaps'], batch['bert'], labels)
+    elif isinstance(model, WavLMClassifier):
+        batch['audio'] = batch['audio'].to(device)
+        batch['audio_lengths'] = batch['audio_lengths'].to(device)
+        return model(batch['audio'], batch['audio_lengths'], labels)
+    else:
+        raise ValueError("Unknown model type for forward pass.")
+
+
 def train_epoch(model, train_loader, optimizer, criterion, device):
     model.train()
     total_loss = 0
     
     for batch in tqdm(train_loader, desc="Training"):
-        # Move batch tensors to device
-        batch['audio'] = batch['audio'].to(device)
-        batch['audio_lengths'] = batch['audio_lengths'].to(device)
-        batch['egemaps'] = batch['egemaps'].to(device)
-        batch['bert'] = batch['bert'].to(device)
-        
         # Convert diagnosis to labels (HC=0, MCI=1, Dementia=2)
         labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
         
         optimizer.zero_grad()
-        logits = model(batch)
+        logits = forward_batch(model, batch, labels, device)
         loss = criterion(logits, labels)
         loss.backward()
         optimizer.step()

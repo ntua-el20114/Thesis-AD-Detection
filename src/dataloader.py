@@ -15,12 +15,10 @@ class MultiConAD_Dataset(Dataset):
         jsonl_path: Union[str, Path],
         audio_dir: Union[str, Path],
         sample_rate: int = 16000,
-        load_audio: bool = True,
     ):
         self.jsonl_path = Path(jsonl_path)
         self.audio_dir = Path(audio_dir)
         self.sample_rate = sample_rate
-        self.load_audio = load_audio
         
         self.records = []
         with open(self.jsonl_path, 'r') as f:
@@ -34,24 +32,19 @@ class MultiConAD_Dataset(Dataset):
     def __getitem__(self, idx: int) -> Dict:
         record = self.records[idx]
         
-        if self.load_audio:
-            audio_filename = record['Audio_file']
-            # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
-            if audio_filename.startswith('Audio/'):
-                audio_filename = audio_filename[6:]
-            audio_path = self.audio_dir / audio_filename
-            
-            # torchaudio.load() handles MP3, WAV, FLAC, etc.
-            waveform, sr = torchaudio.load(str(audio_path))
-            
-            if sr != self.sample_rate:
-                waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
-            
-            if waveform.shape[0] > 1:
-                waveform = waveform.mean(dim=0, keepdim=True)
-        else:
-            # Return an empty tensor if not loading audio
-            waveform = torch.zeros((1, 1), dtype=torch.float32)
+        audio_filename = record['Audio_file']
+        # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
+        if audio_filename.startswith('Audio/'):
+            audio_filename = audio_filename[6:]
+        audio_path = self.audio_dir / audio_filename
+        
+        waveform, sr = torchaudio.load(str(audio_path))
+        
+        if sr != self.sample_rate:
+            waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
+        
+        if waveform.shape[0] > 1:
+            waveform = waveform.mean(dim=0, keepdim=True)
         
         return {
             **record,
@@ -104,7 +97,6 @@ def create_dataloaders(
     batch_size: int = 32,
     sample_rate: int = 16000,
     val_split: float = 0.2,
-    load_audio: bool = True,
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train, validation, and test dataloaders.
@@ -118,7 +110,6 @@ def create_dataloaders(
         batch_size: Batch size for dataloaders
         sample_rate: Sample rate for audio
         val_split: Fraction of training data to use for validation
-        load_audio: Whether to load audio files (default=True)
     
     Returns:
         Tuple of (train_loader, val_loader, test_loader)
@@ -143,17 +134,17 @@ def create_dataloaders(
     train_dataset.jsonl_path = Path(train_jsonl)
     train_dataset.audio_dir = Path(audio_dir)
     train_dataset.sample_rate = sample_rate
-    train_dataset.load_audio = load_audio
+
     train_dataset.records = train_records_split
     
     val_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
     val_dataset.jsonl_path = Path(train_jsonl)
     val_dataset.audio_dir = Path(audio_dir)
     val_dataset.sample_rate = sample_rate
-    val_dataset.load_audio = load_audio
+
     val_dataset.records = val_records_split
     
-    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate, load_audio)
+    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate)
     
     # Create dataloaders
     train_loader = DataLoader(
