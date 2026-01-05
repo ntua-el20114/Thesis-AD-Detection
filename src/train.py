@@ -30,8 +30,6 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
     total_loss = 0
     
     for batch in tqdm(train_loader, desc="Training"):
-        print(f"Debug: Batch keys - {list(batch.keys())}")
-
         # Extract only the tensors (audio, egemaps, bert, etc.) and move to GPU
         inputs = prepare_batch(batch, device)
         
@@ -59,7 +57,6 @@ def evaluate(model, test_loader, criterion, device):
     
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
-            # Same generic logic as training
             inputs = prepare_batch(batch, device)
             labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
             
