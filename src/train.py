@@ -16,17 +16,18 @@ def _convert_diagnosis_to_labels(diagnosis_list, device):
 def forward_batch(model, batch, labels, device):
     """
     Call the model's forward method, providing the necessary inputs according to the model type.
+    Moves the specific required tensors to the device.
     """
     if isinstance(model, LinearFusionModel):
         batch['egemaps'] = batch['egemaps'].to(device)
         batch['bert'] = batch['bert'].to(device)
-        return model(batch['egemaps'], batch['bert'], labels)
+        return model(batch['egemaps'], batch['bert'])
     elif isinstance(model, WavLMClassifier):
         batch['audio'] = batch['audio'].to(device)
         batch['audio_lengths'] = batch['audio_lengths'].to(device)
-        return model(batch['audio'], batch['audio_lengths'], labels)
+        return model(batch['audio'], batch['audio_lengths'])
     else:
-        raise ValueError("Unknown model type for forward pass.")
+        raise ValueError(f"Unknown model type for forward pass: {type(model)}")
 
 
 def train_epoch(model, train_loader, optimizer, criterion, device):
@@ -56,15 +57,13 @@ def evaluate(model, test_loader, criterion, device):
     
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
-            # Move batch tensors to device
-            batch['audio'] = batch['audio'].to(device)
-            batch['audio_lengths'] = batch['audio_lengths'].to(device)
-            batch['egemaps'] = batch['egemaps'].to(device)
-            batch['bert'] = batch['bert'].to(device)
-            
+            # Prepare labels
             labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
             
-            logits = model(batch)
+            # Use forward_batch to handle device movement and input selection generically
+            # This prevents crashes when keys (e.g., 'audio') are missing from the batch
+            logits = forward_batch(model, batch, labels, device)
+            
             loss = criterion(logits, labels)
             total_loss += loss.item()
             
@@ -88,18 +87,6 @@ def train(
 ):
     """
     Train a model.
-    
-    Args:
-        model: Model to train
-        train_loader: Training dataloader
-        val_loader: Validation dataloader
-        test_loader: Test dataloader
-        num_epochs: Number of epochs
-        learning_rate: Learning rate
-        device: Device to use
-    
-    Returns:
-        Tuple of (model, history dictionary, test metrics dictionary)
     """
     # Ensure device is a torch.device object
     if isinstance(device, str):
@@ -107,7 +94,6 @@ def train(
     
     model = model.to(device)
     print(f"Model moved to device: {device}")
-    print(f"Model device check: {next(model.parameters()).device}")
     
     optimizer = AdamW(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()

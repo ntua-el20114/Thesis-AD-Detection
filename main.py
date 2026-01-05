@@ -23,32 +23,16 @@ def get_model_info(model):
     return num_params, architecture
 
 def generate_seeds(num_seeds: int, base_seed: str = BASE_SEED) -> list:
-    """
-    Generate seeds deterministically based on a base seed string.
-    
-    Args:
-        num_seeds: Number of seeds to generate
-        base_seed: Base seed string (uses current datetime if None)
-    
-    Returns:
-        List of integer seeds
-    """
-    
+    """Generate seeds deterministically based on a base seed string."""
     seeds = []
     for i in range(num_seeds):
-        # Create a deterministic seed by hashing the base seed + index
         hash_input = f"{base_seed}_{i}".encode()
         hash_obj = hashlib.sha256(hash_input)
-        seed = int(hash_obj.hexdigest(), 16) % (2**31)  # Keep it within 32-bit range
+        seed = int(hash_obj.hexdigest(), 16) % (2**31)
         seeds.append(seed)
-    
     return seeds
 
 def main(
-    # model_name: str = 'wavlm',
-    # batch_size: int = 4,
-    # num_epochs: int = 5,
-    # learning_rate: float = 2e-5,
     model_name: str,
     comment: str,
     batch_size: int,
@@ -58,24 +42,14 @@ def main(
     val_split: float = 0.1,
     results_dir: str = 'results',
 ):
-    """
-    Main training script with multiple experiment repetitions.
-    
-    Args:
-        model_name: Name of model to use
-        batch_size: Batch size
-        num_epochs: Number of epochs
-        learning_rate: Learning rate
-        num_repetitions: Number of experiment repetitions (default=5)
-        val_split: Fraction of training data to use for validation (default=0.1)
-        results_dir: Directory to save results
-    """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
     
     # Create dataloaders
     print("Loading data...")
     data_dir = Path("data/MultiConAD")
+    
+    # Pass model_name to create_dataloaders
     train_loader, val_loader, test_loader = create_dataloaders(
         train_jsonl=data_dir / "train_English.jsonl",
         test_jsonl=data_dir / "test_English.jsonl",
@@ -83,6 +57,7 @@ def main(
         batch_size=batch_size,
         sample_rate=SAMPLE_RATE,
         val_split=val_split,
+        model_name=model_name  # <--- Essential Update
     )
     
     # Create experiment directory
@@ -122,7 +97,7 @@ def main(
     with open(exp_dir / 'config.json', 'w') as f:
         json.dump(config, f, indent=2)
     
-    # Save model architecture to separate text file for easy viewing
+    # Save model architecture
     with open(exp_dir / 'model_architecture.txt', 'w') as f:
         f.write(f"Model: {model_name}\n")
         f.write(f"Total Parameters: {num_params:,}\n")
@@ -143,13 +118,11 @@ def main(
         print(msg)
         print(f"{'='*len(msg)}")
         
-        # Set seed for reproducibility
         seed = seeds[rep]
         torch.manual_seed(seed)
         np.random.seed(seed)
         print(f"Seed: {seed}")
 
-        # Create model for this repetition
         print(f"Creating {model_name} model...")
         if model_name == 'wavlm':
             current_model = WavLMClassifier(num_classes=3)
@@ -158,7 +131,6 @@ def main(
         else:
             raise ValueError(f"Unknown model: {model_name}")
         
-        # Train
         print("Starting training...")
         current_model, history, test_metrics = train(
             current_model,
@@ -170,16 +142,12 @@ def main(
             device=device,
         )
         
-        # Save history for this repetition
         rep_history_file = exp_dir / f'history_rep{rep+1:03d}.json'
         with open(rep_history_file, 'w') as f:
             json.dump(history, f, indent=2)
         
-        # Extract final metrics from this repetition
         final_accuracy = test_metrics['test_accuracy']
         
-        # For now, we'll use accuracy as primary metric
-        # F1 and AUR would need to be computed with actual predictions
         metrics = {
             'repetition': rep + 1,
             'seed': seed,
@@ -191,11 +159,10 @@ def main(
         
         print(f"Rep {rep+1} - Accuracy: {final_accuracy:.4f}")
         
-        # Save model for this repetition
         model_file = exp_dir / f'model_rep{rep+1:03d}.pt'
         torch.save(current_model.state_dict(), model_file)
     
-    # Save metrics CSV with averages and standard deviations
+    # Save metrics CSV
     if all_metrics:
         csv_file = exp_dir / 'metrics.csv'
         with open(csv_file, 'w', newline='') as f:
@@ -203,12 +170,10 @@ def main(
             writer.writeheader()
             writer.writerows(all_metrics)
             
-            # Calculate statistics
             accuracies = [m['accuracy'] for m in all_metrics]
             f1_scores = [m['f1'] for m in all_metrics]
             aur_scores = [m['aur'] for m in all_metrics]
             
-            # Add averages row
             avg_metrics = {
                 'repetition': 'AVERAGE',
                 'seed': '-',
@@ -218,7 +183,6 @@ def main(
             }
             writer.writerow(avg_metrics)
             
-            # Add std deviations row
             std_metrics = {
                 'repetition': 'STD_DEV',
                 'seed': '-',

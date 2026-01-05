@@ -9,16 +9,27 @@ from sklearn.model_selection import train_test_split
 
 TRAIN_VAL_SPLIT_SEED = 42
 
+# Define which keys are required for each model type to avoid redundant I/O
+MODEL_REQUIREMENTS = {
+    'wavlm': ['audio'],
+    'test_linear': ['egemaps', 'bert'],
+}
+
 class MultiConAD_Dataset(Dataset):
     def __init__(
         self,
         jsonl_path: Union[str, Path],
         audio_dir: Union[str, Path],
         sample_rate: int = 16000,
+        model_name: str = 'wavlm'
     ):
         self.jsonl_path = Path(jsonl_path)
         self.audio_dir = Path(audio_dir)
         self.sample_rate = sample_rate
+        self.model_name = model_name
+        
+        # Determine requirements; default to audio if model unknown
+        self.required_features = MODEL_REQUIREMENTS.get(model_name, ['audio'])
         
         self.records = []
         with open(self.jsonl_path, 'r') as f:
@@ -31,60 +42,76 @@ class MultiConAD_Dataset(Dataset):
     
     def __getitem__(self, idx: int) -> Dict:
         record = self.records[idx]
+        output = {**record}
         
-        audio_filename = record['Audio_file']
-        # Strip 'Audio/' prefix if present (since audio_dir already points to Audio/)
-        if audio_filename.startswith('Audio/'):
-            audio_filename = audio_filename[6:]
-        audio_path = self.audio_dir / audio_filename
-        
-        waveform, sr = torchaudio.load(str(audio_path))
-        
-        if sr != self.sample_rate:
-            waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
-        
-        if waveform.shape[0] > 1:
-            waveform = waveform.mean(dim=0, keepdim=True)
-        
-        return {
-            **record,
-            'audio': waveform,
-        }
+        # 1. Load Audio (Only if required)
+        if 'audio' in self.required_features:
+            audio_filename = record['Audio_file']
+            if audio_filename.startswith('Audio/'):
+                audio_filename = audio_filename[6:]
+            audio_path = self.audio_dir / audio_filename
+            
+            # Expensive I/O operation
+            waveform, sr = torchaudio.load(str(audio_path))
+            
+            if sr != self.sample_rate:
+                waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
+            
+            if waveform.shape[0] > 1:
+                waveform = waveform.mean(dim=0, keepdim=True)
+            
+            output['audio'] = waveform
+            
+        # 2. Load Features (Only if required)
+        if 'egemaps' in self.required_features:
+            output['egemaps'] = record['egemaps']
+            
+        if 'bert' in self.required_features:
+            output['bert'] = record['bert']
+            
+        return output
 
 
 def collate_fn_pad(batch: List[Dict]) -> Dict:
-    max_audio_length = max(sample['audio'].shape[1] for sample in batch)
-    
-    audio_batch = []
-    audio_lengths = []
-    egemaps_batch = []
-    bert_batch = []
-    
-    for sample in batch:
-        # Process audio
-        audio = sample['audio'].squeeze(0)
-        audio_len = audio.shape[0]
-        audio_lengths.append(audio_len)
+    """
+    Dynamic collate function that only processes keys present in the batch.
+    """
+    if not batch:
+        return {}
         
-        if audio_len < max_audio_length:
-            audio = torch.nn.functional.pad(audio, (0, max_audio_length - audio_len))
-        
-        audio_batch.append(audio)
-        
-        # Process egemaps and bert (convert to tensors)
-        egemaps_batch.append(torch.as_tensor(sample['egemaps'], dtype=torch.float32))
-        bert_batch.append(torch.as_tensor(sample['bert'], dtype=torch.float32))
+    keys = batch[0].keys()
+    output = {}
     
-    output = {
-        'audio': torch.stack(audio_batch),
-        'audio_lengths': torch.tensor(audio_lengths, dtype=torch.long),
-        'egemaps': torch.stack(egemaps_batch),
-        'bert': torch.stack(bert_batch),
-    }
-    
-    # Add all other fields (as lists for metadata)
-    for key in batch[0].keys():
-        if key not in ['audio', 'egemaps', 'bert']:
+    # 1. Handle Audio (Padding)
+    if 'audio' in keys:
+        max_audio_length = max(sample['audio'].shape[1] for sample in batch)
+        audio_batch = []
+        audio_lengths = []
+        
+        for sample in batch:
+            audio = sample['audio'].squeeze(0)
+            audio_len = audio.shape[0]
+            audio_lengths.append(audio_len)
+            
+            if audio_len < max_audio_length:
+                audio = torch.nn.functional.pad(audio, (0, max_audio_length - audio_len))
+            audio_batch.append(audio)
+            
+        output['audio'] = torch.stack(audio_batch)
+        output['audio_lengths'] = torch.tensor(audio_lengths, dtype=torch.long)
+
+    # 2. Handle numeric features (Stacking)
+    if 'egemaps' in keys:
+        output['egemaps'] = torch.stack([torch.as_tensor(s['egemaps'], dtype=torch.float32) for s in batch])
+        
+    if 'bert' in keys:
+        output['bert'] = torch.stack([torch.as_tensor(s['bert'], dtype=torch.float32) for s in batch])
+
+    # 3. Handle Metadata (Pass through as lists)
+    # Exclude the tensor keys we just processed
+    processed_keys = {'audio', 'egemaps', 'bert'}
+    for key in keys:
+        if key not in processed_keys:
             output[key] = [sample[key] for sample in batch]
     
     return output
@@ -94,25 +121,13 @@ def create_dataloaders(
     train_jsonl: Union[str, Path],
     test_jsonl: Union[str, Path],
     audio_dir: Union[str, Path],
+    model_name: str,
     batch_size: int = 32,
     sample_rate: int = 16000,
     val_split: float = 0.2,
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train, validation, and test dataloaders.
-    
-    The validation set is extracted from the training data.
-    
-    Args:
-        train_jsonl: Path to training JSONL file
-        test_jsonl: Path to test JSONL file
-        audio_dir: Path to audio directory
-        batch_size: Batch size for dataloaders
-        sample_rate: Sample rate for audio
-        val_split: Fraction of training data to use for validation
-    
-    Returns:
-        Tuple of (train_loader, val_loader, test_loader)
     """
     # Load training records
     train_records = []
@@ -129,22 +144,14 @@ def create_dataloaders(
         random_state=TRAIN_VAL_SPLIT_SEED,
     )
     
-    # Create datasets
-    train_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
-    train_dataset.jsonl_path = Path(train_jsonl)
-    train_dataset.audio_dir = Path(audio_dir)
-    train_dataset.sample_rate = sample_rate
-
+    # Create datasets with explicit instantiation
+    train_dataset = MultiConAD_Dataset(train_jsonl, audio_dir, sample_rate, model_name)
     train_dataset.records = train_records_split
     
-    val_dataset = MultiConAD_Dataset.__new__(MultiConAD_Dataset)
-    val_dataset.jsonl_path = Path(train_jsonl)
-    val_dataset.audio_dir = Path(audio_dir)
-    val_dataset.sample_rate = sample_rate
-
+    val_dataset = MultiConAD_Dataset(train_jsonl, audio_dir, sample_rate, model_name)
     val_dataset.records = val_records_split
     
-    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate)
+    test_dataset = MultiConAD_Dataset(test_jsonl, audio_dir, sample_rate, model_name)
     
     # Create dataloaders
     train_loader = DataLoader(
