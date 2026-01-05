@@ -77,10 +77,10 @@ def evaluate(model, test_loader, criterion, device):
     f1 = f1_score(all_labels, all_preds, average='macro')
     uar = recall_score(all_labels, all_preds, average='macro')
     return {
-        'test_loss': avg_loss,
-        'test_accuracy': accuracy,
-        'test_f1': f1,
-        'test_uar': uar
+        'loss': avg_loss,
+        'acc': accuracy,
+        'f1': f1,
+        'uar': uar
     }
 
 def train(
@@ -105,7 +105,9 @@ def train(
     
     for epoch in range(num_epochs):
         train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
-        val_loss, val_acc = evaluate(model, val_loader, criterion, device)
+        metrics = evaluate(model, val_loader, criterion, device)
+        val_loss = metrics['loss']
+        val_acc = metrics['acc']
         
         history['train_loss'].append(train_loss)
         history['val_loss'].append(val_loss)
@@ -117,10 +119,10 @@ def train(
     print("Test Set Evaluation")
     print("="*50)
     test_metrics = evaluate(model, test_loader, criterion, device)
-    print(f"Test Loss: {test_metrics['test_loss']:.4f}")
-    print(f"Test Accuracy: {test_metrics['test_accuracy']:.4f}")
-    print(f"Test F1 Score: {test_metrics['test_f1']:.4f}")
-    print(f"Test UAR: {test_metrics['test_uar']:.4f}")
+    print(f"Test Loss: {test_metrics['loss']:.4f}")
+    print(f"Test Accuracy: {test_metrics['acc']:.4f}")
+    print(f"Test F1 Score: {test_metrics['f1']:.4f}")
+    print(f"Test UAR: {test_metrics['uar']:.4f}")
     print("="*50 + "\n")
     
     return model, history, test_metrics

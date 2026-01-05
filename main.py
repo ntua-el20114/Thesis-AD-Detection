@@ -146,17 +146,16 @@ def main(
         with open(rep_history_file, 'w') as f:
             json.dump(history, f, indent=2)
         
-        final_accuracy = test_metrics['test_accuracy']
         metrics = {
             'repetition': rep + 1,
             'seed': seed,
-            'accuracy': test_metrics.get('test_accuracy'),
-            'f1': test_metrics.get('test_f1'),
-            'uar': test_metrics.get('test_uar'),
+            'accuracy': test_metrics['acc'],
+            'f1': test_metrics['f1'],
+            'uar': test_metrics['uar'],
         }
         all_metrics.append(metrics)
         
-        print(f"Rep {rep+1} - Accuracy: {final_accuracy:.4f}")
+        print(f"Rep {rep+1} - Accuracy: {test_metrics['acc']:.4f}")
         
         model_file = exp_dir / f'model_rep{rep+1:03d}.pt'
         torch.save(current_model.state_dict(), model_file)
