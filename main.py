@@ -164,20 +164,20 @@ def main(
     if all_metrics:
         csv_file = exp_dir / 'metrics.csv'
         with open(csv_file, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=['repetition', 'seed', 'accuracy', 'f1', 'aur'])
+            writer = csv.DictWriter(f, fieldnames=['repetition', 'seed', 'accuracy', 'f1', 'uar'])
             writer.writeheader()
             writer.writerows(all_metrics)
             
             accuracies = [m['accuracy'] for m in all_metrics]
             f1_scores = [m['f1'] for m in all_metrics]
-            aur_scores = [m['aur'] for m in all_metrics]
+            uar_scores = [m['uar'] for m in all_metrics]
             
             avg_metrics = {
                 'repetition': 'AVERAGE',
                 'seed': '-',
                 'accuracy': np.mean(accuracies),
                 'f1': np.mean(f1_scores),
-                'aur': np.mean(aur_scores),
+                'uar': np.mean(uar_scores),
             }
             writer.writerow(avg_metrics)
             
@@ -186,7 +186,7 @@ def main(
                 'seed': '-',
                 'accuracy': np.std(accuracies),
                 'f1': np.std(f1_scores),
-                'aur': np.std(aur_scores),
+                'uar': np.std(uar_scores),
             }
             writer.writerow(std_metrics)
     
