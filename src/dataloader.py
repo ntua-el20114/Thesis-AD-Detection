@@ -21,7 +21,7 @@ class MultiConAD_Dataset(Dataset):
         jsonl_path: Union[str, Path],
         audio_dir: Union[str, Path],
         sample_rate: int = 16000,
-        model_name: str = 'wavlm'
+        model_name: str = 'test_linear',
     ):
         self.jsonl_path = Path(jsonl_path)
         self.audio_dir = Path(audio_dir)
@@ -44,14 +44,13 @@ class MultiConAD_Dataset(Dataset):
         record = self.records[idx]
         output = {**record}
         
-        # 1. Load Audio (Only if required)
+        # Load Audio
         if 'audio' in self.required_features:
             audio_filename = record['Audio_file']
             if audio_filename.startswith('Audio/'):
                 audio_filename = audio_filename[6:]
             audio_path = self.audio_dir / audio_filename
             
-            # Expensive I/O operation
             waveform, sr = torchaudio.load(str(audio_path))
             
             if sr != self.sample_rate:
@@ -62,7 +61,7 @@ class MultiConAD_Dataset(Dataset):
             
             output['audio'] = waveform
             
-        # 2. Load Features (Only if required)
+        # Load Features
         if 'egemaps' in self.required_features:
             output['egemaps'] = record['egemaps']
             
@@ -82,7 +81,7 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
     keys = batch[0].keys()
     output = {}
     
-    # 1. Handle Audio (Padding)
+    # Handle Audio (Padding)
     if 'audio' in keys:
         max_audio_length = max(sample['audio'].shape[1] for sample in batch)
         audio_batch = []
@@ -100,15 +99,15 @@ def collate_fn_pad(batch: List[Dict]) -> Dict:
         output['audio'] = torch.stack(audio_batch)
         output['audio_lengths'] = torch.tensor(audio_lengths, dtype=torch.long)
 
-    # 2. Handle numeric features (Stacking)
+    # Handle numeric features (Stacking)
     if 'egemaps' in keys:
         output['egemaps'] = torch.stack([torch.as_tensor(s['egemaps'], dtype=torch.float32) for s in batch])
         
     if 'bert' in keys:
         output['bert'] = torch.stack([torch.as_tensor(s['bert'], dtype=torch.float32) for s in batch])
 
-    # 3. Handle Metadata (Pass through as lists)
-    # Exclude the tensor keys we just processed
+    # Handle Metadata (Pass through as lists)
+    # Exclude the tensor keys
     processed_keys = {'audio', 'egemaps', 'bert'}
     for key in keys:
         if key not in processed_keys:

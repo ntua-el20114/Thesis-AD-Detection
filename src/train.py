@@ -4,42 +4,43 @@ from torch.optim import AdamW
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from src.models.test_models import LinearFusionModel
-from src.models.wavlm_model import WavLMClassifier
-
 LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
 
 def _convert_diagnosis_to_labels(diagnosis_list, device):
     """Efficiently convert diagnosis strings to label tensor."""
     return torch.tensor([LABEL_MAP.get(d, 0) for d in diagnosis_list], dtype=torch.long, device=device)
 
-def forward_batch(model, batch, labels, device):
+def prepare_batch(batch, device):
     """
-    Call the model's forward method, providing the necessary inputs according to the model type.
-    Moves the specific required tensors to the device.
+    Generic function to prepare batch for the model:
+    1. Moves all Tensor values to the target device.
+    2. Separates model inputs (Tensors) from metadata (lists/strings).
     """
-    if isinstance(model, LinearFusionModel):
-        batch['egemaps'] = batch['egemaps'].to(device)
-        batch['bert'] = batch['bert'].to(device)
-        return model(batch['egemaps'], batch['bert'])
-    elif isinstance(model, WavLMClassifier):
-        batch['audio'] = batch['audio'].to(device)
-        batch['audio_lengths'] = batch['audio_lengths'].to(device)
-        return model(batch['audio'], batch['audio_lengths'])
-    else:
-        raise ValueError(f"Unknown model type for forward pass: {type(model)}")
-
+    model_inputs = {}
+    
+    for k, v in batch.items():
+        if isinstance(v, torch.Tensor):
+            # Move to device and add to inputs
+            model_inputs[k] = v.to(device)
+    
+    return model_inputs
 
 def train_epoch(model, train_loader, optimizer, criterion, device):
     model.train()
     total_loss = 0
     
-    for batch in tqdm(train_loader, desc="Training"):
-        # Convert diagnosis to labels (HC=0, MCI=1, Dementia=2)
+    for batch in tqdm(train_loader, desc=f"Training... batch contents: {list(batch.keys())}"):
+        # Extract only the tensors (audio, egemaps, bert, etc.) and move to GPU
+        inputs = prepare_batch(batch, device)
+        
+        # Prepare Labels
         labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
         
+        # Forward Pass
+        # **inputs unpacks the dictionary into arguments
         optimizer.zero_grad()
-        logits = forward_batch(model, batch, labels, device)
+        logits = model(**inputs) 
+        
         loss = criterion(logits, labels)
         loss.backward()
         optimizer.step()
@@ -47,7 +48,6 @@ def train_epoch(model, train_loader, optimizer, criterion, device):
         total_loss += loss.item()
     
     return total_loss / len(train_loader)
-
 
 def evaluate(model, test_loader, criterion, device):
     model.eval()
@@ -57,12 +57,11 @@ def evaluate(model, test_loader, criterion, device):
     
     with torch.no_grad():
         for batch in tqdm(test_loader, desc="Evaluating"):
-            # Prepare labels
+            # Same generic logic as training
+            inputs = prepare_batch(batch, device)
             labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
             
-            # Use forward_batch to handle device movement and input selection generically
-            # This prevents crashes when keys (e.g., 'audio') are missing from the batch
-            logits = forward_batch(model, batch, labels, device)
+            logits = model(**inputs)
             
             loss = criterion(logits, labels)
             total_loss += loss.item()
@@ -75,7 +74,6 @@ def evaluate(model, test_loader, criterion, device):
     avg_loss = total_loss / len(test_loader)
     return avg_loss, accuracy
 
-
 def train(
     model,
     train_loader: DataLoader,
@@ -85,10 +83,6 @@ def train(
     learning_rate: float = 2e-5,
     device: str = 'cuda' if torch.cuda.is_available() else 'cpu',
 ):
-    """
-    Train a model.
-    """
-    # Ensure device is a torch.device object
     if isinstance(device, str):
         device = torch.device(device)
     
@@ -110,7 +104,6 @@ def train(
         
         print(f"Epoch {epoch+1}/{num_epochs}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_acc={val_acc:.4f}")
     
-    # Evaluate on test set at the end
     print("\n" + "="*50)
     print("Test Set Evaluation")
     print("="*50)
