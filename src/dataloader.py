@@ -11,6 +11,7 @@ TRAIN_VAL_SPLIT_SEED = 42
 
 # Define which keys are required for each model type to avoid redundant I/O
 MODEL_REQUIREMENTS = {
+    'trillsson': ['audio'],
     'wavlm': ['audio'],
     'test_linear': ['egemaps', 'bert'],
 }
@@ -47,17 +48,24 @@ class MultiConAD_Dataset(Dataset):
         # Load Audio
         if 'audio' in self.required_features:
             audio_filename = record['Audio_file']
-            if audio_filename.startswith('Audio/'):
-                audio_filename = audio_filename[6:]
-            audio_path = self.audio_dir / audio_filename
             
-            waveform, sr = torchaudio.load(str(audio_path))
+            # Try to load .pt file first (pre-processed, more efficient)
+            pt_filename = audio_filename.replace('.wav', '.pt')
+            pt_path = self.audio_dir / 'pt_16k' / pt_filename
             
-            if sr != self.sample_rate:
-                waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
-            
-            if waveform.shape[0] > 1:
-                waveform = waveform.mean(dim=0, keepdim=True)
+            if pt_path.exists():
+                # Load pre-processed tensor (already 16kHz, mono)
+                waveform = torch.load(pt_path)
+            else:
+                # Fallback to loading .wav file
+                audio_path = self.audio_dir / audio_filename
+                waveform, sr = torchaudio.load(str(audio_path))
+                
+                if sr != self.sample_rate:
+                    waveform = torchaudio.transforms.Resample(sr, self.sample_rate)(waveform)
+                
+                if waveform.shape[0] > 1:
+                    waveform = waveform.mean(dim=0, keepdim=True)
             
             output['audio'] = waveform
             

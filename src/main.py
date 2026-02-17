@@ -54,7 +54,7 @@ def main(
     train_loader, val_loader, test_loader = create_dataloaders(
         train_jsonl=data_dir / "train_English.jsonl",
         test_jsonl=data_dir / "test_English.jsonl",
-        audio_dir=data_dir / "Audio",
+        audio_dir=data_dir / "",
         batch_size=batch_size,
         sample_rate=SAMPLE_RATE,
         val_split=val_split,
