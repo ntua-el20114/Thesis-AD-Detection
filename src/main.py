@@ -10,6 +10,7 @@ import argparse
 
 from dataloader import create_dataloaders
 from models.pretrained import WavLMClassifier
+from models.pretrained import TRILLssonClassifier
 from models.test_models import LinearFusionModel
 from train import train
 
@@ -70,10 +71,12 @@ def main(
     seeds = generate_seeds(num_repetitions, base_seed=BASE_SEED)
     
     # Create a model instance to get architecture and parameter count
-    if model_name == 'wavlm':
-        sample_model = WavLMClassifier()
-    elif model_name == 'test_linear':
+    if model_name == 'test_linear':
         sample_model = LinearFusionModel()
+    elif model_name == 'trillsson':
+        sample_model = TRILLssonClassifier()
+    elif model_name == 'wavlm':
+        sample_model = WavLMClassifier()
     else:
         raise ValueError(f"Unknown model: {model_name}")
     
@@ -127,10 +130,12 @@ def main(
         print(f"Seed: {seed}")
 
         print(f"Creating {model_name} model...")
-        if model_name == 'wavlm':
-            current_model = WavLMClassifier()
-        elif model_name == 'test_linear':
+        if model_name == 'test_linear':
             current_model = LinearFusionModel()
+        elif model_name == 'trillsson':
+            current_model = TRILLssonClassifier()
+        elif model_name == 'wavlm':
+            current_model = WavLMClassifier()
         else:
             raise ValueError(f"Unknown model: {model_name}")
         
