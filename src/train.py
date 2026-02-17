@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 import numpy as np
 from sklearn.metrics import f1_score, recall_score
+from typing import Union
 
 LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
 
@@ -90,10 +91,9 @@ def train(
     test_loader: DataLoader,
     num_epochs: int = 5,
     learning_rate: float = 2e-5,
-    device: str = 'cuda' if torch.cuda.is_available() else 'cpu',
+    device: Union[str, torch.device] = 'cuda' if torch.cuda.is_available() else 'cpu',
 ):
-    if isinstance(device, str):
-        device = torch.device(device)
+    device = torch.device(device)
     
     model = model.to(device)
     print(f"Model moved to device: {device}")
