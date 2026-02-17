@@ -69,12 +69,16 @@ class MultiConAD_Dataset(Dataset):
             
             output['audio'] = waveform
             
-        # Load Features
+        # Load Features (only include if required by model)
         if 'egemaps' in self.required_features:
             output['egemaps'] = record['egemaps']
+        elif 'egemaps' in output:
+            del output['egemaps']
             
         if 'bert' in self.required_features:
             output['bert'] = record['bert']
+        elif 'bert' in output:
+            del output['bert']
             
         return output
 
