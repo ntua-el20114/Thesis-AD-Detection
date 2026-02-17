@@ -12,15 +12,17 @@ NUM_CLASSES = 3
 
 class TRILLssonClassifier(nn.Module):
     """
-    Uses the TRILLsson% model, an AST with 88.6M parameters.
+    Uses the TRILLsson5 model, an AST with 88.6M parameters.
     The model is only available through TensorFlow, so we need to perform an awkward PyTorch/TensorFlow merging
     """
 
-    def __init__(self, freeze_backbone: bool = False, model_path: str = "google/trillsson/tensorFlow2/5"):
+    def __init__(self, freeze_backbone: bool = False, model_source: str = "google/trillsson/tensorFlow2/5"):
         super().__init__()
         
         # Download TRILLsson model 
-        model_path = kagglehub.model_download(model_path)
+        print(f"Downloading model from {model_source}...")
+        model_path = kagglehub.model_download(model_source)
+        print(f"Downloaded model stored in {model_path}")
         
         # Store the model path for cleanup
         self.model_path = model_path
@@ -37,6 +39,7 @@ class TRILLssonClassifier(nn.Module):
     
     def __del__(self):
         """ Model destructor. Cleans up model files."""
+        return
         try:
             if hasattr(self, 'model_path') and self.model_path:
                 # Remove the entire model directory
