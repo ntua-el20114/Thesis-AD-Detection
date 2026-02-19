@@ -12,7 +12,7 @@ from dataloader import create_dataloaders
 from models.pretrained import WavLMClassifier
 from models.pretrained import TRILLssonClassifier
 from models.test_models import LinearFusionModel
-from train import train
+from train import train, evaluate_text_model
 
 SAMPLE_RATE = 16000
 BASE_SEED = 42

@@ -84,6 +84,8 @@ def evaluate(model, test_loader, criterion, device):
         'uar': uar
     }
 
+
+
 def train(
     model,
     train_loader: DataLoader,
