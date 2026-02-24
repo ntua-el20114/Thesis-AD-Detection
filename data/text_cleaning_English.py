@@ -34,17 +34,9 @@ output_path = f"{output_directory}/{output_filename}"
 
 English_df = pd.read_json(output_path, lines=True)
 
-
-
-
-
-
 # Remove Chinese transcript from Taukdial
 def remove_zh_language_rows(df):
     return df[df['Languages'] != 'zh']
-
-
-
 
 def clean_diagnosis(df):
     # Remove specific diagnoses
@@ -69,10 +61,7 @@ def clean_diagnosis(df):
     
     return df
 
-
-
 def preprocess_text(text):
-
     text = re.sub(r'\b[A-Z]{3}\b', '', text)
     text = re.sub(r'xxx', '', text)
     text = re.sub(r'<[^>]*>', '', text)

@@ -16,27 +16,27 @@ AUDIO_OUTPUT_DIR = MULTICONAD_DIR / "Audio"
 DATASETS = ["WLS", "Pitt", "Lu", "Kempler", "Delaware", "Baycrest", "VAS"]
 
 # --- Step 0: Fix Directory Structures ---
-def fix_directory_names():
-    """
-    MultiConAD's scripts hardcode the folder name 'Transcriptions'.
-    Your file structure uses 'Transcripts'.
-    This function renames them automatically.
-    """
-    print("\n--- [0/5] Normalizing Directory Names ---")
-    for ds in DATASETS:
-        ds_path = ROOT_DIR / ds
-        if not ds_path.exists(): continue
-        
-        current = ds_path / "Transcripts"
-        target = ds_path / "Transcriptions"
-        
-        # If 'Transcripts' exists but 'Transcriptions' doesn't, rename/move it
-        if current.exists() and not target.exists():
-            print(f"  Renaming: {current} -> {target}")
-            try:
-                shutil.move(str(current), str(target))
-            except Exception as e:
-                print(f"  [!] Failed to move {current}: {e}")
+# def fix_directory_names():
+#     """
+#     MultiConAD's scripts hardcode the folder name 'Transcriptions'.
+#     Your file structure uses 'Transcripts'.
+#     This function renames them automatically.
+#     """
+#     print("\n--- [0/5] Normalizing Directory Names ---")
+#     for ds in DATASETS:
+#         ds_path = ROOT_DIR / ds
+#         if not ds_path.exists(): continue
+#         
+#         current = ds_path / "Transcripts"
+#         target = ds_path / "Transcriptions"
+#         
+#         # If 'Transcripts' exists but 'Transcriptions' doesn't, rename/move it
+#         if current.exists() and not target.exists():
+#             print(f"  Renaming: {current} -> {target}")
+#             try:
+#                 shutil.move(str(current), str(target))
+#             except Exception as e:
+#                 print(f"  [!] Failed to move {current}: {e}")
 
 # --- Helper: Audio Linking ---
 def find_audio(base_folder, filename_stem):
@@ -356,7 +356,7 @@ if __name__ == "__main__":
     if not MULTICONAD_DIR.exists():
         MULTICONAD_DIR.mkdir()
         
-    fix_directory_names()
+    # fix_directory_names()
     preprocess_wls()
     preprocess_taukdial()
     run_pipeline_scripts()
