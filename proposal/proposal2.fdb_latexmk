@@ -1,31 +1,20 @@
 # Fdb version 4
-["biber report"] 1772192623.53633 "report.bcf" "report.bbl" "report" 1772198857.9925 0
+["biber proposal2"] 1772192474.18005 "proposal2.bcf" "proposal2.bbl" "proposal2" 1772192475.68108 0
+  "proposal2.bcf" 1772188819.4849 113418 d22ddf2ddc4db8f2a9930b71339df63d "xelatex"
   "references.bib" 1772192474.00314 114692 43a52c3ba0e5fc7260d23b8dbd8664c9 ""
-  "report.bcf" 1772198857.57906 113313 aa3a60eef6655e45b09b486925d1025d "xelatex"
   (generated)
-  "report.bbl"
-  "report.blg"
+  "proposal2.bbl"
+  "proposal2.blg"
   (rewritten before read)
-["xdvipdfmx"] 1772198857.65222 "report.xdv" "report.pdf" "report" 1772198857.99441 0
-  "report.xdv" 1772198857.58026 393896 8da02a57cbe9f33504df43b432536551 "xelatex"
+["xdvipdfmx"] 1772188819.55768 "proposal2.xdv" "proposal2.pdf" "proposal2" 1772192475.68253 0
+  "proposal2.xdv" 1772188819.48651 367476 1db2250fe87686feb6b097574a5c04ad "xelatex"
   (generated)
-  "report.pdf"
+  "proposal2.pdf"
   (rewritten before read)
-["xelatex"] 1772198855.75882 "report.tex" "report.xdv" "report" 1772198857.99259 0
+["xelatex"] 1772188817.83498 "proposal2.tex" "proposal2.xdv" "proposal2" 1772192475.68112 0
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm" 1246382020 996 a18840b13b499c08ac2de96a99eda4bc ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm" 1136768653 1520 eccf95517727cb11801f4f1aee3a21b4 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm" 1136768653 1524 d89e2d087a9828407a196f428428ef4a ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm" 1136768653 1300 b62933e007d01cfd073f79b963c01526 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm" 1136768653 1292 21c1c5bfeaebccffdb478fd231a0997d ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr9.tfm" 1136768653 1292 6b21b9c2c7bebb38aa2273f7ca0fb3af ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm" 1136768653 1116 25a7bf822c58caf309a702ef79f4afbb ""
   "/usr/share/texlive/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1576625341 40635 c40361e206be584d448876bba8a64a3b ""
   "/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty" 1576016050 33961 6b5c75130e435b2bfdb9f480a09a39f9 ""
@@ -201,17 +190,16 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1770681600 40900 887e0dc8cac988a9e9c574af364cf837 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1771493559 11133766 28ac2b069bab559ced69d0c65187220d ""
   "cookie-theft-picture.png" 1766053344.06539 205738 9fa2ce9ed38682fc5e9f3cf6776f8be4 ""
-  "dataset.png" 1772109858.73447 98890 879e62882514751a58872bec9f29ef5e ""
-  "report.aux" 1772198857.56906 17668 b54ad76f682301e571c8515a8aa470eb "xelatex"
-  "report.bbl" 1772192624.61399 222274 51603ee1e85a522e4b7b7e6460ec6105 "biber report"
-  "report.out" 1772198857.57706 3352 0a9f56c4427265048bb463e615154e48 "xelatex"
-  "report.run.xml" 1772198857.58026 2451 39d3f80ba2e7319a1eff703450322592 "xelatex"
-  "report.tex" 1772198853.89606 32658 636378d235d8fbfb97e88e84aefb2dbf ""
+  "proposal2.aux" 1772188819.4739 15836 4d2345c70c250331019e8fcb793d08d1 "xelatex"
+  "proposal2.bbl" 1772192475.66214 231993 5e108f05f3d3e3867a946528547480cb "biber proposal2"
+  "proposal2.out" 1772188819.4819 3604 5b9bff9493370346635e2b9c5bd0134d "xelatex"
+  "proposal2.run.xml" 1772188819.48651 2472 c42074d2b40676302af58e9b92fe0f72 "xelatex"
+  "proposal2.tex" 1766592187.27612 29080 a6bbf81b5c43cf13e2794ef2b732a0dc ""
   (generated)
-  "report.aux"
-  "report.bcf"
-  "report.log"
-  "report.out"
-  "report.run.xml"
-  "report.xdv"
+  "proposal2.aux"
+  "proposal2.bcf"
+  "proposal2.log"
+  "proposal2.out"
+  "proposal2.run.xml"
+  "proposal2.xdv"
   (rewritten before read)

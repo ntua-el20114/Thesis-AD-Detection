@@ -1,15 +1,15 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'report.blg'
-[97] biber:342> INFO - === Thu Feb 19, 2026, 14:57:45
-[119] Biber.pm:421> INFO - Reading 'report.bcf'
-[217] Biber.pm:1002> INFO - Found 44 citekeys in bib section 0
-[232] Biber.pm:4487> INFO - Processing section 0
-[245] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
-[250] bibtex.pm:1713> INFO - LaTeX decoding ...
-[443] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
-[1631] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[1632] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[1632] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
-[1632] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[1673] bbl.pm:676> INFO - Writing 'report.bbl' with encoding 'UTF-8'
-[1765] bbl.pm:779> INFO - Output to report.bbl
+[41] biber:342> INFO - === Fri Feb 27, 2026, 13:43:43
+[50] Biber.pm:421> INFO - Reading 'report.bcf'
+[92] Biber.pm:1002> INFO - Found 47 citekeys in bib section 0
+[99] Biber.pm:4487> INFO - Processing section 0
+[105] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
+[107] bibtex.pm:1713> INFO - LaTeX decoding ...
+[173] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[683] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[683] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[683] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[683] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[701] bbl.pm:676> INFO - Writing 'report.bbl' with encoding 'UTF-8'
+[739] bbl.pm:779> INFO - Output to report.bbl

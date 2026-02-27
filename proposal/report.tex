@@ -46,12 +46,16 @@
   \clearfield{issn}
 }
 
+% table rules
+\setlength{\heavyrulewidth}{1.5pt}   % Affects \toprule and \bottomrule
+\setlength{\lightrulewidth}{0.8pt}   % Affects \midrule
+
 % Set main font (optional, replace with your preferred font)
 \setmainfont{Linux Libertine}
 
 % Title, Author, and Date
 \title{\textbf{Early Detection of Alzheimer's Disease \\ from Speech with Deep Learning \\}
-\Large Thesis Progress Report}
+\Large Master's Thesis Progress Report}
 \date{\today}
 
 \author{\textbf{Raftopoulos Michail}}
@@ -76,71 +80,232 @@
 % Title and Abstract
 \maketitle
 
-\todo[color=mygreen]{\large Latest progress can be found in Section
-\ref{sec:methodology}: Methodology.} 
+\todo[color=mygreen, size=\large]{Latest additions can be found in Section
+\ref{sec:dataset}: Dataset and Section \ref{sec:methodology}: Methodology.} 
 
 \begin{abstract} 
 	Early detection of Alzheimer's Disease (AD) and Mild Cognitive
 	Impairment (MCI) is critical for timely intervention and effective
 	disease management. Speech analysis has emerged as a promising,
 	non-invasive, and cost-effective approach for detecting the cognitive
-	decline associated with AD and MCI. This research proposal presents a
-	comprehensive literature review of existing methodologies and
-	identifies critical gaps within the field. Despite significant
-	advancements, current models often lack the generalizability and
-	interpretability necessary for clinical deployment, while data scarcity
-	remains a persistent challenge. Furthermore, existing methodologies
-	frequently overlook the conversational dynamics inherent in the data,
-	potentially leading to biased evaluations. To address these
-	limitations, we propose a suite of methodologies including
-	conversational modeling, longitudinal patient analysis, self-supervised
-	learning on unlabeled datasets, and advanced data augmentation
-	techniques. Collectively, these approaches aim to enhance the clinical
-	relevance of the models and maximize the utility of available data
-	resources.
+	decline associated with AD and MCI. This master's thesis aims to contribute
+	to the field by focusing on modeling the conversational nature of
+	the available datasets, a crucial yet often overlooked characteristic. In
+	this report, we document our progress through the stages of data analysis
+	and preprocessing, baseline experiments and experimentation regarding
+	conversational modeling, deriving inspiration from the field of
+	paralinguistics.
 \end{abstract}
 
-	\begin{multicols}{2}
+\begin{multicols}{2}
 
-		\section{Introduction} \par Dementia is a progressive
-		neurodegenerative disorder that causes irreversible brain
-		damage, significantly impairing activities of daily living. It
-		is estimated to affect over 57.4 million people, a figure that
-		is expected to rise dramatically due to the aging population
-		\cite{nicholsEstimationGlobalPrevalence2022}. Alzheimer's
-		Disease (AD) is the most prevalent form of dementia, accounting
-		for 60-70\% of all cases \cite{silvaAlzheimersDiseaseRisk2019}.
-		\par While there is no known cure for AD, early detection can
-		greatly help patients manage their symptoms and improve the
-		quality of life for them and their families. In particular,
-		researchers highlight the need for detecting a cognitive
-		decline stage known as Mild Cognitive Impairment (MCI) which
-		may or may not progress to dementia. Speech analysis has
-		emerged as a promising approach for detecting MCI, offering a
-		non-invasive, cost-effective, and accessible means of
-		assessment \cite{2018AlzheimersDisease2018,
-		lanziDementiaBankTheoreticalRationale2023}. \par The field has
-		witnessed significant academic interest in recent years,
-		characterized by frequent competitions and a growing body of
-		literature. However, it continues to face substantial
-		challenges that hinder clinical translation. Although many
-		models report high evaluation metrics, performance levels
-		remain insufficient for reliable clinical application.
-		Moreover, these models are frequently trained and evaluated on
-		small or outdated datasets, raising concerns regarding their
-		generalizability. In this research proposal, we perform a
-		comprehensive literature review of existing methodologies and
-		the evaluation metrics achieved. We then identify gaps in the
-		literature and missed opportunities, and finally propose a set
-		of promising methodologies to address these limitations.
+\section{Introduction} 
+\par Dementia is a progressive neurodegenerative disorder that causes
+irreversible brain damage, significantly impairing activities of daily living.
+It is estimated to affect over 57.4 million people, a figure that is expected
+to rise dramatically due to the aging population
+\cite{nicholsEstimationGlobalPrevalence2022}. Alzheimer's Disease (AD) is the
+most prevalent form of dementia, accounting for 60-70\% of all cases
+\cite{silvaAlzheimersDiseaseRisk2019}. \par While there is no known cure for
+AD, early detection can greatly help patients manage their symptoms and improve
+the quality of life for them and their families. In particular, researchers
+highlight the need for detecting a cognitive decline stage known as Mild
+Cognitive Impairment (MCI) which may or may not progress to dementia. Speech
+analysis has emerged as a promising approach for detecting MCI, offering a
+non-invasive, cost-effective, and accessible means of assessment
+\cite{2018AlzheimersDisease2018, lanziDementiaBankTheoreticalRationale2023}.
+\par The field has witnessed significant academic interest in recent years,
+characterized by frequent competitions and a growing body of literature.
+However, it continues to face substantial challenges that hinder clinical
+translation. Although many models report high evaluation metrics, performance
+levels remain insufficient for reliable clinical application. Moreover, these
+models are frequently trained and evaluated on small or outdated datasets,
+raising concerns regarding their generalizability. In this research proposal,
+we perform a comprehensive literature review of existing methodologies and the
+evaluation metrics achieved. We then identify gaps in the literature and missed
+opportunities, and finally propose a set of promising methodologies to address
+these limitations.
 
-		\begin{figure}[H] \centering
-		\includegraphics[width=0.9\linewidth]{cookie-theft-picture.png}
+\begin{figure}[H] 
+	\centering
+	\includegraphics[width=\linewidth]{cookie-theft-picture.png}
 	\caption{The Cookie Theft Picture, used in the picture description task of
-the Pitt corpus and other datasets from DementiaBank.} \label{fig:ctp}
+	the Pitt corpus and other datasets from DementiaBank.} \label{fig:ctp}
 \end{figure}
 
-\section{Literature Review} \subsection{Datasets and Evaluation Challenges}
+\section{Dataset}\label{sec:dataset}
+\par Most available data in the field is provided by the
+\emph{DementiaBank} \cite{lanziDementiaBankTheoreticalRationale2023} database.
+DementiaBank consists of a collection of corpora, that contain audio recordings
+and CHAT transcripts of various cognitive assessment tasks, administered by an
+interviewer\footnote{The only exception is the VAS corpus, which consists of
+recorded Voice Assistant System commands.}. In this work, we utilize the
+\emph{MultiConAD} \cite{shakeriMultiConADUnifiedMultilingual2025} framework,
+which aggregates all DementiaBank corpora into a single, unified dataset. In
+addition, MultiConAD converts all transcripts to plain text and experiments
+with translation and multilingual trainings. We choose to focus only on the
+purely English subset of MultiConAD.
+
+\tpar{Implementation Details} While the MultiConAD reproduction source code is
+available online\footnote{\href{https://github.com/ArezoShakeri/MultiConAD}{https://github.com/ArezoShakeri/MultiConAD}}, it was
+realised that the repository was missing critical preprocessing steps that were
+essential for the incorporation of the "WLS", "VAS" and "Kempler" corpora. Thus,
+these scripts had to be manually implemented. In addition, since the
+publication of the MultiConAD dataset, the "Delaware" corpus has grown in
+number of data samples, that we chose to incorporate into our implementation.
+As a result, our MultiConAD implementation differs slightly from the original
+one. The differences between the two implementations are summarized in Table
+\ref{tab:impl}.
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabular}{l c c c c}
+		\toprule
+		\textbf{MultiConAD} & \textbf{Tot Length} & \textbf{Samples} &
+		\textbf{Train} & \textbf{Test} \\
+		\midrule
+		Original & \textit{not specified} & 2411 & 2201 & 210 \\
+		Ours & 114.49 hours & 2469 & 2217 & 252 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Differences in data samples between ours and the original (English
+	only) MultiConAD dataset implementation.}
+	\label{tab:impl}
+\end{table}
+
+\par After the implementation and analysis of the dataset at hand, several key
+observations have emerged that will shape the direction of this study’s
+methodology:
+\begin{enumerate}
+	\item \textbf{Conversational Data:} As already mentioned, most data samples
+		consist of oral conversations. To our knowledge, no recent study has
+		modeled this conversational structure, leading to models processing the
+		speech of both the interviewer and the participant with no distinction
+		whatsoever (see \ref{sec:conversational-nature} in the Literature
+		Review). This is where choose to focus our study.
+	\item \textbf{Small Dataset:} Although it includes nearly all available
+		datasets, MultiConAD is still severely small for deep learning
+		standards, amounting to about 2500 samples, or about 115 hours. Thus,
+		the resulting model will be limited to fine-tuning, or to utilizing
+		layers of open, pre-trained language and paralinguistic models.
+	\item \textbf{Class Imbalance:} As shown in Figure \ref{fig:dataset} (top
+		and bottom right), the class distribution heavily favors the healthy
+		controls. This raises the need for class-balancing data augmentation.
+	\item \textbf{Large-Scale Recordings:} The DementiaBank dataset consists of
+		substantial audio files with significant variance in duration, ranging
+		from 2 to 35 minutes. Given that most speech models are optimized for
+		short windows of a few seconds, we have introduced a design requirement
+		to manage the aggregation of these processed segments into a cohesive
+		output. This can be better demonstrated by Figure \ref{fig:dataset} (top left).
+	\item \textbf{Dataset Bias:} The individual sub-datasets within MultiConAD
+		exhibit a disproportionate class distribution (see Figure
+		\ref{fig:dataset}, bottom left). For instance, the WLS dataset
+		comprises a vast majority of healthy controls. This imbalance
+		introduces a significant bias hazard; the model may inadvertently learn
+		to classify samples based on the unique acoustic signatures or noise
+		fragments of the source datasets rather than the underlying
+		pathological voice characteristics.
+\end{enumerate}
+
+
+\begin{figure*}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{dataset.png}
+	\caption{\emph{top left:} Sample and class distribution among sub-datasets
+	of MultiConAD. \emph{bottom left:} Recording durations among sub-datasets
+of MultiConAD. \textit{top right:} Class distribution. \emph{bottom right:}
+Class distribution by Train/Test split.}
+	\label{fig:dataset}
+\end{figure*}
+
+
+\section{Methodology}\label{sec:methodology}
+\par In this section we document our progress regarding baselines, candidate
+options for further experiments, and the results yielded by our models.
+
+\subsection{Baseline Experiments}
+The original MultiConAD paper proposes a series of simple baseline models that
+utilize the transcripts' text representations, in conjunction with traditional
+ML classifiers. For text representations, the authors experimented with TF-IDF
+representations (sparse) and \texttt{intfloat/multilingual-e5-large}
+embeddings (dense). Since our implementation of MultiConAD differs slightly
+from the original, we chose to reproduce these benchmarks to ensure a fair
+comparison. The results can be seen in Table \ref{tab:baselines}.
+
+
+\begin{table}[H]
+	\centering
+	% \small
+	\begin{tabular}{l c c c}
+		\toprule
+		\textbf{Model} & \textbf{Acc} & \textbf{UAR} & \textbf{F1} \\
+		\midrule
+		MultiConAD - Sparse (original) & 0.65 & - & - \\
+		MultiConAD - Dense (original) & 0.65 & - & - \\
+		\midrule
+		MultiConAD - Sparse (ours) & 0.7 & 0.66 & 0.68 \\
+		MultiConAD - Dense (ours) & 0.67 & 0.63 & 0.65 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Baseline model evaluation metrics.}
+	\label{tab:baselines}
+\end{table}
+\todo{
+	I'm not sure why the accuracy gap between ours and the original
+	MultiConAD implementation is so significant.
+}
+\todo{
+	I could try to
+	reproduce more papers on MultiConAD but since it is very cumbersome to work
+	with, I'd like to move forward with the methodology and perhaps return to
+	that later.
+}
+
+\subsection{Conversational Modeling}
+\par This study focuses on modeling the conversational structure of
+DementiaBank data, to assist the model in differentiating the interviewer from
+the participant, control each person's involvement in the model's
+decision-making and evaluate the participant's question answering skills in a
+more precise way.
+\par Deriving inspiration from the field of Multimodal Emotion Recognition in
+Conversations \cite{wuMultimodalEmotionRecognition2025,
+linParalinguisticsEnhancedLargeLanguage2024, chenGOATSLMSpokenLanguage2025}, we
+distinguish two possible directions for our methodology:
+\begin{itemize}
+	\item \textbf{Prompt-based:} Having a foundational language model as a
+		decision-making backbone, we engineer prompts to incorporate speaker
+		text, speaker information, and/or speech embeddings.
+	\item \textbf{Graph-based:} We model the conversation graph, with nodes
+		representing speaker utterances and edges representing semantic
+		connections.
+\end{itemize}
+\par Keeping the limited dataset size in mind, we need to restrict the number
+of trainable parameters and base the model on pretrained layers. In future
+steps, we will focus on one of these options (at least initially) and flesh out
+an initial design, from where the experimentations will begin.
+
+\section{Future Steps}
+\begin{itemize}
+	\item Perform initial experiments with one of the two mentioned methodologies.
+	\item Reproduce more models on the MultiConAD dataset.
+\end{itemize}
+
+\section{Notes}
+\begin{itemize}
+	\item Although MultiConAD provides 1211 artificially labeled WLS
+		recordings, the total amount of WLS samples provided by DementiaBank
+		amount to approximately 10000 recordings from about 1300 speakers.
+		Moreover, even more data samples may be retrieved by contacting the
+		official WLS study
+		organization\footnote{\href{https://researchers.wls.wisc.edu/}{https://researchers.wls.wisc.edu/}}.
+		This opens the door to potential self-supervised or silver-labeling
+		techniques as a means to mitigate the limited dataset size issue.
+\end{itemize}
+
+
+\section*{Appendix: Literature Review} 
+\subsection{Datasets and Evaluation Challenges} \label{sec:lit-review-datasets}
 \tpar{DementiaBank} Most datasets currently available are provided by the
 DementiaBank database. DementiaBank is a large collection of audio recordings,
 consisting of various cognitive assessment tasks, administered by an
@@ -335,13 +500,16 @@ inference vs. cross-validation). This lack of standardization makes objective
 comparisons and the identification of a true SOTA challenging. Despite these
 limitations, this overview highlights the primary data resources available and
 the current state of performance.
-\par All mentioned dataset, besides the Pitt Corpus and MultiConAD were introduced as evaluation challenges. ADReSS and ADReSSo are subsets of the Pitt Corpus. MultiConAD is an aggregated dataset combining multiple DementiaBank corpora. Although it is multilingual, we focus only on the English subset. Since MultiConAD is a very recent dataset, the only model for comparison is the baseline set by the authors.
+\par All mentioned dataset, besides the Pitt Corpus and MultiConAD were
+introduced as evaluation challenges. ADReSS and ADReSSo are subsets of the Pitt
+Corpus. MultiConAD is an aggregated dataset combining multiple DementiaBank
+corpora. Although it is multilingual, we focus only on the English subset.
+Since MultiConAD is a very recent dataset, the only model for comparison is the
+baseline set by the authors.
 
 \begin{table*}[htbp]
-\caption{State-of-the-Art (SOTA) Models for Alzheimer's Disease Detection from Speech.}
-\label{tab:sota}
 \centering
-\begin{tabular}{@{}p{2.5cm} p{2.2cm} c p{2.8cm} p{2.5cm} p{2.5cm}@{}}
+\begin{tabular}{@{}p{2.5cm} p{2.2cm} cp{2.8cm} p{2.5cm} p{2.5cm}@{}}
 \toprule
 \textbf{Dataset} & \textbf{Train/Test Split} & \textbf{Classes} &
 \textbf{Modalities} & \textbf{Performance} & \textbf{Source} \\
@@ -384,6 +552,8 @@ Audio, Transcripts & \textbf{Bin Acc:} 0.90 \newline \textbf{Ter Acc:} 0.65 &
 \bottomrule
 
 \end{tabular}
+\caption{State-of-the-Art (SOTA) Models for Alzheimer's Disease Detection from Speech.}
+\label{tab:sota}
 \end{table*}
 
 \subsection{Limitations and Opportunities} \subsubsection{Generalizability
@@ -448,36 +618,8 @@ leveraged WLS in this manner are
 \cite{guoCrossingCookieTheft2021}, which manually determine potential labels
 based on task performance criteria.
 
-\section{Dataset}\label{sec:dataset}
-\todo{write summary (see notebook)}
-\begin{figure*}[htbp]
-	\centering
-	\includegraphics[width=0.9\textwidth]{dataset.png}
-	\caption{\todo{write caption.}} \label{fig:dataset}
-\end{figure*}
-
-
-\section{Methodology}\label{sec:methodology}
-\todo{what has happened so far}
-\subsection{Baseline Experiments}
-\todo{todo}
-\subsection{Implementation Characteristics}
-\todo{Include both semantic and paralinguistic modalities, focus on conversational modeling etc}
-\subsection{Conversational Modeling}
-\todo{mention options}
-
-\section{Future Steps}
-\begin{itemize}
-	\item Finish MultiConAD baseline.
-	\item Replicate existing paper on MultiConAD.
-	\item List available conversational modeling options.
-\end{itemize}
-
-\section{Notes}
-\begin{itemize}
-	\item WLS progress
-\end{itemize}
 
 \printbibliography 
 
-\end{multicols} \end{document}
+\end{multicols}
+\end{document}

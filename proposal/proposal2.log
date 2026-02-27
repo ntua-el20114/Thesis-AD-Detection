@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2026.2.19)  27 FEB 2026 15:27
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2026.2.19)  27 FEB 2026 12:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**report.tex
-(./report.tex
+**proposal2.tex
+(./proposal2.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -985,89 +985,89 @@ Package fontspec Info: Font family 'LinuxLibertine(0)' created for font 'Linux
 
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... none found.
- (./report.aux)
-\openout1 = `report.aux'.
+ (./proposal2.aux)
+\openout1 = `proposal2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 78.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 78.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 74.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 74.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 78.
-LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 74.
+LaTeX Font Info:    ... okay on input line 74.
 
 Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
 (fontspec)             this).
 
 \symlegacymaths=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 78.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 78.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 78.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 78.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 78.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 78.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 78.
-LaTeX Font Info:    Redeclaring math accent \check on input line 78.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 78.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 78.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 78.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 78.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 78.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 74.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 74.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 74.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 74.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 74.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 74.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 74.
+LaTeX Font Info:    Redeclaring math accent \check on input line 74.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 74.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 74.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 74.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 74.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 74.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 78.
+(Font)              `operators' in the math version `normal' on input line 74.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/LinuxLibertine(0)/m/n on input line 78.
+(Font)                  OT1/cmr/m/n --> TU/LinuxLibertine(0)/m/n on input line 74.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 78.
+(Font)              `operators' in the math version `bold' on input line 74.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/LinuxLibertine(0)/m/n on input line 78.
+(Font)                  OT1/cmr/bx/n --> TU/LinuxLibertine(0)/m/n on input line 74.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/LinuxLibertine(0)/m/n --> TU/LinuxLibertine(0)/m/n on input line 78.
+(Font)                  TU/LinuxLibertine(0)/m/n --> TU/LinuxLibertine(0)/m/n on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/LinuxLibertine(0)/m/it on input line 78.
+(Font)                  OT1/cmr/m/it --> TU/LinuxLibertine(0)/m/it on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/LinuxLibertine(0)/b/n on input line 78.
+(Font)                  OT1/cmr/bx/n --> TU/LinuxLibertine(0)/b/n on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 78.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 78.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 74.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/LinuxLibertine(0)/m/n --> TU/LinuxLibertine(0)/b/n on input line 78.
+(Font)                  TU/LinuxLibertine(0)/m/n --> TU/LinuxLibertine(0)/b/n on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/LinuxLibertine(0)/b/it on input line 78.
+(Font)                  OT1/cmr/bx/it --> TU/LinuxLibertine(0)/b/it on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 78.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 74.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 78.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 74.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1112,92 +1112,100 @@ Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout3 = `report.bcf'.
+\openout3 = `proposal2.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'report.bbl' found.
- (./report.bbl)
-Package biblatex Info: Reference section=0 on input line 78.
-Package biblatex Info: Reference segment=0 on input line 78.
+Package biblatex Info: ... file 'proposal2.bbl' found.
+ (./proposal2.bbl
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                11249319
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
+Package biblatex Info: Reference section=0 on input line 74.
+Package biblatex Info: Reference segment=0 on input line 74.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 78.
- (./report.out) (./report.out)
+Package hyperref Info: Link coloring ON on input line 74.
+ (./proposal2.out) (./proposal2.out)
 \@outlinefile=\write5
-\openout5 = `report.out'.
+\openout5 = `proposal2.out'.
 
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 84.
 File: cookie-theft-picture.png Graphic file (type bmp)
 <cookie-theft-picture.png>
  [1
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 195--201
-[]\TU/LinuxLibertine(0)/b/n/10 Large-Scale Recordings: \TU/LinuxLibertine(0)/m/n/10 The DementiaBank
- []
-
-File: dataset.png Graphic file (type bmp)
-<dataset.png>
-
-Underfull \hbox (badness 5147) in paragraph at lines 228--235
-\TU/LinuxLibertine(0)/m/n/10 ML classifiers. For text representations, the au-
- []
-
-[2] [3] [4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 514--514
+] [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 346--346
 []|\TU/LinuxLibertine(0)/b/n/10 Train/Test
  []
 
 
-Underfull \hbox (badness 5374) in paragraph at lines 518--518
+Underfull \hbox (badness 5374) in paragraph at lines 350--350
 []|\TU/LinuxLibertine(0)/m/n/10 552 total (10-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 549--549
+LaTeX Warning: Citation '11249319' on page 4 undefined on input line 373.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 381--381
 []|\TU/LinuxLibertine(0)/b/n/10 MultiConAD
  []
 
-
-Underfull \hbox (badness 5939) in paragraph at lines 623--623
+[4] [5]
+Underfull \hbox (badness 5939) in paragraph at lines 520--520
 []\TU/LinuxLibertine(0)/m/n/10 “  2018 Alzheimer’s disease facts and figures,”
  []
 
-[6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 623--623
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 520--520
 \TU/LinuxLibertine(0)/m/n/10 “  Reasoning-Based Approach with Chain-of-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 623--623
+Underfull \hbox (badness 10000) in paragraph at lines 520--520
 []\TU/LinuxLibertine(0)/m/n/10 A. Hlédiková, D. Woszczyk, A. Akman, S.
  []
 
-[8]
-Underfull \hbox (badness 7326) in paragraph at lines 623--623
+
+Underfull \hbox (badness 7326) in paragraph at lines 520--520
 \TU/LinuxLibertine(0)/m/n/10 “  NeuroXVocal: Detection and Explanation of
  []
 
 
-Underfull \hbox (badness 5756) in paragraph at lines 623--623
+Underfull \hbox (badness 5756) in paragraph at lines 520--520
 \TU/LinuxLibertine(0)/m/n/10 Lingual Alzheimer’s Disease Detection Based
  []
 
-[9] (./report.aux)
-Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 0A9F56C4427265048BB463E615154E48;3352.
-Package logreq Info: Writing requests to 'report.run.xml'.
-\openout1 = `report.run.xml'.
+[7]
+Underfull \hbox (badness 5711) in paragraph at lines 520--520
+\TU/LinuxLibertine(0)/m/n/10 Velazquez, and O. Scharenborg, “  Pathological
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 520--520
+[]\TU/LinuxLibertine(0)/m/n/10 A. Chatziagapi, G. Paraskevopoulos, D.
+ []
+
+[8] (./proposal2.aux)
+Package rerunfilecheck Info: File `proposal2.out' has not changed.
+(rerunfilecheck)             Checksum: 5B9BFF9493370346635E2B9C5BD0134D;3604.
+Package logreq Info: Writing requests to 'proposal2.run.xml'.
+\openout1 = `proposal2.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 34517 strings out of 476696
- 714210 string characters out of 5806955
+ 34406 strings out of 476696
+ 712252 string characters out of 5806955
  1875018 words of memory out of 6000000
- 54226 multiletter control sequences out of 15000+600000
- 517484 words of font info for 76 fonts, out of 8000000 for 9000
+ 54130 multiletter control sequences out of 15000+600000
+ 513936 words of font info for 61 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 99i,10n,94p,2845b,5148s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,11n,94p,2848b,5143s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.xdv (9 pages, 393896 bytes).
+Output written on proposal2.xdv (8 pages, 367476 bytes).

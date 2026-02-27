@@ -1508,6 +1508,323 @@
       \verb 10.1044/2022_AJSLP-22-00281
       \endverb
     \endentry
+    \entry{shakeriMultiConADUnifiedMultilingual2025}{misc}{}{}
+      \name{author}{3}{}{%
+        {{hash=0e756bc49616642232f3597e08222f83}{%
+           family={Shakeri},
+           familyi={S\bibinitperiod},
+           given={Arezo},
+           giveni={A\bibinitperiod}}}%
+        {{hash=0fba1b6589ff20fc79a330b500808ac7}{%
+           family={Farmanbar},
+           familyi={F\bibinitperiod},
+           given={Mina},
+           giveni={M\bibinitperiod}}}%
+        {{hash=bb706bacb251c39d000c0da6d6bd67f7}{%
+           family={Balog},
+           familyi={B\bibinitperiod},
+           given={Krisztian},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{fullhash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{fullhashraw}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{bibnamehash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{authorbibnamehash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{authornamehash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{authorfullhash}{a0ec41b03448d200801b141e7845e3ce}
+      \strng{authorfullhashraw}{a0ec41b03448d200801b141e7845e3ce}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Dementia is a progressive cognitive syndrome with Alzheimer's disease (AD) as the leading cause. Conversation-based AD detection offers a cost-effective alternative to clinical methods, as language dysfunction is an early biomarker of AD. However, most prior research has framed AD detection as a binary classification problem, limiting the ability to identify Mild Cognitive Impairment (MCI)---a crucial stage for early intervention. Also, studies primarily rely on single-language datasets, mainly in English, restricting crosslanguage generalizability. To address this gap, we make three key contributions. First, we introduce a novel, multilingual dataset for AD detection by unifying 16 publicly available dementia-related conversational datasets. This corpus spans English, Spanish, Chinese, and Greek, and incorporates both audio and text data derived from a variety of cognitive assessment tasks. Second, we perform finer-grained classification, including MCI, and evaluate various classifiers using sparse and dense text representations. Third, we conduct experiments in monolingual and multilingual settings, finding that some languages benefit from multilingual training while others perform better independently. This study highlights the challenges in multilingual AD detection and enables future research on both language-specific approaches and techniques aimed at improving model generalization and robustness.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arXiv}
+      \field{langid}{english}
+      \field{month}{2}
+      \field{number}{arXiv:2502.19208}
+      \field{shorttitle}{{{MultiConAD}}}
+      \field{title}{{{MultiConAD}}: {{A Unified Multilingual Conversational Dataset}} for {{Early Alzheimer}}'s {{Detection}}}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.48550/arXiv.2502.19208
+      \endverb
+      \verb{eprint}
+      \verb 2502.19208
+      \endverb
+      \keyw{Computer Science - Computation and Language}
+    \endentry
+    \entry{wuMultimodalEmotionRecognition2025}{misc}{}{}
+      \name{author}{8}{}{%
+        {{hash=44a8d2fd6190b4f4fded77f3af6f75aa}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Chengyan},
+           giveni={C\bibinitperiod}}}%
+        {{hash=efe48e046fe98368221b16643a791e64}{%
+           family={Cai},
+           familyi={C\bibinitperiod},
+           given={Yiqiang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=621013bf54d3546375ad71f17f020b5b}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Yang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=4aa42a670b4139b42755f67568bdc939}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Pengxu},
+           giveni={P\bibinitperiod}}}%
+        {{hash=27baf5aaec4774ee11b4dd830e8a6ac4}{%
+           family={Xue},
+           familyi={X\bibinitperiod},
+           given={Yun},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=7a548bf4458dbf0f957efa52caeee188}{%
+           family={Gong},
+           familyi={G\bibinitperiod},
+           given={Ziwei},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=f5cb368011303fe22ab5c7141448c62d}{%
+           family={Hirschberg},
+           familyi={H\bibinitperiod},
+           given={Julia},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7ce0a6e1029d761ca6bd5e5a3114d203}{%
+           family={Ma},
+           familyi={M\bibinitperiod},
+           given={Bolei},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{2edcb2ff5ee0b38ffcbb9e1006436ed4}
+      \strng{fullhash}{86661f880da575dda5c86027b0429c88}
+      \strng{fullhashraw}{86661f880da575dda5c86027b0429c88}
+      \strng{bibnamehash}{2edcb2ff5ee0b38ffcbb9e1006436ed4}
+      \strng{authorbibnamehash}{2edcb2ff5ee0b38ffcbb9e1006436ed4}
+      \strng{authornamehash}{2edcb2ff5ee0b38ffcbb9e1006436ed4}
+      \strng{authorfullhash}{86661f880da575dda5c86027b0429c88}
+      \strng{authorfullhashraw}{86661f880da575dda5c86027b0429c88}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{While text-based emotion recognition methods have achieved notable success, real-world dialogue systems often demand a more nuanced emotional understanding than any single modality can offer. Multimodal Emotion Recognition in Conversations (MERC) has thus emerged as a crucial direction for enhancing the naturalness and emotional understanding of humancomputer interaction. Its goal is to accurately recognize emotions by integrating information from various modalities such as text, speech, and visual signals. This survey offers a systematic overview of MERC, including its motivations, core tasks, representative methods, and evaluation strategies. We further examine recent trends, highlight key challenges, and outline future directions. As interest in emotionally intelligent systems grows, this survey provides timely guidance for advancing MERC research.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arXiv}
+      \field{langid}{english}
+      \field{month}{9}
+      \field{number}{arXiv:2505.20511}
+      \field{shorttitle}{Multimodal {{Emotion Recognition}} in {{Conversations}}}
+      \field{title}{Multimodal {{Emotion Recognition}} in {{Conversations}}: {{A Survey}} of {{Methods}}, {{Trends}}, {{Challenges}} and {{Prospects}}}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.48550/arXiv.2505.20511
+      \endverb
+      \verb{eprint}
+      \verb 2505.20511
+      \endverb
+      \keyw{Computer Science - Computation and Language,Review}
+    \endentry
+    \entry{linParalinguisticsEnhancedLargeLanguage2024}{misc}{}{}
+      \name{author}{9}{}{%
+        {{hash=768de535492e78532fc4bb7eb9506b63}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Guan-Ting},
+           giveni={G\bibinithyphendelim T\bibinitperiod}}}%
+        {{hash=1e1c6761c9f1551e294934be99cb799c}{%
+           family={Shivakumar},
+           familyi={S\bibinitperiod},
+           given={Prashanth\bibnamedelima Gurunath},
+           giveni={P\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=f751ec8711ffd3d3b5784ef1c1ea4d5c}{%
+           family={Gandhe},
+           familyi={G\bibinitperiod},
+           given={Ankur},
+           giveni={A\bibinitperiod}}}%
+        {{hash=649892bc3e7c9c570cbb91cb84df3c86}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Chao-Han\bibnamedelima Huck},
+           giveni={C\bibinithyphendelim H\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+        {{hash=886d5cf3b55ee1903d491ac4c449ac5c}{%
+           family={Gu},
+           familyi={G\bibinitperiod},
+           given={Yile},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=722285d1d997613e07742bc3fd291b9d}{%
+           family={Ghosh},
+           familyi={G\bibinitperiod},
+           given={Shalini},
+           giveni={S\bibinitperiod}}}%
+        {{hash=8b60cd3ee633c8d1d585f08b92fefbf4}{%
+           family={Stolcke},
+           familyi={S\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+        {{hash=fb8577a9fc9ffad889841bc0bbb600f0}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Hung-yi},
+           giveni={H\bibinithyphendelim y\bibinitperiod}}}%
+        {{hash=fd881e62cf45a2f07000746a0e975c0e}{%
+           family={Bulyko},
+           familyi={B\bibinitperiod},
+           given={Ivan},
+           giveni={I\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{9f3bd2167a756dcb24e233d2771871ad}
+      \strng{fullhash}{57ff4ad1006004dfb9b29d4541503c44}
+      \strng{fullhashraw}{57ff4ad1006004dfb9b29d4541503c44}
+      \strng{bibnamehash}{9f3bd2167a756dcb24e233d2771871ad}
+      \strng{authorbibnamehash}{9f3bd2167a756dcb24e233d2771871ad}
+      \strng{authornamehash}{9f3bd2167a756dcb24e233d2771871ad}
+      \strng{authorfullhash}{57ff4ad1006004dfb9b29d4541503c44}
+      \strng{authorfullhashraw}{57ff4ad1006004dfb9b29d4541503c44}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Large Language Models (LLMs) have demonstrated superior abilities in tasks such as chatting, reasoning, and question-answering. However, standard LLMs may ignore crucial paralinguistic information, such as sentiment, emotion, and speaking style, which are essential for achieving natural, human-like spoken conversation, especially when such information is conveyed by acoustic cues. We therefore propose Paralinguistics-enhanced Generative Pretrained Transformer (ParalinGPT), an LLM that utilizes text and speech modalities to better model the linguistic content and paralinguistic attributes of spoken dialogue. The model takes the conversational context of text, speech embeddings, and paralinguistic attributes as input prompts within a serialized multitasking multimodal framework. Specifically, our framework serializes tasks in the order of current paralinguistic attribute prediction, response paralinguistic attribute prediction, and response text generation with autoregressive conditioning. We utilize the Switchboard-1 corpus, including its sentiment labels as the paralinguistic attribute, as our spoken dialogue dataset. Experimental results indicate the proposed serialized multitasking method outperforms typical sequence classification techniques on current and response sentiment classification. Furthermore, leveraging conversational context and speech embeddings significantly improves both response text generation and sentiment prediction. Our proposed framework achieves relative improvements of 6.7\%, 12.0\%, and 3.5\% in current sentiment accuracy, response sentiment accuracy, and response text BLEU score, respectively.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arXiv}
+      \field{month}{1}
+      \field{number}{arXiv:2312.15316}
+      \field{title}{Paralinguistics-{{Enhanced Large Language Modeling}} of {{Spoken Dialogue}}}
+      \field{year}{2024}
+      \verb{doi}
+      \verb 10.48550/arXiv.2312.15316
+      \endverb
+      \verb{eprint}
+      \verb 2312.15316
+      \endverb
+      \keyw{Computer Science - Computation and Language,Electrical Engineering and Systems Science - Audio and Speech Processing}
+    \endentry
+    \entry{chenGOATSLMSpokenLanguage2025}{misc}{}{}
+      \name{author}{16}{}{%
+        {{hash=c357bacfbf8f4e29c2daa8db907dcd58}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Hongjie},
+           giveni={H\bibinitperiod}}}%
+        {{hash=7246d27c9fd9a874245ede3cb8cfc00d}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Zehan},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=9ad91c94e4bbce17019b918da6037ec9}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Yaodong},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=efe5bb6550ce8ccc46ee378a479e3593}{%
+           family={Deng},
+           familyi={D\bibinitperiod},
+           given={Wenming},
+           giveni={W\bibinitperiod}}}%
+        {{hash=1885a4ee8887b2b9034d9d56095f1798}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={Yitong},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=56a5598e06082938c7a8af33a5c8614f}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Yuxin},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=e849fe675bcbad1fef713afc9649531c}{%
+           family={Lv},
+           familyi={L\bibinitperiod},
+           given={Hang},
+           giveni={H\bibinitperiod}}}%
+        {{hash=3f051a0dd3cbe4f99cddf8c7d5d602c5}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Xuechao},
+           giveni={X\bibinitperiod}}}%
+        {{hash=ae51735c9c31621f49c0b252c58ecd51}{%
+           family={Kang},
+           familyi={K\bibinitperiod},
+           given={Jian},
+           giveni={J\bibinitperiod}}}%
+        {{hash=a0350983e01ebd986ada9aa2ed962076}{%
+           family={Lian},
+           familyi={L\bibinitperiod},
+           given={Jie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=5f61775c2fbdd179d018bb797bd0ce1d}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Jie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=3ad93e4c675a68a22a9c2c52b38e2751}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Chao},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1c3a5b237bff8368af4eacfd3daf7543}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Shuangyong},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f774e8f87b804bd36ac50eb0183b509c}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Yongxiang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=fe5844eeb4caa8187cabeef6eed329cc}{%
+           family={He},
+           familyi={H\bibinitperiod},
+           given={Zhongjiang},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=750adebf12ff1b4140470407f82e2b40}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Xuelong},
+           giveni={X\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{6f480e78b6dc0081d6de8d6300009060}
+      \strng{fullhash}{7b4b626c54f360a1540005a650202e00}
+      \strng{fullhashraw}{7b4b626c54f360a1540005a650202e00}
+      \strng{bibnamehash}{6f480e78b6dc0081d6de8d6300009060}
+      \strng{authorbibnamehash}{6f480e78b6dc0081d6de8d6300009060}
+      \strng{authornamehash}{6f480e78b6dc0081d6de8d6300009060}
+      \strng{authorfullhash}{7b4b626c54f360a1540005a650202e00}
+      \strng{authorfullhashraw}{7b4b626c54f360a1540005a650202e00}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Recent advances in end-to-end spoken language models (SLMs) have significantly improved the ability of AI systems to engage in natural spoken interactions. However, most existing models treat speech merely as a vehicle for linguistic content, often overlooking the rich paralinguistic and speaker characteristic cues embedded in human speech, such as dialect, age, emotion, and non-speech vocalizations. In this work, we introduce GOAT-SLM, a novel spoken language model with paralinguistic and speaker characteristic awareness, designed to extend spoken language modeling beyond text semantics. GOAT-SLM adopts a dual-modality head architecture that decouples linguistic modeling from acoustic realization, enabling robust language understanding while supporting expressive and adaptive speech generation. To enhance model efficiency and versatility, we propose a modular, staged training strategy that progressively aligns linguistic, paralinguistic, and speaker characteristic information using large-scale speech-text corpora. Experimental results on TELEVAL, a multi-dimensional evaluation benchmark, demonstrate that GOAT-SLM achieves well-balanced performance across both semantic and non-semantic tasks, and outperforms existing open-source models in handling emotion, dialectal variation, and age-sensitive interactions. This work highlights the importance of modeling beyond linguistic content and advances the development of more natural, adaptive, and socially aware spoken language systems.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arXiv}
+      \field{month}{7}
+      \field{number}{arXiv:2507.18119}
+      \field{shorttitle}{{{GOAT-SLM}}}
+      \field{title}{{{GOAT-SLM}}: {{A Spoken Language Model}} with {{Paralinguistic}} and {{Speaker Characteristic Awareness}}}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.48550/arXiv.2507.18119
+      \endverb
+      \verb{eprint}
+      \verb 2507.18119
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Computation and Language,Computer Science - Sound,Electrical Engineering and Systems Science - Audio and Speech Processing}
+    \endentry
     \entry{luzAlzheimersDementiaRecognition2020}{misc}{}{}
       \name{author}{5}{}{%
         {{hash=422ed3a0a79e276789d897fd25102274}{%
@@ -1549,8 +1866,8 @@
       \strng{authornamehash}{883713e327cf2132443786cb1df3fc3e}
       \strng{authorfullhash}{3a21d0930d125b94f3c07ebbfe6a4d6c}
       \strng{authorfullhashraw}{3a21d0930d125b94f3c07ebbfe6a4d6c}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{The ADReSS Challenge at INTERSPEECH 2020 defines a shared task through which different approaches to the automated recognition of Alzheimer's dementia based on spontaneous speech can be compared. ADReSS provides researchers with a benchmark speech dataset which has been acoustically pre-processed and balanced in terms of age and gender, defining two cognitive assessment tasks, namely: the Alzheimer's speech classification task and the neuropsychological score regression task. In the Alzheimer's speech classification task, ADReSS challenge participants create models for classifying speech as dementia or healthy control speech. In the the neuropsychological score regression task, participants create models to predict mini-mental state examination scores. This paper describes the ADReSS Challenge in detail and presents a baseline for both tasks, including feature extraction procedures and results for classification and regression models. ADReSS aims to provide the speech and language Alzheimer's research community with a platform for comprehensive methodological comparisons. This will hopefully contribute to addressing the lack of standardisation that currently affects the field and shed light on avenues for future research and clinical applicability.}
@@ -1590,8 +1907,8 @@
       \strng{authornamehash}{01ab4ce944f56bdd56fc5a38ae0d4588}
       \strng{authorfullhash}{01ab4ce944f56bdd56fc5a38ae0d4588}
       \strng{authorfullhashraw}{01ab4ce944f56bdd56fc5a38ae0d4588}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Building on the success of the ADReSS Challenge at Interspeech 2020, which attracted the participation of 34 teams from across the world, the ADReSSo Challenge targets three difficult automatic prediction problems of societal and medical relevance, namely: detection of Alzheimer's Dementia, inference of cognitive testing scores, and prediction of cognitive decline. This paper presents these prediction tasks in detail, describes the datasets used, and reports the results of the baseline classification and regression models we developed for each task. A combination of acoustic and linguistic features extracted directly from audio recordings, without human intervention, yielded a baseline accuracy of 78.87\% for the AD classification task, a root mean squared (RMSE) error of 5.28 for prediction of cognitive scores , and 68.75\% accuracy for the cognitive decline prediction task.}
@@ -1639,8 +1956,8 @@
       \strng{authornamehash}{ab49fa309eabaf1c28e96c46b8c55975}
       \strng{authorfullhash}{c7324a40ddcf04f6a96eedc1810e5287}
       \strng{authorfullhashraw}{c7324a40ddcf04f6a96eedc1810e5287}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The ADReSS-M Signal Processing Grand Challenge was held at the 2023 IEEE International Conference on Acoustics, Speech and Signal Processing, ICASSP 2023. The challenge targeted difficult automatic prediction problems of great societal and medical relevance, namely, the detection of Alzheimer's Dementia (AD) and the estimation of cognitive test scoress. Participants were invited to create models for the assessment of cognitive function based on spontaneous speech data. Most of these models employed signal processing and machine learning methods. The ADReSS-M challenge was designed to assess the extent to which predictive models built based on speech in one language generalise to another language. The language data compiled and made available for ADReSS-M comprised English, for model training, and Greek, for model testing and validation. To the best of our knowledge no previous shared research task investigated acoustic features of the speech signal or linguistic characteristics in the context of multilingual AD detection. This paper describes the context of the ADReSS-M challenge, its data sets, its predictive tasks, the evaluation methodology we employed, our baseline models and results, and the top five submissions. The paper concludes with a summary discussion of the ADReSS-M results, and our critical assessment of the future outlook in this field.}
@@ -1654,56 +1971,6 @@
       \verb{doi}
       \verb 10.1109/OJSP.2024.3378595
       \endverb
-    \endentry
-    \entry{shakeriMultiConADUnifiedMultilingual2025}{misc}{}{}
-      \name{author}{3}{}{%
-        {{hash=0e756bc49616642232f3597e08222f83}{%
-           family={Shakeri},
-           familyi={S\bibinitperiod},
-           given={Arezo},
-           giveni={A\bibinitperiod}}}%
-        {{hash=0fba1b6589ff20fc79a330b500808ac7}{%
-           family={Farmanbar},
-           familyi={F\bibinitperiod},
-           given={Mina},
-           giveni={M\bibinitperiod}}}%
-        {{hash=bb706bacb251c39d000c0da6d6bd67f7}{%
-           family={Balog},
-           familyi={B\bibinitperiod},
-           given={Krisztian},
-           giveni={K\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {arXiv}%
-      }
-      \strng{namehash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{fullhash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{fullhashraw}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{bibnamehash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{authorbibnamehash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{authornamehash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{authorfullhash}{a0ec41b03448d200801b141e7845e3ce}
-      \strng{authorfullhashraw}{a0ec41b03448d200801b141e7845e3ce}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{shorttitle}
-      \field{abstract}{Dementia is a progressive cognitive syndrome with Alzheimer's disease (AD) as the leading cause. Conversation-based AD detection offers a cost-effective alternative to clinical methods, as language dysfunction is an early biomarker of AD. However, most prior research has framed AD detection as a binary classification problem, limiting the ability to identify Mild Cognitive Impairment (MCI)---a crucial stage for early intervention. Also, studies primarily rely on single-language datasets, mainly in English, restricting crosslanguage generalizability. To address this gap, we make three key contributions. First, we introduce a novel, multilingual dataset for AD detection by unifying 16 publicly available dementia-related conversational datasets. This corpus spans English, Spanish, Chinese, and Greek, and incorporates both audio and text data derived from a variety of cognitive assessment tasks. Second, we perform finer-grained classification, including MCI, and evaluate various classifiers using sparse and dense text representations. Third, we conduct experiments in monolingual and multilingual settings, finding that some languages benefit from multilingual training while others perform better independently. This study highlights the challenges in multilingual AD detection and enables future research on both language-specific approaches and techniques aimed at improving model generalization and robustness.}
-      \field{eprintclass}{cs}
-      \field{eprinttype}{arXiv}
-      \field{langid}{english}
-      \field{month}{2}
-      \field{number}{arXiv:2502.19208}
-      \field{shorttitle}{{{MultiConAD}}}
-      \field{title}{{{MultiConAD}}: {{A Unified Multilingual Conversational Dataset}} for {{Early Alzheimer}}'s {{Detection}}}
-      \field{year}{2025}
-      \verb{doi}
-      \verb 10.48550/arXiv.2502.19208
-      \endverb
-      \verb{eprint}
-      \verb 2502.19208
-      \endverb
-      \keyw{Computer Science - Computation and Language}
     \endentry
     \entry{taoEarlyDementiaDetection2024}{misc}{}{}
       \name{author}{15}{}{%
@@ -1794,8 +2061,8 @@
       \strng{authornamehash}{0d46038ef37fabbc2ff782b3b5789b9e}
       \strng{authorfullhash}{4af29b39cb9227e0615b00b05c922d6c}
       \strng{authorfullhashraw}{4af29b39cb9227e0615b00b05c922d6c}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Dementia is associated with various cognitive impairments and typically manifests only after significant progression, making intervention at this stage often ineffective. To address this issue, the Prediction and Recognition of Cognitive Decline through Spontaneous Speech (PROCESS) Signal Processing Grand Challenge invites participants to focus on early-stage dementia detection. We provide a new spontaneous speech corpus for this challenge. This corpus includes answers from three prompts designed by neurologists to better capture the cognition of speakers. Our baseline models achieved an F1-score of 55.0\% on the classification task and an RMSE of 2.98 on the regression task.}
@@ -2219,8 +2486,8 @@
       \strng{authornamehash}{e6bdba65d1b09dd9e19254b3d5333c04}
       \strng{authorfullhash}{e6bdba65d1b09dd9e19254b3d5333c04}
       \strng{authorfullhashraw}{e6bdba65d1b09dd9e19254b3d5333c04}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Alzheimer's disease (AD) is a progressive neurological disorder, meaning that the symptoms develop gradually throughout the years. It is also the main cause of dementia, which affects memory, thinking skills, and mental abilities. Nowadays, researchers have moved their interest towards AD detection from spontaneous speech, since it constitutes a time-effective procedure. However, existing state-of-the-art works proposing multimodal approaches do not take into consideration the inter- and intramodal interactions and propose early and late fusion approaches. To tackle these limitations, we propose deep neural networks, which can be trained in an end-to-end trainable way and capture the inter- and intra-modal interactions. Firstly, each audio file is converted to an image consisting of three channels, i.e., logMel spectrogram, delta, and delta-delta. Next, each transcript is passed through a BERT model followed by a gated selfattention layer. Similarly, each image is passed through a Swin Transformer followed by an independent gated self-attention layer. Acoustic features are extracted also from each audio file. Finally, the representation vectors from the different modalities are fed to a tensor fusion layer for capturing the inter-modal interactions. Extensive experiments conducted on the ADReSS Challenge dataset indicate that our introduced approaches obtain valuable advantages over existing research initiatives reaching Accuracy and F1-score up to 86.25\% and 85.48\% respectively.}
@@ -2265,8 +2532,8 @@
       \strng{authornamehash}{e6b278f65d3e21cc2d5aee535d9d74ea}
       \strng{authorfullhash}{e6b278f65d3e21cc2d5aee535d9d74ea}
       \strng{authorfullhashraw}{e6b278f65d3e21cc2d5aee535d9d74ea}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Alzheimer's dementia (AD) entails negative psychological, social, and economic consequences not only for the patients but also for their families, relatives, and society in general. Despite the significance of this phenomenon and the importance for an early diagnosis, there are still limitations. Specifically, the main limitation is pertinent to the way the modalities of speech and transcripts are combined in a single neural network. Existing research works add/concatenate the image and text representations, employ majority voting approaches or average the predictions after training many textual and speech models separately. To address these limitations, in this paper we present some new methods to detect AD patients and predict the Mini-Mental State Examination (MMSE) scores in an end-to-end trainable manner consisting of a combination of BERT, Vision Transformer, Co-Attention, Multimodal Shifting Gate, and a variant of the self-attention mechanism. Specifically, we convert audio to Log-Mel spectrograms, their delta, and delta-delta (acceleration values). First, we pass each transcript and image through a BERT model and Vision Transformer respectively adding a co-attention layer at the top, which generates image and word attention simultaneously. Secondly, we propose an architecture, which integrates multimodal information to a BERT model via a Multimodal Shifting Gate. Finally, we introduce an approach to capture both the inter- and intra-modal interactions by concatenating the textual and visual representations and utilizing a self-attention mechanism, which includes a gate model. Experiments conducted on the ADReSS Challenge dataset indicate that our introduced models demonstrate valuable advantages over existing research initiatives achieving competitive results in both the AD classification and MMSE regression task. Specifically, our best performing model attains an accuracy of 90.00\% and a Root Mean Squared Error (RMSE) of 3.61 in the AD classification task and MMSE regression task respectively, achieving a new state-of-the-art performance in the MMSE regression task.}
@@ -2316,8 +2583,8 @@
       \strng{authornamehash}{fc31da87808300d743b8376aa8708b33}
       \strng{authorfullhash}{11797234e6ea0acaf0bf90d57f1160fa}
       \strng{authorfullhashraw}{11797234e6ea0acaf0bf90d57f1160fa}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Speech is usually used for constructing an automatic Alzheimer's dementia (AD) detection system, as the acoustic and linguistic abilities show a decline in people living with AD at the early stages. However, speech includes not only AD-related local and global information but also other information unrelated to cognitive status, such as age and gender. In this paper, we propose a speech-based system named Swin-BERT for automatic dementia detection. For the acoustic part, the shifted windows multi-head attention that proposed to extract local and global information from images, is used for designing our acoustic-based system. To decouple the effect of age and gender on acoustic feature extraction, they are used as an extra input of the designed acoustic system. For the linguistic part, the rhythm-related information, which varies significantly between people living with and without AD, is removed while transcribing the audio recordings into transcripts. To compensate for the removed rhythm-related information, the character-level transcripts are proposed to be used as the extra input of a word-level BERT-style system. Finally, the Swin-BERT combines the acoustic features learned from our proposed acoustic-based system with our linguistic-based system. The experiments are based on the two datasets provided by the international dementia detection challenges: the ADReSS and ADReSSo. The results show that both the proposed acoustic and linguistic systems can be better or comparable with previous research on the two datasets. Superior results are achieved by the proposed Swin-BERT system on the ADReSS and ADReSSo datasets, which are 85.58\textbackslash\% F-score and 87.32\textbackslash\% F-score respectively.}
@@ -2370,8 +2637,8 @@
       \strng{authornamehash}{8c8a7f16923ebd0e4a1015f8f45c9698}
       \strng{authorfullhash}{e82e3da9222b2a0cefe15060cfda1267}
       \strng{authorfullhashraw}{e82e3da9222b2a0cefe15060cfda1267}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Mild Cognitive Impairment (MCI) is a medical condition characterized by noticeable declines in memory and cognitive abilities, potentially affecting individual's daily activities. In this paper, we introduce CogniVoice, a novel multilingual and multimodal framework to detect MCI and estimate Mini-Mental State Examination (MMSE) scores by analyzing speech data and its textual transcriptions. The key component of CogniVoice is an ensemble multimodal and multilingual network based on ``Product of Experts'' that mitigates reliance on shortcut solutions. Using a comprehensive dataset containing both English and Chinese languages from TAUKADIAL challenge, CogniVoice outperforms the best performing baseline model on MCI classification and MMSE regression tasks by 2.8 and 4.1 points in F1 and RMSE respectively, and can effectively reduce the performance gap across different language groups by 0.7 points in F11.}
@@ -2415,8 +2682,8 @@
       \strng{authornamehash}{6014ccce29d8406d10e14375d7a270fe}
       \strng{authorfullhash}{6014ccce29d8406d10e14375d7a270fe}
       \strng{authorfullhashraw}{6014ccce29d8406d10e14375d7a270fe}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Dementia is a progressive neurological disorder that affects the daily lives of older adults, impacting their verbal communication and cognitive function. Early diagnosis is important to enhance the lifespan and quality of life for affected individuals. Despite its importance, diagnosing dementia is a complex process. Automated machine learning solutions involving multiple types of data have the potential to improve the process of automated dementia screening. In this study, we build deep learning models to classify dementia cases from controls using the Pitt Cookie Theft dataset from DementiaBank, a database of short~participant responses to~the structured task of describing a picture of a cookie theft. We fine-tune Wav2vec and Word2vec baseline models to make binary~predictions of dementia~from audio recordings and text transcripts, respectively. We conduct experiments with four versions of the dataset: (1) the original data, (2) the data with short sentences removed, (3) text-based augmentation of the original data, and (4) text-based augmentation of the data with short sentences removed. Our results indicate that synonym-based text data augmentation generally enhances the performance of models that incorporate the text modality. Without data augmentation, models using the text modality achieve around 60\% accuracy and 70\% AUROC scores, and with data augmentation, the models achieve around 80\% accuracy and 90\% AUROC scores. We do not observe significant improvements in performance with the addition of audio or timestamp information into the model. We include a qualitative error analysis of the sentences that are misclassified under each study condition. This study provides preliminary insights into the effects of both text-based data augmentation and multimodal deep learning for automated dementia classification.}
@@ -2469,8 +2736,8 @@
       \strng{authornamehash}{315be2cc1375a17ffae61cf6e75c5b7c}
       \strng{authorfullhash}{d1eebd5babcd5a4186eb044a7a117654}
       \strng{authorfullhashraw}{d1eebd5babcd5a4186eb044a7a117654}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Alzheimer's disease (AD) is a progressive neurodegenerative disorder that significantly affects cognitive function. One widely used diagnostic approach involves analyzing patients' verbal descriptions of pictures. While prior studies have primarily focused on speech- and text-based models, the integration of visual context is still at an early stage. This study proposes a novel multimodal AD prediction model that integrates image, text, and audio modalities. The image and text modalities are processed using a vision-language model and structured as a bipartite graph before fusion, while all three modalities are integrated through a combination of co-attention-based intermediate fusion and late fusion, enabling effective inter-modality cooperation. The proposed model achieves an accuracy of 90.61\%, outperforming state-of-the-art models. Furthermore, an ablation study quantifies the contribution of each modality using Shapley values, which serve as the foundation for a novel auxiliary loss function that adaptively adjusts modality importance during training. The findings indicate that integrating image, text, and audio modalities via a co-attention-based intermediate fusion enhances AD classification performance. Additionally, this study analyzes modality-specific attention patterns and key linguistic tokens, demonstrating that audio and text provide complementary cues for AD classification.}
@@ -2518,8 +2785,8 @@
       \strng{authornamehash}{fedf25047ed6714542fc55e6e665c09c}
       \strng{authorfullhash}{fedf25047ed6714542fc55e6e665c09c}
       \strng{authorfullhashraw}{fedf25047ed6714542fc55e6e665c09c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Speech pauses serve as a valuable and non-invasive biomarker for the early detection of dementia. Our study aims to examine abnormal pauses, specifically their durations, for improving the detection performance. Inspired by the proven performance of the Transformer-based models in dementia detection, we opted for integrating the abnormal pauses into these models. Specifically, we enriched the inputs for the Transformer-based models by fusing between-segment pause context into the automated transcriptions. We performed the experiments on our Cantonese elderly corpus called CU-Marvel. To improve the detection performance, we optimized the pause durations when infusing the pause context into the transcriptions. Our findings suggest that the between-segment pauses could also serve as promising biomarkers. We emphasize the importance of optimizing pause patterns across different languages or datasets. Our findings indicate that various classification tasks prefer distinct patterns of pause infusing.}
@@ -2566,8 +2833,8 @@
       \strng{authornamehash}{99c2812dabef1a8415bf0df6c7602eac}
       \strng{authorfullhash}{a167a5489abf5a8f01d245b0719fb250}
       \strng{authorfullhashraw}{a167a5489abf5a8f01d245b0719fb250}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Societies worldwide are rapidly entering a super-aged era, making elderly health a pressing concern. The aging population is increasing the burden on national economies and households. Dementia cases are rising significantly with this demographic shift. Recent research using voice-based models and large language models (LLM) offers new possibilities for dementia diagnosis and treatment. Our Chain-of-Thought (CoT) reasoning method combines speech and language models. The process starts with automatic speech recognition to convert speech to text. We add a linear layer to an LLM for Alzheimer's disease (AD) and non-AD classification, using supervised fine-tuning (SFT) with CoT reasoning and cues. This approach showed an 16.7\% relative performance improvement compared to methods without CoT prompt reasoning. To the best of our knowledge, our proposed method achieved state-of-the-art performance in CoT approaches.}
@@ -2601,8 +2868,8 @@
       \strng{authornamehash}{bef85743748b6ef9d28e19ed6d0400ce}
       \strng{authorfullhash}{bef85743748b6ef9d28e19ed6d0400ce}
       \strng{authorfullhashraw}{bef85743748b6ef9d28e19ed6d0400ce}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The development of noninvasive and cost-effective methods of detecting Alzheimer's disease (AD) is essential for its early prevention and mitigation. We optimize the detection of AD using natural language processing (NLP) of spontaneous speech ...}
@@ -3056,8 +3323,8 @@
       \strng{authornamehash}{4cbb7000f073327678fa00a1e8c5ec39}
       \strng{authorfullhash}{aefc6637879c0ea200dd67229731e09a}
       \strng{authorfullhashraw}{aefc6637879c0ea200dd67229731e09a}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Alzheimer's Disease (AD) is a neurodegenerative disorder that significantly impacts a patient's ability to communicate and organize language. Traditional methods for detecting AD, such as physical screening or neurological testing, can be challenging and time-consuming. Recent research has explored the use of deep learning techniques to distinguish AD patients from non-AD patients by analysing the spontaneous speech. These models, however, are limited by the availability of data. To address this, we propose a novel contrastive data augmentation method, which simulates the cognitive impairment of a patient by randomly deleting a proportion of text from the transcript to create negative samples. The corrupted samples are expected to be in worse conditions than the original by a margin. Experimental results on the benchmark ADReSS Challenge dataset demonstrate that our model achieves the best performance among language-based models1.}
@@ -3112,8 +3379,8 @@
       \strng{authornamehash}{c6ac692cc6f28d2553337bbd717ba9ed}
       \strng{authorfullhash}{00980810932b8d62ab0c22728ff28824}
       \strng{authorfullhashraw}{00980810932b8d62ab0c22728ff28824}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Dementia is a growing problem as our society ages, and detection methods are often invasive and expensive. Recent deep-learning techniques can offer a faster diagnosis and have shown promising results. However, they require large amounts of labelled data which is not easily available for the task of dementia detection. One effective solution to sparse data problems is data augmentation, though the exact methods need to be selected carefully. To date, there has been no empirical study of data augmentation on Alzheimer's disease (AD) datasets for NLP and speech processing. In this work, we investigate data augmentation techniques for the task of AD detection and perform an empirical evaluation of the different approaches on two kinds of models for both the text and audio domains. We use a transformer-based model for both domains, and SVM and Random Forest models for the text and audio domains, respectively. We generate additional samples using traditional as well as deep learning based methods and show that data augmentation improves performance for both the text- and audio-based models and that such results are comparable to state-of-the-art results on the popular ADReSS set, with carefully crafted architectures and features.}
@@ -3455,8 +3722,8 @@
       \strng{authornamehash}{86d90dfb18595fc35dd5a7a90807971d}
       \strng{authorfullhash}{08dc0bd4e563acf30bc500feb1d6d640}
       \strng{authorfullhashraw}{08dc0bd4e563acf30bc500feb1d6d640}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{month}{10}

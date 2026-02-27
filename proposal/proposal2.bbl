@@ -3419,56 +3419,6 @@
       \endverb
       \keyw{Acoustics,Alzheimer's dementia detection,Alzheimer's disease,Feature extraction,Linguistics,paralinguistic features,pre-trained features,Signal processing,Task analysis,Training}
     \endentry
-    \entry{11249319}{inproceedings}{}{}
-      \name{author}{5}{}{%
-        {{hash=538e00be099131eb89f9d1633c4c6c64}{%
-           family={Bilal},
-           familyi={B\bibinitperiod},
-           given={Muhammad},
-           giveni={M\bibinitperiod}}}%
-        {{hash=87acd6b42bb19d18b60a0c7f24432e51}{%
-           family={Abdulla},
-           familyi={A\bibinitperiod},
-           given={Waleed},
-           giveni={W\bibinitperiod}}}%
-        {{hash=0ed2885ee44b5d3986df2b11312b233f}{%
-           family={Cheung},
-           familyi={C\bibinitperiod},
-           given={Gary},
-           giveni={G\bibinitperiod}}}%
-        {{hash=e4ef73c7b4cef54af6481abc178d9ee3}{%
-           family={Tippett},
-           familyi={T\bibinitperiod},
-           given={Lynette},
-           giveni={L\bibinitperiod}}}%
-        {{hash=8cef4bd556f98e4d0e1500b341628b11}{%
-           family={Shahamiri},
-           familyi={S\bibinitperiod},
-           given={Seyed\bibnamedelima Reza},
-           giveni={S\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
-      }
-      \strng{namehash}{86d90dfb18595fc35dd5a7a90807971d}
-      \strng{fullhash}{08dc0bd4e563acf30bc500feb1d6d640}
-      \strng{fullhashraw}{08dc0bd4e563acf30bc500feb1d6d640}
-      \strng{bibnamehash}{08dc0bd4e563acf30bc500feb1d6d640}
-      \strng{authorbibnamehash}{08dc0bd4e563acf30bc500feb1d6d640}
-      \strng{authornamehash}{86d90dfb18595fc35dd5a7a90807971d}
-      \strng{authorfullhash}{08dc0bd4e563acf30bc500feb1d6d640}
-      \strng{authorfullhashraw}{08dc0bd4e563acf30bc500feb1d6d640}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{2025 Asia Pacific Signal and Information Processing Association Annual Summit and Conference (APSIPA ASC)}
-      \field{title}{Multimodal Speech Analysis for Early Detection of Mild Cognitive Impairment: A Scalable Approach}
-      \field{year}{2025}
-      \field{pages}{2465\bibrangedash 2470}
-      \range{pages}{6}
-      \verb{doi}
-      \verb 10.1109/APSIPAASC65261.2025.11249319
-      \endverb
-      \keyw{Adaptation models;Speech analysis;Scalability;Semantics;Pipelines;Feature extraction;Data augmentation;Acoustics;Data models;Dementia}
-    \endentry
     \entry{liuCleverHansEffect2024}{misc}{}{}
       \name{author}{4}{}{%
         {{hash=190840d2dc4322fb1c74c250252de8ca}{%
@@ -4091,6 +4041,7 @@
       \keyw{Data Augmentation,Emotion Recognition}
     \endentry
   \enddatalist
+  \missing{11249319}
 \endrefsection
 \endinput
 

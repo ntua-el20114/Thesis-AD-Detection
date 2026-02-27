@@ -1,0 +1,17 @@
+[0] Config.pm:328> INFO - This is Biber 2.21
+[0] Config.pm:331> INFO - Logfile is 'proposal2.blg'
+[43] biber:342> INFO - === Fri Feb 27, 2026, 13:41:14
+[58] Biber.pm:421> INFO - Reading 'proposal2.bcf'
+[100] Biber.pm:1002> INFO - Found 50 citekeys in bib section 0
+[107] Biber.pm:4487> INFO - Processing section 0
+[113] Biber.pm:4678> INFO - Looking for bibtex file 'references.bib' for section 0
+[116] bibtex.pm:1713> INFO - LaTeX decoding ...
+[181] bibtex.pm:1519> INFO - Found BibTeX data source 'references.bib'
+[721] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[721] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[721] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[721] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[739] bbl.pm:676> INFO - Writing 'proposal2.bbl' with encoding 'UTF-8'
+[778] bbl.pm:779> INFO - Output to proposal2.bbl
+[779] Biber.pm:132> WARN - I didn't find a database entry for '11249319' (section 0)
+[779] Biber.pm:134> INFO - WARNINGS: 1
