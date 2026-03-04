@@ -19,27 +19,28 @@ class TRILLssonClassifier(nn.Module):
     def __init__(self, freeze_backbone: bool = False, model_source: str = "google/trillsson/tensorFlow2/5"):
         super().__init__()
         
-        # Download TRILLsson model 
-        print(f"Downloading model from {model_source}...")
-        model_path = kagglehub.model_download(model_source)
-        print(f"Downloaded model stored in {model_path}")
+        # Download TRILLsson model (kagglehub will cache it automatically)
+        print(f"Loading model from {model_source}...")
+        model_path = kagglehub.model_download(model_source, force_download=False)
+        print(f"Model loaded from: {model_path}")
         
         # Store the model path for cleanup
         self.model_path = model_path
         
         # Load the TensorFlow model
         self.trill_model = tf.saved_model.load(model_path)
+        self.trill_infer = self.trill_model.signatures['serving_default']
         
         # Get the feature dimension from TRILLsson
         # TRILLsson outputs 512-dimensional features by default
-        self.feature_dim = 512
+        self.feature_dim = 1024
         
         # Classifier head
         self.classifier = nn.Linear(self.feature_dim, NUM_CLASSES)
     
     def __del__(self):
-        """ Model destructor. Cleans up model files."""
         return
+        """ Model destructor. Cleans up model files."""
         try:
             if hasattr(self, 'model_path') and self.model_path:
                 # Remove the entire model directory
@@ -54,6 +55,8 @@ class TRILLssonClassifier(nn.Module):
                     print(f"Cleaned up empty parent directory: {parent_dir}")
         except Exception as e:
             print(f"Warning: Could not clean up model files: {e}")
+        return
+
     
     def forward(self, audio, audio_lengths):
         """
@@ -62,49 +65,45 @@ class TRILLssonClassifier(nn.Module):
         """
         
         batch_size, seq_len = audio.shape
+        chunk_size = 32000  # 2 seconds at 16kHz
+
+        # Convert PyTorch tensor to TensorFlow tensor
+        # Need to move to CPU first for numpy conversion, then to TF tensor on GPU
+        audio = audio.cpu().numpy() if audio.is_cuda else audio.numpy()
         
-        # Convert PyTorch tensor to numpy for TensorFlow
-        audio_np = audio.detach().cpu().numpy()
+        with tf.device('/GPU:0'):  # Explicitly place on GPU
+            audio = tf.constant(audio, dtype=tf.float32)
+
+            # Split audio into 2-second chunks
+            num_chunks = seq_len // chunk_size
+            
+            # Reshape to (batch_size, num_chunks, chunk_size)
+            audio_chunks = tf.reshape(audio[:, :num_chunks * chunk_size], 
+                                     [batch_size, num_chunks, chunk_size])
+            del audio
+            
+            # Process each chunk through TRILLsson
+            # We need to reshape to (batch_size * num_chunks, chunk_size) for processing
+            audio_chunks = tf.reshape(audio_chunks, [batch_size * num_chunks, chunk_size])
+            
+            # Get embeddings for all chunks
+            trill_embeddings = self.trill_infer(audio_chunks)
+            
+            # Reshape back to (batch_size, num_chunks, feature_dim)
+            trill_embeddings = tf.reshape(trill_embeddings['tf.math.reduce_mean'], 
+                                         [batch_size, num_chunks, self.feature_dim])
+            
+            # Mean pooling across chunks dimension
+            pooled_embeddings = tf.reduce_mean(trill_embeddings, axis=1)
         
-        # Process each sample in the batch
-        batch_features = []
-        for i in range(batch_size):
-            # Get individual sample
-            sample = audio_np[i, :audio_lengths[i]]
-            
-            # TRILLsson expects audio at 16kHz, mono, float32
-            # Reshape to (samples,) if needed
-            if len(sample.shape) > 1:
-                sample = np.mean(sample, axis=-1)  # Convert to mono if stereo
-            
-            # Normalize audio to [-1, 1] range
-            sample = sample.astype(np.float32)
-            if np.max(np.abs(sample)) > 0:
-                sample = sample / np.max(np.abs(sample))
-            
-            # Add batch dimension for TRILLsson
-            sample = np.expand_dims(sample, axis=0)
-            
-            # Get TRILLsson features
-            # TRILLsson returns a dictionary with 'embedding' and 'logits'
-            features = self.trill_model(sample)
-            
-            # Use the embedding features
-            if isinstance(features, dict) and 'embedding' in features:
-                embedding = features['embedding'].numpy()
-            else:
-                # If it's not a dict, assume it's the embedding directly
-                embedding = features.numpy()
-            
-            # Mean pooling over time
-            pooled_features = np.mean(embedding, axis=0)  # (feature_dim,)
-            batch_features.append(pooled_features)
+        # Convert back to PyTorch tensor for classification
+        pooled_embeddings_pt = torch.from_numpy(pooled_embeddings.numpy())
         
-        # Convert back to PyTorch tensor
-        batch_features = torch.from_numpy(np.stack(batch_features)).to(audio.device)
+        # Move to classifier device
+        pooled_embeddings_pt = pooled_embeddings_pt.to(next(self.classifier.parameters()).device)
         
         # Classifier
-        logits = self.classifier(batch_features)  # (batch_size, num_classes)
+        logits = self.classifier(pooled_embeddings_pt)  # (batch_size, num_classes)
         
         return logits
 
