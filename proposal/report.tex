@@ -27,8 +27,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{todonotes}
 \usepackage{xcolor}
+\usepackage{tcolorbox}
 
-\setuptodonotes{inline}
 \hypersetup{
     colorlinks=true,      
     linkcolor=blue,        
@@ -39,6 +39,14 @@
 }
 % Todonotes setup
 \definecolor{mygreen}{HTML}{13C325} 
+\newcommand{\note}[1]{\todo[inline, nolist]{#1}}
+
+% Tcolorbox for new sections
+\newcommand{\new}[1]{%
+    \begin{tcolorbox}[colback=green!10!white, colframe=green!50!black, title=New]
+    #1
+    \end{tcolorbox}
+}
 
 % Bibliography setup
 \AtEveryBibitem{
@@ -80,9 +88,6 @@
 % Title and Abstract
 \maketitle
 
-\todo[color=mygreen, size=\large]{Latest additions can be found in Section
-\ref{sec:dataset}: Dataset and Section \ref{sec:methodology}: Methodology.} 
-
 \begin{abstract} 
 	Early detection of Alzheimer's Disease (AD) and Mild Cognitive
 	Impairment (MCI) is critical for timely intervention and effective
@@ -97,9 +102,10 @@
 	paralinguistics.
 \end{abstract}
 
+
 \begin{multicols}{2}
 
-\section{Introduction} 
+\section{Introduction}
 \par Dementia is a progressive neurodegenerative disorder that causes
 irreversible brain damage, significantly impairing activities of daily living.
 It is estimated to affect over 57.4 million people, a figure that is expected
@@ -126,12 +132,85 @@ evaluation metrics achieved. We then identify gaps in the literature and missed
 opportunities, and finally propose a set of promising methodologies to address
 these limitations.
 
+
 \begin{figure}[H] 
 	\centering
 	\includegraphics[width=\linewidth]{cookie-theft-picture.png}
 	\caption{The Cookie Theft Picture, used in the picture description task of
 	the Pitt corpus and other datasets from DementiaBank.} \label{fig:ctp}
 \end{figure}
+
+
+\new{\section{Relative Work}}
+\par This study focuses on modeling the conversational structure of
+DementiaBank data, to assist the model in differentiating the interviewer from
+the participant, control each person's involvement in the model's
+decision-making and evaluate the participant's question answering skills in a
+more precise way.
+\subsection{Emotion Recognition in Conversations}
+\par Deriving inspiration from the field of Multimodal Emotion Recognition in
+Conversations (ERC) \cite{wuMultimodalEmotionRecognition2025,
+linParalinguisticsEnhancedLargeLanguage2024, chenGOATSLMSpokenLanguage2025}, we
+distinguish two possible directions for our methodology:
+\begin{itemize}
+	\item \textbf{Prompt-based:} Having a foundational language model as a
+		decision-making backbone, we engineer prompts to incorporate speaker
+		text, speaker information, and/or speech embeddings.
+	\item \textbf{Graph-based:} We model the conversation graph, with nodes
+		representing speaker utterances and edges representing semantic
+		connections. After being processed 
+\end{itemize}
+\par After reviewing these approaches, we observed that \emph{Graph-based}
+methodologies were proven the most promising for experimentation and
+improvement. In addition, at least in the domain of Emotion Recognition in
+Conversations, most state-of-the-art approaches incorporated the modeling of
+graph structures. Consequently, this is the path that we decided to focus our
+work on.
+
+\par Originating in the RNN era of ERC, the first work to introduce the concept
+of modeling a conversation as a graph was DialogueGCN
+\cite{ghosalDialogueGCNGraphConvolutional2019}. The authors modeled each
+utterance as a node, fully connected with its neighbors within a specific time
+window. Speaker information was encoded within the edges, defining a distinct
+relation for each interaction ($speaker_1 \rightarrow speaker_2$,
+$speaker_1 \rightarrow speaker_2$, etc.). MMGCN \cite{huMMGCNMultimodalFusion2021}
+expanded this idea into the multimodal setting by creating a separate graph for
+each modality and connecting inter-modal vertices of the same utterance. In
+contrast to DialogueGCN, they distinguished participants by concatenating a
+one-hot encoding vector into each vertex embedding. A recent improvement to
+this methodology was introduced by MERC-GCN
+\cite{fengCrossmodalContextFusion2025}. The authors constructed a graph similar
+to that of DialogueGCN, but chose to fuse multimodal features with a
+co-attention transformer before representing each utterance as a single vertex.
+MERC-GCN's architecture is displayed in Figure \ref{fig:merc-gcn}.
+All of the aforementioned methodologies utilized LSTMs or GRUs for full context
+modeling prior to generating the graph, which they subsequently processed with
+GCNs.
+
+\subsection{Conversational Modeling in Other Domains}
+\par The modeling of conversations using graphs has been applied across various
+other domains in the broader literature. In the field of depression detection,
+\cite{xiaDepressionDetectionModel2024} modeled clinical interviews from the
+DAIC-WOZ dataset using a dual-graph approach: one graph encoding sentence
+similarity and the other capturing keyword correlation. They also employed a
+multi-view methodology, creating distinct graphs for the interviewer's
+questions and the patient's answers, with explicit connections linking each
+question to its corresponding response. In a medical context,
+\cite{zhaoMedicalDialogueResponse2022} developed a knowledge-grounded chatbot
+capable of offering advice to patients. For their conversational modeling, the
+authors represented utterances as nodes, linking adjacent utterances via
+neighbor edges. Furthermore, they extracted medical entities, referenced their
+relationships within an external knowledge graph, and introduced corresponding
+knowledge-aware edges. This approach allowed the authors to effectively target
+medical information and capture long-range dependencies. Finally,
+\cite{liGLGRQuestionawareGlobaltoLocal2023} utilized graphs to model dialogues
+centered around an initial question, aiming to extract the final answer.
+Instead of simply connecting adjacent utterances, they extracted Conversational
+Discourse Structures to define the relationships among them. Additionally, they
+represented participants as distinct nodes connected to their spoken
+utterances. Lastly, they introduced a global question node and connected it to
+all utterance nodes within the graph.
+
 
 \section{Dataset}\label{sec:dataset}
 \par Most available data in the field is provided by the
@@ -156,6 +235,7 @@ number of data samples, that we chose to incorporate into our implementation.
 As a result, our MultiConAD implementation differs slightly from the original
 one. The differences between the two implementations are summarized in Table
 \ref{tab:impl}.
+\todo{This is another test}
 
 \begin{table}[H]
 	\centering
@@ -220,10 +300,112 @@ Class distribution by Train/Test split.}
 \end{figure*}
 
 
-\section{Methodology}\label{sec:methodology}
+\new{\section{Methodology}}\label{sec:methodology}
+
+\subsection{Architecture}
+\tpar{Preprocessing} Our data pre-processing pipeline will be heavily inspired
+by Emilia-Pipe \cite{heEmiliaExtensiveMultilingual2024}, and can be summarized
+as follows: Source Separation $\rightarrow$ Speaker Diarization $\rightarrow$
+Audio Chunk Segmentation $\rightarrow$ Audio-Transcript Alignment. We
+distinguish source separation as a critical part of our pipeline, as each
+sub-dataset contains its unique noise fragments, which intoduces significant
+bias risks. regarding speaker diarization and chunk segmentation, we can
+utilize the available hand-crafted CHAT transcriptions, which involve speaker
+identification and accurate timestamps for utterances. In sub-datasets that
+CHAT transcriptions are not available, we will follow Emilia-Pipe's toolkit.
+Lastly, we choose to omit Voice Activity Detection, as periods of pause and
+silence are a strong indicator of cognitive impairment.
+
+\tpar{Feature Extraction} Each utterance contains two modalities: text and
+audio. For audio modality we will extract paralinguistic embeddigs utilizing
+Google's TRILLsson-5 model \cite{shorTRILLssonDistilledUniversal2022}. For the
+textual modality, a sentence transformer will be utilized. 
+\note{Any suggestions on a modern SBERT-like model?}
+\par The next stages are reminiscent of the MERC-GCN architecture and the
+broader methodology used in the MERC domain. Thus, we display MERC-GCN's
+architecture in Figure \ref{fig:merc-gcn}, which we will be useing as a
+theoretical baseline for comparison.
+
+\begin{figure*}[htbp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{merc-gcn.png}
+	\caption{MERC-GCN architecture \cite{fengCrossmodalContextFusion2025}}
+	\label{fig:merc-gcn}
+\end{figure*}
+
+\tpar{Multimodal Fusion} For multimodal fusion, we will follow MERC-GCN's
+paradigm and fuse the audio and text embeddings before the graph modeling with
+a Co-Attention Transformer. 
+\note{Maybe I could try fusing with a Cross-Attention Transformer after the graph modeling?}
+
+\tpar{Graph Modeling} Similar to MERC-GCN, we propose modeling each utterance
+as a graph vertex, fully connected to its neighbors within a specific time
+window. However, in contrast to emotion recognition, capturing specific
+long-range dependencies plays a crucial role in dementia detection. Simply
+maximizing the context window within the graph is not a viable solution, as it
+renders computations prohibitively expensive
+\cite{ghosalDialogueGCNGraphConvolutional2019}. Therefore, we propose a novel
+approach for capturing these long-range dependencies:
+
+\begin{enumerate} 
+	\item We omit the initial GRU-based contextual modeling utilized in MERC-GCN.
+	\item We retain the standard graph structure featuring fully connected
+		local context windows. 
+	\item For each utterance i, we introduce edges
+		pointing to past and future utterances at logarithmic intervals (e.g.,
+		establishing connections to i±2, i±4, i±8, i±16, \dots). 
+	\item To accurately encode utterance ordering, we incorporate positional
+		embeddings into the vertex representations. 
+\end{enumerate} 
+\note{Maybe also add the original question as a node in the context, like
+\cite{liGLGRQuestionawareGlobaltoLocal2023}? How could this be achieved?}
+
+We hypothesize that under this modeling scheme, two to three GNN layers will be
+sufficient to aggregate information across the entire sequence. Regarding the
+actual GNN model, we are considering utilizing a RelationalGAT instead of
+MERC-GCN's attention+RGCN approach. Since we have only 2 speakers, we are
+limiting the ralations to just 8, which computationally allows the use of
+different Q-K-V transformations for each relation i.e. an RGAT.
+\note{attention+RGCN vs RGAT}
+
+\tpar{Pooling \& Classification} For the classification step, we will perform
+attention pooling over all patient utternaces to extract a patient-wide
+representation, which will then be imposed to the final classification. This
+selective process prevents the model from directly classifying interviewer
+speech and instead focusing on the participant's speech and its interactions in
+the dialogue.
+
+\subsection{Training}
+\par Our proposed architecture introduces a sizable amount of trainable
+parameters. Direct model training on MultiConAD poses a significant risk of
+overfitting. Consequently, we'll have to first pretrain our model in a suitable
+dataset. Dataset candidates are shown below:
+\begin{enumerate}
+	\item \textbf{\href{https://emilia-dataset.github.io/Emilia-Demo-Page/}{Emilia}}:
+		A large dataset, scraped from internet sources such as podcasts and
+		videos. Its English subset contains over \emph{46,828 hours}. It should
+		be noted, however, that it is mostly focused on TTS application and
+		graph modeling will require some manual preprocessing.
+	\item \textbf{\href{https://salt-research.github.io/DeepDialogue/}{DeepDialogue}}: 
+		Offers \emph{40,150} automatically generated dialogues, with about
+		\emph{6 turns} per conversation, amounting to more that \emph{480 hours} of
+		audio.
+	\item \textbf{\href{https://pmc.ncbi.nlm.nih.gov/articles/PMC10065445/\#sec14}{CANDOR Corpus}}: 
+		A multimodal corpus of \emph{1656} English dialogues that amounts
+		to \emph{850 hours} of audio. Each conversation lasts more than
+		\emph{25 minutes}, matching the long recording format of MultiConAD. 
+		Access to the dataset is granted after a formal request.
+	\item 
+		\textbf{\href{https://ai.meta.com/research/seamless-interaction/?tab=Controllability\%0A}{Seamless Interaction}}:
+		Meta's newly open sourced conversational dataset, featuring more than
+		\emph{4,000 hours} of dialogues between \emph{4000+ participants}. 
+\end{enumerate}
+\note{What pretraing algorithm could we use?}
+
+
+\section{Experiments}
 \par In this section we document our progress regarding baselines, candidate
 options for further experiments, and the results yielded by our models.
-
 \subsection{Baseline Experiments}
 The original MultiConAD paper proposes a series of simple baseline models that
 utilize the transcripts' text representations, in conjunction with traditional
@@ -232,7 +414,6 @@ representations (sparse) and \texttt{intfloat/multilingual-e5-large}
 embeddings (dense). Since our implementation of MultiConAD differs slightly
 from the original, we chose to reproduce these benchmarks to ensure a fair
 comparison. The results can be seen in Table \ref{tab:baselines}.
-
 
 \begin{table}[H]
 	\centering
@@ -251,39 +432,13 @@ comparison. The results can be seen in Table \ref{tab:baselines}.
 	\caption{Baseline model evaluation metrics.}
 	\label{tab:baselines}
 \end{table}
-\todo{
-	I'm not sure why the accuracy gap between ours and the original
-	MultiConAD implementation is so significant.
-}
-\todo{
+\note{
 	I could try to
 	reproduce more papers on MultiConAD but since it is very cumbersome to work
 	with, I'd like to move forward with the methodology and perhaps return to
 	that later.
 }
 
-\subsection{Conversational Modeling}
-\par This study focuses on modeling the conversational structure of
-DementiaBank data, to assist the model in differentiating the interviewer from
-the participant, control each person's involvement in the model's
-decision-making and evaluate the participant's question answering skills in a
-more precise way.
-\par Deriving inspiration from the field of Multimodal Emotion Recognition in
-Conversations \cite{wuMultimodalEmotionRecognition2025,
-linParalinguisticsEnhancedLargeLanguage2024, chenGOATSLMSpokenLanguage2025}, we
-distinguish two possible directions for our methodology:
-\begin{itemize}
-	\item \textbf{Prompt-based:} Having a foundational language model as a
-		decision-making backbone, we engineer prompts to incorporate speaker
-		text, speaker information, and/or speech embeddings.
-	\item \textbf{Graph-based:} We model the conversation graph, with nodes
-		representing speaker utterances and edges representing semantic
-		connections.
-\end{itemize}
-\par Keeping the limited dataset size in mind, we need to restrict the number
-of trainable parameters and base the model on pretrained layers. In future
-steps, we will focus on one of these options (at least initially) and flesh out
-an initial design, from where the experimentations will begin.
 
 \section{Future Steps}
 \begin{itemize}
