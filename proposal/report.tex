@@ -95,11 +95,16 @@
 	non-invasive, and cost-effective approach for detecting the cognitive
 	decline associated with AD and MCI. This master's thesis aims to contribute
 	to the field by focusing on modeling the conversational nature of
-	the available datasets, a crucial yet often overlooked characteristic. In
-	this report, we document our progress through the stages of data analysis
-	and preprocessing, baseline experiments and experimentation regarding
-	conversational modeling, deriving inspiration from the field of
-	paralinguistics.
+	the available datasets, a crucial yet often overlooked characteristic. We
+	model the utterances of the conversation as nodes of a graph, capturing the
+	complex interactions between the interviewer and the participant. Moreover,
+	we propose a novel technique of introducing logarithmic-step skip edges to
+	capture long-range dependencies with a minimal computational cost. We additionally
+	introduce a patient-wide pooling method that effectively isolates and
+	evaluates the patient's speech. In this report, we document our progress
+	through the stages of data analysis and preprocessing, baseline experiments
+	and experimentation regarding conversational modeling, deriving inspiration
+	from the field of paralinguistics.
 \end{abstract}
 
 
@@ -141,7 +146,7 @@ these limitations.
 \end{figure}
 
 
-\new{\section{Relative Work}}
+\section{Relative Work}
 \par This study focuses on modeling the conversational structure of
 DementiaBank data, to assist the model in differentiating the interviewer from
 the participant, control each person's involvement in the model's
@@ -295,12 +300,20 @@ methodology:
 	\caption{\emph{top left:} Sample and class distribution among sub-datasets
 	of MultiConAD. \emph{bottom left:} Recording durations among sub-datasets
 of MultiConAD. \textit{top right:} Class distribution. \emph{bottom right:}
-Class distribution by Train/Test split.}
+Number of unique patients per dataset.}
 	\label{fig:dataset}
 \end{figure*}
 
 
-\new{\section{Methodology}}\label{sec:methodology}
+\section{Methodology}\label{sec:methodology}
+\new{
+\par In this section, we describe our proposed model and its computational
+stages, as well as our training strategies. We model the utterances of the
+conversation as nodes of a graph, capturing the complex interactions between
+the interviewer and the participant. Moreover, we propose a novel technique of
+introducing logarithmic-step skip edges to capture long-range dependencies with
+a minimal computational cost. We additionally introduce a patient-wide pooling method that
+effectively isolates and evaluates the patient's speech.}
 
 \subsection{Architecture}
 \tpar{Preprocessing} Our data pre-processing pipeline will be heavily inspired
@@ -336,7 +349,6 @@ theoretical baseline for comparison.
 \tpar{Multimodal Fusion} For multimodal fusion, we will follow MERC-GCN's
 paradigm and fuse the audio and text embeddings before the graph modeling with
 a Co-Attention Transformer. 
-\note{Maybe I could try fusing with a Cross-Attention Transformer after the graph modeling?}
 
 \tpar{Graph Modeling} Similar to MERC-GCN, we propose modeling each utterance
 as a graph vertex, fully connected to its neighbors within a specific time
@@ -357,8 +369,6 @@ approach for capturing these long-range dependencies:
 	\item To accurately encode utterance ordering, we incorporate positional
 		embeddings into the vertex representations. 
 \end{enumerate} 
-\note{Maybe also add the original question as a node in the context, like
-\cite{liGLGRQuestionawareGlobaltoLocal2023}? How could this be achieved?}
 
 We hypothesize that under this modeling scheme, two to three GNN layers will be
 sufficient to aggregate information across the entire sequence. Regarding the
@@ -366,14 +376,46 @@ actual GNN model, we are considering utilizing a RelationalGAT instead of
 MERC-GCN's attention+RGCN approach. Since we have only 2 speakers, we are
 limiting the ralations to just 8, which computationally allows the use of
 different Q-K-V transformations for each relation i.e. an RGAT.
-\note{attention+RGCN vs RGAT}
+\note{The authors of MERC-GCN include future and past relations. However, since
+we use positional embeddings, I assume it is best to remove this type of
+relation, reducing their total number to 4.}
 
-\tpar{Pooling \& Classification} For the classification step, we will perform
-attention pooling over all patient utternaces to extract a patient-wide
-representation, which will then be imposed to the final classification. This
-selective process prevents the model from directly classifying interviewer
-speech and instead focusing on the participant's speech and its interactions in
+\tpar{Pooling \& Classification} For the classification step, we propose
+performing attention pooling over all patient utterances to extract a
+patient-wide representation, which is then applied to the final classification.
+This selective process prevents the model from directly classifying interviewer
+speech and instead focuses on the participant's speech and its interactions in
 the dialogue.
+
+\new{\subsection{Parameter Estimation}}
+In order to examine the sufficiency of the dataset, we perform a rough
+estimation of the proposed model's total parameter count. For each trainable
+stage of our architecture, we derive the theoretical formulas that give us the
+expected parameter count (biases are excluded for simplicity):
+\begin{align*}
+	\text{projection}&: d_t  d_h + d_a d_h \\
+	\text{co-attention}&: (3\frac{d_h^2}{h}\times h + d_h^2 + 2 d_h)\times2\times L_{ca}\\
+	\text{RGAT}&: (d_h^2 + 3d_h^2)\times R \times L_{rgat}\\
+	\text{pool+classification}&: 2d_h^2+3d_h\\
+\end{align*}
+Where:
+\begin{align*}
+   d_t&: \text{text dimention (sentence transformer)}\\
+   d_a=1024&: \text{audio dimention (TRILLsson-5)}\\
+   d_h&: \text{network hidden dimention}\\
+   h&: \text{co-attention heads}\\
+   L_{ca}&: \text{co-attention layers}\\
+   L_{rgat}&: \text{RGAT layers}\\
+   R=8&: \text{number of relations}\\
+   C=3&: \text{number of classes}\\
+\end{align*}
+Substituting the parameter values, we get a range of model size, from
+approximately \textbf{1.5m parameters} (for $d_t=1024, d_a=1024, d_h=128, R=8,
+C=3, n_ca=1, n_rgat=2$), up to about \textbf{30m parameters} (for $d_t=1024,
+d_a=1024, d_h=512, R=8, C=3, n_ca=2, n_rgat=3$). For further reduction of the
+trainable parameters, we would need to shrink the hidden dimension below 128,
+which we fear will lead to weak model generalization.
+
 
 \subsection{Training}
 \par Our proposed architecture introduces a sizable amount of trainable
@@ -398,14 +440,25 @@ dataset. Dataset candidates are shown below:
 	\item 
 		\textbf{\href{https://ai.meta.com/research/seamless-interaction/?tab=Controllability\%0A}{Seamless Interaction}}:
 		Meta's newly open sourced conversational dataset, featuring more than
-		\emph{4,000 hours} of dialogues between \emph{4000+ participants}. 
+		\emph{4,000 hours} of dialogues between \emph{4,000+ participants}. 
 \end{enumerate}
-\note{What pretraing algorithm could we use?}
-
+\note{What pretraing algorithm should we use?}
+\par In the pretraining phase, the entire model will be trained end-to-end,
+which may include fine-tuning the unimodal encoders (the 88.6M-parameter
+TRILLsson and the yet-to-be-determined sentence transformer). Subsequently,
+during the MultiConAD training stage, only the GNN layers will remain trainable
+in order to mitigate the risk of overfitting.
+\note{Pretrain: finetune encoders in adition to model?\\ Finetuning: train only
+GNN instead of entire model?}
 
 \section{Experiments}
-\par In this section we document our progress regarding baselines, candidate
-options for further experiments, and the results yielded by our models.
+\par In this section, we outline our baseline progress, candidate experiments,
+and model results. We utilize Unweighted Average Recall (UAR) as our primary
+evaluation metric because it accounts for class imbalance and emphasizes
+false-negative classifications, which are critical in medical applications.
+Additionally, we report accuracy to facilitate direct comparison with the
+original MultiConAD baseline, alongside the Macro-F1 score due to its
+widespread adoption in the literature.
 \subsection{Baseline Experiments}
 The original MultiConAD paper proposes a series of simple baseline models that
 utilize the transcripts' text representations, in conjunction with traditional
@@ -413,7 +466,8 @@ ML classifiers. For text representations, the authors experimented with TF-IDF
 representations (sparse) and \texttt{intfloat/multilingual-e5-large}
 embeddings (dense). Since our implementation of MultiConAD differs slightly
 from the original, we chose to reproduce these benchmarks to ensure a fair
-comparison. The results can be seen in Table \ref{tab:baselines}.
+comparison. In Table \ref{tab:baselines}, we present the best performing
+baseline classifiers, for sparse and dense representations.
 
 \begin{table}[H]
 	\centering
@@ -422,29 +476,41 @@ comparison. The results can be seen in Table \ref{tab:baselines}.
 		\toprule
 		\textbf{Model} & \textbf{Acc} & \textbf{UAR} & \textbf{F1} \\
 		\midrule
-		MultiConAD - Sparse (original) & 0.65 & - & - \\
-		MultiConAD - Dense (original) & 0.65 & - & - \\
+		Sparse+RF (original) & 0.65 & - & - \\
+		Dense+SVM (original) & 0.65 & 0.63 & - \\
 		\midrule
-		MultiConAD - Sparse (ours) & 0.7 & 0.66 & 0.68 \\
-		MultiConAD - Dense (ours) & 0.67 & 0.63 & 0.65 \\
+		Sparse+SVM (ours) & 0.7 & 0.66 & 0.68 \\
+		Dense+SVM (ours) & 0.67 & 0.63 & 0.65 \\
 		\bottomrule
 	\end{tabular}
 	\caption{Baseline model evaluation metrics.}
 	\label{tab:baselines}
 \end{table}
-\note{
-	I could try to
-	reproduce more papers on MultiConAD but since it is very cumbersome to work
-	with, I'd like to move forward with the methodology and perhaps return to
-	that later.
+\new{
+\par Our evaluation demonstrates a performance increase of up to +5\% compared
+to the original MultiConAD baseline. To investigate this discrepancy, we
+systematically ruled out several variables. We utilized the authors' original
+source scripts and default random seeds, eliminating architectural differences.
+To account for dataset size and split composition, we reduced our sample size
+to 2411 and ran train-evaluation loops across 10 iterations using random
+train-test splits. Under these conditions, the model consistently outperformed
+the original baseline, achieving acc:
+0.690$\pm$0.027, UAR:0.664$\pm$0.026, and Macro−F1:0.675$\pm$0.028.
+\par Further analysis revealed noticeable variations in the sample
+distributions across sub-datasets (we estimate about 345 different samples). For
+instance, our implementation yielded fewer WLS samples but more Delaware and
+Taukdial samples than the authors reported. Because the original paper
+describes the pipeline but omits specific sample IDs for the train and test
+splits, achieving an exact 1-to-1 reproduction of their dataset seems
+unfeasible. We therefore conclude that the performance differences do not
+result from specific train-test split seeds, but rather stem from fundamental
+differences in sample distribution between the two implementations.
 }
-
-
-\section{Future Steps}
-\begin{itemize}
-	\item Perform initial experiments with one of the two mentioned methodologies.
-	\item Reproduce more models on the MultiConAD dataset.
-\end{itemize}
+\note{Exact reproduction of the MultiConAD dataset, particularly its specific
+test set, appears unfeasible. Furthermore, the original authors' train-test
+split methodology fails to account for speaker IDs, which introduces the risk
+of data leakage. Given these limitations, how should we proceed? Should we
+contact the authors?}
 
 \section{Notes}
 \begin{itemize}

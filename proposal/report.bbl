@@ -2169,6 +2169,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{Dementia is a progressive cognitive syndrome with Alzheimer's disease (AD) as the leading cause. Conversation-based AD detection offers a cost-effective alternative to clinical methods, as language dysfunction is an early biomarker of AD. However, most prior research has framed AD detection as a binary classification problem, limiting the ability to identify Mild Cognitive Impairment (MCI)---a crucial stage for early intervention. Also, studies primarily rely on single-language datasets, mainly in English, restricting crosslanguage generalizability. To address this gap, we make three key contributions. First, we introduce a novel, multilingual dataset for AD detection by unifying 16 publicly available dementia-related conversational datasets. This corpus spans English, Spanish, Chinese, and Greek, and incorporates both audio and text data derived from a variety of cognitive assessment tasks. Second, we perform finer-grained classification, including MCI, and evaluate various classifiers using sparse and dense text representations. Third, we conduct experiments in monolingual and multilingual settings, finding that some languages benefit from multilingual training while others perform better independently. This study highlights the challenges in multilingual AD detection and enables future research on both language-specific approaches and techniques aimed at improving model generalization and robustness.}
+      \field{annotation}{GSCC: 0000004 2026-03-29T16:54:15.563Z 0.07}
       \field{eprintclass}{cs}
       \field{eprinttype}{arXiv}
       \field{langid}{english}
@@ -2376,8 +2377,8 @@
       \strng{authornamehash}{883713e327cf2132443786cb1df3fc3e}
       \strng{authorfullhash}{3a21d0930d125b94f3c07ebbfe6a4d6c}
       \strng{authorfullhashraw}{3a21d0930d125b94f3c07ebbfe6a4d6c}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{The ADReSS Challenge at INTERSPEECH 2020 defines a shared task through which different approaches to the automated recognition of Alzheimer's dementia based on spontaneous speech can be compared. ADReSS provides researchers with a benchmark speech dataset which has been acoustically pre-processed and balanced in terms of age and gender, defining two cognitive assessment tasks, namely: the Alzheimer's speech classification task and the neuropsychological score regression task. In the Alzheimer's speech classification task, ADReSS challenge participants create models for classifying speech as dementia or healthy control speech. In the the neuropsychological score regression task, participants create models to predict mini-mental state examination scores. This paper describes the ADReSS Challenge in detail and presents a baseline for both tasks, including feature extraction procedures and results for classification and regression models. ADReSS aims to provide the speech and language Alzheimer's research community with a platform for comprehensive methodological comparisons. This will hopefully contribute to addressing the lack of standardisation that currently affects the field and shed light on avenues for future research and clinical applicability.}
@@ -2913,8 +2914,8 @@
       \strng{authornamehash}{0efafdb22a1087e4baea2d80de26b786}
       \strng{authorfullhash}{f47d4c103dedad54e35afab43038e859}
       \strng{authorfullhashraw}{f47d4c103dedad54e35afab43038e859}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Affective behaviour could provide an indicator of Alzheimer's disease and help develop clinical tools for automatically detecting and monitoring disease progression. In this paper, we present a study of the predictive value of emotional behaviour features automatically extracted from spontaneous speech using an affect recognition system for Alzheimer's dementia detection. The effectiveness of affective behaviour features for Alzheimer's Disease detection was assessed on a gender and age balanced subset of the Pitt Corpus, a spontaneous speech database from DementiaBank. The affect recognition system was trained using the extended Geneva Minimalistic Acoustic Parameter Set (eGeMAPS) and the Berlin database of emotional speech. The output of this system provides classification scores or class posterior probabilities of 6+1 emotions as an input for statistical analysis and Alzheimer's dementia detection. The statistical analysis shows that the non-AD subjects have higher mean value of classification scores for anger and disgust, along with a higher entropy of classification scores than AD subjects. The AD subjects have a higher classification scores for the sad emotional behaviour than non-AD. This paper also introduces a novel 'affective behaviour representation' feature vector for Alzheimer's dementia recognition. Results show that classification models based solely on affective behaviour attain 63.42\% detection accuracy.}
@@ -4126,8 +4127,8 @@
       \strng{authornamehash}{51e1f8033144f0a37c9bad6bd73764bd}
       \strng{authorfullhash}{0c2bed5541592bd01287282b5bd18eaf}
       \strng{authorfullhashraw}{0c2bed5541592bd01287282b5bd18eaf}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{abstract}{The early diagnosis of Alzheimer's Disease (AD) through non invasive methods remains a significant healthcare challenge. We present NeuroXVocal, a novel dual-component system that not only classifies but also explains potential AD cases through speech analysis. The classification component (Neuro) processes three distinct data streams: acoustic features capturing speech patterns and voice characteristics, textual features extracted from speech transcriptions, and precomputed embeddings representing linguistic patterns. These streams are fused through a custom transformer-based architecture that enables robust cross-modal interactions. The explainability component (XVocal) implements a Retrieval-Augmented Generation (RAG) approach, leveraging Large Language Models combined with a domain-specific knowledge base of AD research literature. This architecture enables XVocal to retrieve relevant clinical studies and research findings to generate evidence-based context-sensitive explanations of the acoustic and linguistic markers identified in patient speech. Using the IS2021 ADReSSo Challenge benchmark dataset, our system achieved state-of-the-art performance with 95.77\% accuracy in AD classification, significantly outperforming previous approaches. The explainability component was qualitatively evaluated using a structured questionnaire completed by medical professionals, validating its clinical relevance. NeuroXVocal's unique combination of high-accuracy classification and interpretable, literaturegrounded explanations demonstrates its potential as a practical tool for supporting clinical AD diagnosis.}

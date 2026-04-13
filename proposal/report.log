@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2026.2.19)  26 MAR 2026 14:58
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2026.3.28)  31 MAR 2026 19:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1155,16 +1155,21 @@ File: cookie-theft-picture.png Graphic file (type bmp)
  [1
 
 ]
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 238.
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 243.
 
 
 Package multicol Warning: Floats and marginpars not allowed inside `multicols' environment!.
 
 
-Package multicol Warning: Floats and marginpars not allowed inside `multicols' environment!.
+Package multicol Warning: I moved some lines to the next page.
+(multicol)                Footnotes on page 2 might be wrong on input line 244.
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 275--281
+
+Package multicol Warning: Floats and marginpars not allowed inside `multicols' environment!.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 280--286
 []\TU/LinuxLibertine(0)/b/n/10 Large-Scale Recordings: \TU/LinuxLibertine(0)/m/n/10 The DementiaBank
  []
 
@@ -1172,69 +1177,73 @@ File: dataset.png Graphic file (type bmp)
 <dataset.png>
 File: merc-gcn.png Graphic file (type bmp)
 <merc-gcn.png>
-[3] [4]
-Underfull \hbox (badness 5147) in paragraph at lines 410--417
+
+Package multicol Warning: I moved some lines to the next page.
+(multicol)                Footnotes on page 3 might be wrong on input line 361.
+
+[3] [4] [5]
+Underfull \hbox (badness 5147) in paragraph at lines 463--471
 \TU/LinuxLibertine(0)/m/n/10 ML classifiers. For text representations, the au-
  []
 
 
 Package multicol Warning: I moved some lines to the next page.
-(multicol)                Footnotes on page 5 might be wrong on input line 478.
+(multicol)                Footnotes on page 6 might be wrong on input line 544.
 
-[5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 669--669
+[6] [7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 735--735
 []|\TU/LinuxLibertine(0)/b/n/10 Train/Test
  []
 
 
-Underfull \hbox (badness 5374) in paragraph at lines 673--673
+Underfull \hbox (badness 5374) in paragraph at lines 739--739
 []|\TU/LinuxLibertine(0)/m/n/10 552 total (10-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 704--704
+Underfull \hbox (badness 10000) in paragraph at lines 770--770
 []|\TU/LinuxLibertine(0)/b/n/10 MultiConAD
  []
 
-[8]
-Underfull \hbox (badness 5939) in paragraph at lines 778--778
+
+Underfull \hbox (badness 5939) in paragraph at lines 844--844
 []\TU/LinuxLibertine(0)/m/n/10 “  2018 Alzheimer’s disease facts and figures,”
  []
 
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 778--778
+[9] [10]
+Underfull \hbox (badness 10000) in paragraph at lines 844--844
 \TU/LinuxLibertine(0)/m/n/10 “  Reasoning-Based Approach with Chain-of-
  []
 
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 778--778
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 844--844
 []\TU/LinuxLibertine(0)/m/n/10 A. Hlédiková, D. Woszczyk, A. Akman, S.
  []
 
 
-Underfull \hbox (badness 7326) in paragraph at lines 778--778
+Underfull \hbox (badness 7326) in paragraph at lines 844--844
 \TU/LinuxLibertine(0)/m/n/10 “  NeuroXVocal: Detection and Explanation of
  []
 
 
-Underfull \hbox (badness 5756) in paragraph at lines 778--778
+Underfull \hbox (badness 5756) in paragraph at lines 844--844
 \TU/LinuxLibertine(0)/m/n/10 Lingual Alzheimer’s Disease Detection Based
  []
 
-[11] (./report.aux)
+[12] (./report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: C5EAC66EF968028E38C57B2E6FF9212F;4120.
+(rerunfilecheck)             Checksum: FC63E1F8BB372EF265ABFD78C6276A5F;4174.
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 36607 strings out of 476696
- 769448 string characters out of 5806955
- 1881018 words of memory out of 6000000
- 56301 multiletter control sequences out of 15000+600000
+ 36612 strings out of 476696
+ 769562 string characters out of 5806955
+ 1877018 words of memory out of 6000000
+ 56306 multiletter control sequences out of 15000+600000
  517484 words of font info for 76 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 99i,10n,94p,2845b,5162s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,10n,94p,2845b,5160s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on report.xdv (11 pages, 501716 bytes).
+Output written on report.xdv (12 pages, 542576 bytes).
