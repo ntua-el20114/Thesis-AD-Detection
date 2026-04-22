@@ -2,6 +2,11 @@
 This is a slightly modified version of the "text_cleaning_English.py" script
 from the MultiConAD repo:
 https://github.com/ArezoShakeri/MultiConAD
+
+Besides the modified file paths, this script:
+ - Ensures there are no WLS samples on the test set
+ - Ensures there is no speaker leakage from the train set to the test set
+ - Adds 'Patient_ID' and 'File_Name' fields
 """
 
 import re
@@ -93,23 +98,35 @@ def preprocess_text(text):
 
     return text
 
+def remove_short_transcripts(df, min_length=60):
+    return df[df['Text_length'] > min_length]
+
+def extract_patient_id(text):
+    return re.sub(r'-(\d+)$', '', text)
+
 English_df = remove_zh_language_rows(English_df)
 English_df = clean_diagnosis(English_df)
 English_df["Text_interviewer_participant"] = English_df["Text_interviewer_participant"].apply(preprocess_text)
 
+English_df["File_Name"] = English_df["Dataset"] + "_" + English_df["File_ID"]
+English_df["Patient_ID"] = English_df["File_Name"].apply(extract_patient_id)
 
 English_df['Text_length'] = English_df['Text_interviewer_participant'].apply(len)
 
-def remove_short_transcripts(df, min_length=60):
-    return df[df['Text_length'] > min_length]
-
-
 English_df = remove_short_transcripts(English_df)
 
-# Split to train-test, excluding WLS samples from the test set
+# Exclude WLS samples from the test set
 WLS_df = English_df[English_df['Dataset'] == 'WLS']
 English_df = English_df[English_df['Dataset'] != 'WLS']
-train_en, test_en = train_test_split(English_df, test_size=0.2, stratify=English_df['Diagnosis'], random_state=42)
+
+# Split patients
+unique_patients = English_df['Patient_ID'].unique()
+train_patients, test_patients = train_test_split(unique_patients, test_size=0.2, stratify=English_df.groupby('Patient_ID')['Diagnosis'].first(), random_state=42)
+
+# Create splits based on patients
+train_en = English_df[English_df['Patient_ID'].isin(train_patients)]
+test_en = English_df[English_df['Patient_ID'].isin(test_patients)]
+
 train_en = pd.concat([train_en, WLS_df], ignore_index=True)
 
 # Save train and test datasets as JSONL
