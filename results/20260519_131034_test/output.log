@@ -1,0 +1,105 @@
+Run dir: /home/michraf/Thesis/results/20260519_131034_test
+Loaded 2203/2204 samples with embeddings
+Loaded 266/266 samples with embeddings
+
+==================================================
+MODEL ARCHITECTURE & PARAMETERS
+==================================================
+CoAttentionClassifier(
+  (audio_proj): Linear(in_features=1024, out_features=256, bias=True)
+  (text_proj): Linear(in_features=768, out_features=256, bias=True)
+  (layers): ModuleList(
+    (0-1): 2 x CoAttentionBlock(
+      (audio_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+      )
+      (text_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+      )
+      (ffn_a): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.1, inplace=False)
+        (3): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (ffn_t): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.1, inplace=False)
+        (3): Linear(in_features=1024, out_features=256, bias=True)
+      )
+      (norm_a1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (norm_t1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (norm_a2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      (norm_t2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+  (classifier): Sequential(
+    (0): Linear(in_features=512, out_features=256, bias=True)
+    (1): GELU(approximate='none')
+    (2): Dropout(p=0.1, inplace=False)
+    (3): Linear(in_features=256, out_features=3, bias=True)
+  )
+)
+--------------------------------------------------
+Total parameters:     3,750,403
+Trainable parameters: 3,750,403
+Non-trainable params: 0
+==================================================
+
+
+========================================
+Run 1/1 (seed=24)
+========================================
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+  Epoch 01/30 | loss 0.7290 | train UAR 0.3474 | val UAR 0.4209
+    ↳ best model saved (UAR 0.4209)
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+/home/michraf/miniconda3/envs/cuda_legacy/lib/python3.10/site-packages/sklearn/metrics/_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+  Epoch 02/30 | loss 0.6232 | train UAR 0.4316 | val UAR 0.3724
+  Epoch 03/30 | loss 0.5694 | train UAR 0.5307 | val UAR 0.5407
+    ↳ best model saved (UAR 0.5407)
+  Epoch 04/30 | loss 0.5176 | train UAR 0.6027 | val UAR 0.6418
+    ↳ best model saved (UAR 0.6418)
+  Epoch 05/30 | loss 0.4932 | train UAR 0.6279 | val UAR 0.6694
+    ↳ best model saved (UAR 0.6694)
+  Epoch 06/30 | loss 0.4595 | train UAR 0.6436 | val UAR 0.6253
+  Epoch 07/30 | loss 0.4406 | train UAR 0.6684 | val UAR 0.6576
+  Epoch 08/30 | loss 0.4171 | train UAR 0.6864 | val UAR 0.5963
+  Epoch 09/30 | loss 0.3921 | train UAR 0.7005 | val UAR 0.6522
+  Epoch 10/30 | loss 0.3737 | train UAR 0.7293 | val UAR 0.5737
+  Epoch 11/30 | loss 0.3683 | train UAR 0.7178 | val UAR 0.6185
+  Epoch 12/30 | loss 0.3494 | train UAR 0.7433 | val UAR 0.6791
+    ↳ best model saved (UAR 0.6791)
+  Epoch 13/30 | loss 0.3332 | train UAR 0.7557 | val UAR 0.6997
+    ↳ best model saved (UAR 0.6997)
+  Epoch 14/30 | loss 0.3142 | train UAR 0.7817 | val UAR 0.6673
+  Epoch 15/30 | loss 0.2806 | train UAR 0.8104 | val UAR 0.6747
+  Epoch 16/30 | loss 0.2486 | train UAR 0.8274 | val UAR 0.6845
+  Epoch 17/30 | loss 0.2656 | train UAR 0.8282 | val UAR 0.6283
+  Epoch 18/30 | loss 0.2368 | train UAR 0.8374 | val UAR 0.6428
+  Epoch 19/30 | loss 0.2217 | train UAR 0.8581 | val UAR 0.5949
+  Epoch 20/30 | loss 0.2120 | train UAR 0.8565 | val UAR 0.6717
+  Early stopping triggered at epoch 20
+  Training plot saved to /home/michraf/Thesis/results/20260519_131034_test/run_0/training.png
+              precision    recall  f1-score   support
+
+          HC       0.64      0.64      0.64       110
+         MCI       0.66      0.64      0.65        90
+    Dementia       0.78      0.82      0.80        66
+
+    accuracy                           0.68       266
+   macro avg       0.69      0.70      0.70       266
+weighted avg       0.68      0.68      0.68       266
+
+
+Results saved to /home/michraf/Thesis/results/20260519_131034_test/results.csv

@@ -1,0 +1,23 @@
+audio_dim: 1024
+base_seed: 24
+batch_size: 16
+d_model: 512
+device: cuda
+dropout: 0.11753309034784536
+epochs: 30
+experiment_description: The first baseline experiment, with no hyperparameter optimization.
+experiment_name: baseline_1
+gemma_dir: /home/michraf/Thesis/data/MultiConAD/gemma
+hpo_epochs: 20
+hpo_trials: 50
+lr: 0.00012853354846675165
+n_classes: 3
+n_heads: 4
+n_layers: 2
+n_runs: 5
+patience: 7
+results_dir: /home/michraf/Thesis/results
+test_jsonl: /home/michraf/Thesis/data/MultiConAD/test_English.jsonl
+text_dim: 768
+train_jsonl: /home/michraf/Thesis/data/MultiConAD/train_English.jsonl
+trill_dir: /home/michraf/Thesis/data/MultiConAD/trillsson

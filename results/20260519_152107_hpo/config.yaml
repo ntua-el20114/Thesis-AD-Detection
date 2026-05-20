@@ -1,0 +1,32 @@
+# Paths
+gemma_dir:       ~/Thesis/data/MultiConAD/gemma
+trill_dir:       ~/Thesis/data/MultiConAD/trillsson
+train_jsonl:     ~/Thesis/data/MultiConAD/train_English.jsonl
+test_jsonl:      ~/Thesis/data/MultiConAD/test_English.jsonl
+results_dir:     ~/Thesis/results
+
+# Experiment
+experiment_name: baseline_1
+experiment_description: "The first baseline experiment, with no hyperparameter optimization."
+base_seed: 24
+n_runs: 5
+
+# Embedding dims
+audio_dim: 1024
+text_dim:  768
+
+# Model
+n_classes: 3
+d_model:   256
+n_heads:   4
+n_layers:  2
+dropout:   0.1
+patience:  7
+
+# Training
+device:     cuda
+batch_size: 16
+lr:         0.0001
+epochs:     30
+hpo_epochs: 20 
+hpo_trials: 50
