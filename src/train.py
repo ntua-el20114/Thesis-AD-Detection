@@ -1,130 +1,133 @@
+import sys, shutil, argparse
+from datetime import datetime
+from pathlib import Path
+
 import torch
-import torch.nn as nn
-from torch.optim import AdamW
 from torch.utils.data import DataLoader
-from tqdm import tqdm
-import numpy as np
-from sklearn.metrics import f1_score, recall_score
-from typing import Union
+from sklearn.metrics import classification_report
 
-LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
-
-def _convert_diagnosis_to_labels(diagnosis_list, device):
-    """Efficiently convert diagnosis strings to label tensor."""
-    return torch.tensor([LABEL_MAP.get(d, 0) for d in diagnosis_list], dtype=torch.long, device=device)
-
-def prepare_batch(batch, device):
-    """
-    Generic function to prepare batch for the model:
-    1. Moves all Tensor values to the target device.
-    2. Separates model inputs (Tensors) from metadata (lists/strings).
-    """
-    model_inputs = {}
-    
-    for k, v in batch.items():
-        if isinstance(v, torch.Tensor):
-            # Move to device and add to inputs
-            model_inputs[k] = v.to(device)
-    
-    return model_inputs
-
-def train_epoch(model, train_loader, optimizer, criterion, device):
-    model.train()
-    total_loss = 0
-    
-    for batch in tqdm(train_loader, desc="Training"):
-        # Extract only the tensors (audio, egemaps, bert, etc.) and move to GPU
-        inputs = prepare_batch(batch, device)
-        
-        # Prepare Labels
-        labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
-        
-        # Forward Pass
-        # **inputs unpacks the dictionary into arguments
-        optimizer.zero_grad()
-        logits = model(**inputs) 
-        
-        loss = criterion(logits, labels)
-        loss.backward()
-        optimizer.step()
-        
-        total_loss += loss.item()
-    
-    return total_loss / len(train_loader)
-
-def evaluate(model, test_loader, criterion, device):
-    model.eval()
-    total_loss = 0
-    all_preds = []
-    all_labels = []
-    
-    with torch.no_grad():
-        for batch in tqdm(test_loader, desc="Evaluating"):
-            inputs = prepare_batch(batch, device)
-            labels = _convert_diagnosis_to_labels(batch['Diagnosis'], device)
-            
-            logits = model(**inputs)
-            
-            loss = criterion(logits, labels)
-            total_loss += loss.item()
-            
-            predictions = logits.argmax(dim=1)
-
-            all_preds.extend(predictions.cpu().numpy())
-            all_labels.extend(labels.cpu().numpy())
-    
-    avg_loss = total_loss / len(test_loader)
-    accuracy = (np.array(all_preds) == np.array(all_labels)).mean()
-    f1 = f1_score(all_labels, all_preds, average='macro')
-    uar = recall_score(all_labels, all_preds, average='macro')
-    return {
-        'loss': avg_loss,
-        'acc': accuracy,
-        'f1': f1,
-        'uar': uar
-    }
+from config import Config
+from dataset import MultiConADDataset, collate_fn
+from model import CoAttentionClassifier
+from utils import Tee, set_seed, extract_metrics, save_results_csv, \
+                  compute_uar, plot_training, TARGET_NAMES, print_model_summary
 
 
+MODEL = CoAttentionClassifier
 
-def train(
-    model,
-    train_loader: DataLoader,
-    val_loader: DataLoader,
-    test_loader: DataLoader,
-    num_epochs: int = 5,
-    learning_rate: float = 2e-5,
-    device: Union[str, torch.device] = 'cuda' if torch.cuda.is_available() else 'cpu',
-):
-    device = torch.device(device)
-    
-    model = model.to(device)
-    print(f"Model moved to device: {device}")
-    
-    optimizer = AdamW(model.parameters(), lr=learning_rate)
-    criterion = nn.CrossEntropyLoss()
-    
-    history = {'train_loss': [], 'val_loss': [], 'val_accuracy': []}
-    
-    for epoch in range(num_epochs):
-        train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
-        metrics = evaluate(model, val_loader, criterion, device)
-        val_loss = metrics['loss']
-        val_acc = metrics['acc']
-        
-        history['train_loss'].append(train_loss)
-        history['val_loss'].append(val_loss)
-        history['val_accuracy'].append(val_acc)
-        
-        print(f"Epoch {epoch+1}/{num_epochs}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_acc={val_acc:.4f}")
-    
+
+def run_epoch(model, loader, device, optimizer=None, criterion=None):
+    training = optimizer is not None
+    model.train() if training else model.eval()
+    total_loss, preds, labels = 0, [], []
+    with torch.set_grad_enabled(training):
+        for trill, gemma, mask, y in loader:
+            trill, gemma, mask, y = trill.to(device), gemma.to(device), mask.to(device), y.to(device)
+            logits = model(trill, gemma, mask)
+            if training:
+                loss = criterion(logits, y)
+                optimizer.zero_grad(); loss.backward(); optimizer.step()
+                total_loss += loss.item()
+            preds.extend(logits.argmax(-1).cpu().tolist())
+            labels.extend(y.cpu().tolist())
+    return total_loss / len(loader), preds, labels
+
+
+def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict:
+    model     = MODEL(cfg).to(device)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr)
+    criterion = torch.nn.CrossEntropyLoss()
+
+    history = {'train_loss': [], 'train_uar': [], 'val_uar': [],
+               'checkpoints': [], 'stopped_at': None}
+    best_uar, patience_counter = 0.0, 0
+
+    for epoch in range(cfg.epochs):
+        loss, train_preds, train_labels = run_epoch(model, train_loader, device, optimizer, criterion)
+        _,    val_preds,   val_labels   = run_epoch(model, test_loader,  device)
+
+        train_uar = compute_uar(train_labels, train_preds)
+        val_uar   = compute_uar(val_labels,   val_preds)
+
+        history['train_loss'].append(loss)
+        history['train_uar'].append(train_uar)
+        history['val_uar'].append(val_uar)
+
+        print(f"  Epoch {epoch+1:02d}/{cfg.epochs} | loss {loss:.4f} | "
+              f"train UAR {train_uar:.4f} | val UAR {val_uar:.4f}")
+
+        torch.save(model.state_dict(), run_dir / 'last_checkpoint.pt')
+
+        if val_uar > best_uar:
+            best_uar = val_uar
+            patience_counter = 0
+            torch.save(model.state_dict(), run_dir / 'best_model.pt')
+            history['checkpoints'].append(epoch + 1)
+            print(f"    ↳ best model saved (UAR {val_uar:.4f})")
+        else:
+            patience_counter += 1
+            if patience_counter >= cfg.patience:
+                history['stopped_at'] = epoch + 1
+                print(f"  Early stopping triggered at epoch {epoch+1}")
+                break
+
+    plot_training(history, run_dir / 'training.png', cfg.experiment_name)
+
+    model.load_state_dict(torch.load(run_dir / 'best_model.pt'))
+    _, preds, labels = run_epoch(model, test_loader, device)
+    print(classification_report(labels, preds, target_names=TARGET_NAMES))
+    return extract_metrics(labels, preds)
+
+
+def main(config_path: str):
+    cfg     = Config.from_yaml(config_path)
+    ts      = datetime.now().strftime('%Y%m%d_%H%M%S')
+    run_dir = Path(cfg.results_dir) / f"{ts}_{cfg.experiment_name}"
+    run_dir.mkdir(parents=True)
+    shutil.copy(config_path, run_dir / 'config.yaml')
+
+    log_file   = open(run_dir / 'output.log', 'w')
+    sys.stdout = Tee(sys.__stdout__, log_file)
+    sys.stderr = Tee(sys.__stderr__, log_file)
+
+    print(f"Run dir: {run_dir}")
+    device = torch.device(cfg.device if torch.cuda.is_available() else 'cpu')
+
+    train_ds = MultiConADDataset(cfg.train_jsonl, cfg.gemma_dir, cfg.trill_dir)
+    test_ds  = MultiConADDataset(cfg.test_jsonl,  cfg.gemma_dir, cfg.trill_dir)
+    loader_kw    = dict(collate_fn=collate_fn, num_workers=4, pin_memory=True)
+    train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True,  **loader_kw)
+    test_loader  = DataLoader(test_ds,  batch_size=cfg.batch_size, shuffle=False, **loader_kw)
+
+    # print experiment info
     print("\n" + "="*50)
-    print("Test Set Evaluation")
+    print("EXPERIMENT: ", cfg.experiment_name)
     print("="*50)
-    test_metrics = evaluate(model, test_loader, criterion, device)
-    print(f"Test Loss: {test_metrics['loss']:.4f}")
-    print(f"Test Accuracy: {test_metrics['acc']:.4f}")
-    print(f"Test F1 Score: {test_metrics['f1']:.4f}")
-    print(f"Test UAR: {test_metrics['uar']:.4f}")
-    print("="*50 + "\n")
-    
-    return model, history, test_metrics
+    print(cfg.experiment_description, "\n")
+
+    # print model summary on a temporary sample model
+    print_model_summary(MODEL(cfg))
+
+    # Repeat train/eval experiment [n_runs] times
+    all_metrics = []
+    for i in range(cfg.n_runs):
+        set_seed(cfg.base_seed + i)
+        print(f"\n{'='*40}\nRun {i+1}/{cfg.n_runs} (seed={cfg.base_seed + i})\n{'='*40}")
+        rep_dir = run_dir / f"run_{i}"
+        rep_dir.mkdir()
+        all_metrics.append(train_one_run(cfg, rep_dir, device, train_loader, test_loader))
+
+    save_results_csv(all_metrics, run_dir / 'results.csv', cfg.base_seed)
+    print(f"\nResults saved to {run_dir / 'results.csv'}")
+
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+    log_file.close()
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, default='config.yaml')
+    args = parser.parse_args()
+    main(args.config)
+    print("\n")
