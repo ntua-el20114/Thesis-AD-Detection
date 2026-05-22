@@ -7,6 +7,7 @@ class Config:
     # Paths
     gemma_dir:       str
     trill_dir:       str
+    speakers_json:   str
     train_jsonl:     str
     test_jsonl:      str
     results_dir:     str
@@ -22,12 +23,19 @@ class Config:
     text_dim:  int
 
     # Model
-    n_classes: int
-    d_model:   int
-    n_heads:   int
-    n_layers:  int
-    dropout:   float
-    patience:  int
+    n_classes:    int
+    d_model:      int
+    ca_heads:     int
+    ca_layers:    int
+    rgat_heads:   int
+    rgat_layers:  int
+    graph_window: int
+
+    # Regularization
+    dropout:      float
+    drop_edge:    float
+    patience:     int
+    weight_decay: float
 
     # Training
     device:     str

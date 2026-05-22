@@ -18,7 +18,7 @@ MODEL = CoAttentionClassifier
 SEARCH_SPACE = {
     'lr':       ('float_log', 1e-5, 1e-3),
     'd_model':  ('categorical', [128, 256, 512]),
-    'n_heads':  ('categorical', [2, 4, 8]),
+    'ca_heads':  ('categorical', [2, 4, 8]),
     'n_layers': ('categorical', [1, 2, 3]),
     'dropout':  ('float', 0.1, 0.5),
 }
@@ -34,9 +34,9 @@ def sample_config(trial: optuna.Trial, base_cfg: Config) -> Config:
                 overrides[name] = trial.suggest_float(name, spec[1], spec[2])
             case 'categorical':
                 overrides[name] = trial.suggest_categorical(name, spec[1])
-    # n_heads must divide d_model
-    while base_cfg.d_model % overrides.get('n_heads', base_cfg.n_heads) != 0:
-        overrides['n_heads'] = trial.suggest_categorical('n_heads', SEARCH_SPACE['n_heads'][1])
+    # ca_heads must divide d_model
+    while base_cfg.d_model % overrides.get('ca_heads', base_cfg.ca_heads) != 0:
+        overrides['ca_heads'] = trial.suggest_categorical('ca_heads', SEARCH_SPACE['ca_heads'][1])
     return Config(**{**base_cfg.__dict__, **overrides})
 
 

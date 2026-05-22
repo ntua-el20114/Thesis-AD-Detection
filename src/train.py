@@ -8,12 +8,12 @@ from sklearn.metrics import classification_report
 
 from config import Config
 from dataset import MultiConADDataset, collate_fn
-from model import CoAttentionClassifier
+from model import CoAttentionClassifier, ConGrAD
 from utils import Tee, set_seed, extract_metrics, save_results_csv, \
                   compute_uar, plot_training, TARGET_NAMES, print_model_summary
 
 
-MODEL = CoAttentionClassifier
+MODEL = ConGrAD
 
 
 def run_epoch(model, loader, device, optimizer=None, criterion=None):
@@ -21,9 +21,12 @@ def run_epoch(model, loader, device, optimizer=None, criterion=None):
     model.train() if training else model.eval()
     total_loss, preds, labels = 0, [], []
     with torch.set_grad_enabled(training):
-        for trill, gemma, mask, y in loader:
-            trill, gemma, mask, y = trill.to(device), gemma.to(device), mask.to(device), y.to(device)
-            logits = model(trill, gemma, mask)
+        for trill, gemma, speakers, mask, y in loader:
+            trill, gemma, speakers, mask, y = (
+                trill.to(device), gemma.to(device),
+                speakers.to(device), mask.to(device), y.to(device)
+            )
+            logits = model(trill, gemma, mask, speakers)
             if training:
                 loss = criterion(logits, y)
                 optimizer.zero_grad(); loss.backward(); optimizer.step()
@@ -34,8 +37,8 @@ def run_epoch(model, loader, device, optimizer=None, criterion=None):
 
 
 def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict:
-    model     = MODEL(cfg).to(device)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr)
+    model = MODEL(cfg).to(device)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     criterion = torch.nn.CrossEntropyLoss()
 
     history = {'train_loss': [], 'train_uar': [], 'val_uar': [],
@@ -44,10 +47,10 @@ def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict
 
     for epoch in range(cfg.epochs):
         loss, train_preds, train_labels = run_epoch(model, train_loader, device, optimizer, criterion)
-        _,    val_preds,   val_labels   = run_epoch(model, test_loader,  device)
+        _, val_preds, val_labels = run_epoch(model, test_loader, device)
 
         train_uar = compute_uar(train_labels, train_preds)
-        val_uar   = compute_uar(val_labels,   val_preds)
+        val_uar = compute_uar(val_labels, val_preds)
 
         history['train_loss'].append(loss)
         history['train_uar'].append(train_uar)
@@ -93,8 +96,8 @@ def main(config_path: str):
     print(f"Run dir: {run_dir}")
     device = torch.device(cfg.device if torch.cuda.is_available() else 'cpu')
 
-    train_ds = MultiConADDataset(cfg.train_jsonl, cfg.gemma_dir, cfg.trill_dir)
-    test_ds  = MultiConADDataset(cfg.test_jsonl,  cfg.gemma_dir, cfg.trill_dir)
+    train_ds = MultiConADDataset(cfg.train_jsonl, cfg.gemma_dir, cfg.trill_dir, cfg.speakers_json)
+    test_ds  = MultiConADDataset(cfg.test_jsonl,  cfg.gemma_dir, cfg.trill_dir, cfg.speakers_json)
     loader_kw    = dict(collate_fn=collate_fn, num_workers=4, pin_memory=True)
     train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True,  **loader_kw)
     test_loader  = DataLoader(test_ds,  batch_size=cfg.batch_size, shuffle=False, **loader_kw)
