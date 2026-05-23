@@ -1,0 +1,120 @@
+Run dir: /home/michraf/Thesis/results/20260522_154800_ConGrAD-test
+Loaded 2203/2204 samples with embeddings
+Loaded 266/266 samples with embeddings
+
+==================================================
+EXPERIMENT:  ConGrAD-test
+==================================================
+ConGrAD test run - added weight decay and DropEdge. 
+
+
+==================================================
+MODEL ARCHITECTURE & PARAMETERS
+==================================================
+ConGrAD(
+  (audio_proj): Linear(in_features=1024, out_features=128, bias=True)
+  (text_proj): Linear(in_features=768, out_features=128, bias=True)
+  (co_attn): ModuleList(
+    (0-1): 2 x CoAttentionBlock(
+      (audio_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (text_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (ffn_a): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.4, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (ffn_t): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.4, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (norm_a1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_a2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+  (fusion): Linear(in_features=256, out_features=128, bias=True)
+  (rgat): RGAT(
+    (layers): ModuleList(
+      (0-1): 2 x RGATConv(128, 32, heads=4)
+    )
+    (drop): Dropout(p=0.4, inplace=False)
+  )
+  (pool_gate): Linear(in_features=128, out_features=1, bias=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): GELU(approximate='none')
+    (2): Dropout(p=0.4, inplace=False)
+    (3): Linear(in_features=128, out_features=3, bias=True)
+  )
+)
+--------------------------------------------------
+Total parameters:     1,208,324
+Trainable parameters: 1,208,324
+Non-trainable params: 0
+==================================================
+
+
+========================================
+Run 1/1 (seed=24)
+========================================
+  Epoch 01/30 | loss 0.7913 | train UAR 0.3398 | val UAR 0.3333
+    ↳ best model saved (UAR 0.3333)
+  Epoch 02/30 | loss 0.7013 | train UAR 0.3656 | val UAR 0.3404
+    ↳ best model saved (UAR 0.3404)
+  Epoch 03/30 | loss 0.6389 | train UAR 0.4350 | val UAR 0.4316
+    ↳ best model saved (UAR 0.4316)
+  Epoch 04/30 | loss 0.6025 | train UAR 0.4976 | val UAR 0.5788
+    ↳ best model saved (UAR 0.5788)
+  Epoch 05/30 | loss 0.5860 | train UAR 0.5154 | val UAR 0.6249
+    ↳ best model saved (UAR 0.6249)
+  Epoch 06/30 | loss 0.5542 | train UAR 0.5798 | val UAR 0.6380
+    ↳ best model saved (UAR 0.6380)
+  Epoch 07/30 | loss 0.5547 | train UAR 0.6014 | val UAR 0.5660
+  Epoch 08/30 | loss 0.5344 | train UAR 0.5811 | val UAR 0.6091
+  Epoch 09/30 | loss 0.5150 | train UAR 0.6014 | val UAR 0.5939
+  Epoch 10/30 | loss 0.4759 | train UAR 0.6494 | val UAR 0.6377
+  Epoch 11/30 | loss 0.4735 | train UAR 0.6559 | val UAR 0.7071
+    ↳ best model saved (UAR 0.7071)
+  Epoch 12/30 | loss 0.4516 | train UAR 0.6743 | val UAR 0.6724
+  Epoch 13/30 | loss 0.4297 | train UAR 0.6819 | val UAR 0.6717
+  Epoch 14/30 | loss 0.4384 | train UAR 0.6795 | val UAR 0.6471
+  Epoch 15/30 | loss 0.4007 | train UAR 0.7106 | val UAR 0.6256
+  Epoch 16/30 | loss 0.4059 | train UAR 0.6920 | val UAR 0.7020
+  Epoch 17/30 | loss 0.3925 | train UAR 0.7197 | val UAR 0.6721
+  Epoch 18/30 | loss 0.3794 | train UAR 0.7173 | val UAR 0.7209
+    ↳ best model saved (UAR 0.7209)
+  Epoch 19/30 | loss 0.3676 | train UAR 0.7354 | val UAR 0.7054
+  Epoch 20/30 | loss 0.3390 | train UAR 0.7556 | val UAR 0.7242
+    ↳ best model saved (UAR 0.7242)
+  Epoch 21/30 | loss 0.3270 | train UAR 0.7581 | val UAR 0.7135
+  Epoch 22/30 | loss 0.3099 | train UAR 0.7846 | val UAR 0.6973
+  Epoch 23/30 | loss 0.3343 | train UAR 0.7682 | val UAR 0.6949
+  Epoch 24/30 | loss 0.3150 | train UAR 0.7794 | val UAR 0.6791
+  Epoch 25/30 | loss 0.2826 | train UAR 0.8049 | val UAR 0.7067
+  Epoch 26/30 | loss 0.2794 | train UAR 0.7991 | val UAR 0.7232
+  Epoch 27/30 | loss 0.2614 | train UAR 0.8363 | val UAR 0.7024
+  Epoch 28/30 | loss 0.2425 | train UAR 0.8388 | val UAR 0.7249
+    ↳ best model saved (UAR 0.7249)
+  Epoch 29/30 | loss 0.2301 | train UAR 0.8398 | val UAR 0.7074
+  Epoch 30/30 | loss 0.2069 | train UAR 0.8651 | val UAR 0.7209
+  Training plot saved to /home/michraf/Thesis/results/20260522_154800_ConGrAD-test/run_0/training.png
+              precision    recall  f1-score   support
+
+          HC       0.71      0.63      0.67       110
+         MCI       0.61      0.74      0.67        90
+    Dementia       0.90      0.80      0.85        66
+
+    accuracy                           0.71       266
+   macro avg       0.74      0.72      0.73       266
+weighted avg       0.72      0.71      0.71       266
+
+
+Results saved to /home/michraf/Thesis/results/20260522_154800_ConGrAD-test/results.csv

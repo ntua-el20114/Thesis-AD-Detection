@@ -1,0 +1,38 @@
+# Paths
+gemma_dir:       ~/Thesis/data/MultiConAD/gemma
+trill_dir:       ~/Thesis/data/MultiConAD/trillsson
+speakers_json:    ~/Thesis/data/MultiConAD/speakers.json
+train_jsonl:     ~/Thesis/data/MultiConAD/train_English.jsonl
+test_jsonl:      ~/Thesis/data/MultiConAD/test_English.jsonl
+results_dir:     ~/Thesis/results
+
+# Experiment
+experiment_name: ConGrAD-test
+experiment_description: "ConGrAD test run"
+base_seed: 24
+n_runs: 1
+
+# Embedding dims
+audio_dim: 1024
+text_dim:  768
+
+# Model
+n_classes:    3
+d_model:      128
+ca_heads:     4
+ca_layers:    1
+rgat_heads:   4
+rgat_layers:  2
+graph_window: 10
+dropout:      0.4
+patience:     15
+
+# Training
+device:     cuda
+batch_size: 16
+lr:         0.0001
+epochs:     30
+
+# Hyperparameter Optiomization
+hpo_epochs: 20 
+hpo_trials: 50

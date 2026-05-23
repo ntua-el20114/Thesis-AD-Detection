@@ -1,0 +1,44 @@
+# Paths
+gemma_dir:       ~/Thesis/data/MultiConAD/gemma
+trill_dir:       ~/Thesis/data/MultiConAD/trillsson
+speakers_json:    ~/Thesis/data/MultiConAD/speakers.json
+train_jsonl:     ~/Thesis/data/MultiConAD/train_English.jsonl
+test_jsonl:      ~/Thesis/data/MultiConAD/test_English.jsonl
+results_dir:     ~/Thesis/results
+
+# Experiment
+experiment_name: ConGrAD-DAT
+experiment_description: "ConGrAD test run - with Domain Adversarial Training."
+base_seed: 24
+n_runs: 1
+
+# Embedding dims
+audio_dim: 1024
+text_dim:  768
+
+# Model
+n_classes:    3
+d_model:      128
+ca_heads:     8
+ca_layers:    1
+rgat_heads:   8
+rgat_layers:  1
+graph_window: 5
+
+# Regularization
+dropout:      0.5
+drop_edge:    0.5
+patience:     10
+weight_decay: 0.1
+adv_lambda:   0.1
+n_domains:    8      # num of DementiaBank sub-datasets
+
+# Training
+device:     cuda
+batch_size: 16
+lr:         0.0001
+epochs:     30
+
+# Hyperparameter Optimization
+hpo_epochs: 20 
+hpo_trials: 50
