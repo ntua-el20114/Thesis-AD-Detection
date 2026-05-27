@@ -1,6 +1,6 @@
 import json, torch
 from pathlib import Path
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, WeightedRandomSampler
 from torch.nn.utils.rnn import pad_sequence
 
 
@@ -47,3 +47,24 @@ def collate_fn(batch):
     speakers_pad = pad_sequence(speakers, batch_first=True, padding_value=0)
     mask = torch.arange(trill_pad.size(1)) < lengths.unsqueeze(1)
     return trill_pad, gemma_pad, speakers_pad, mask, torch.stack(labels)
+
+
+def make_balanced_sampler(dataset: MultiConADDataset) -> WeightedRandomSampler:
+    """
+    Builds a WeightedRandomSampler that samples each class with equal probability,
+    effectively oversampling minority classes (MCI, Dementia) to match the majority
+    (HC). Used as the balanced loader in Balanced-MixUp.
+
+    Each sample receives a weight of 1 / class_count for its class, so that the
+    expected number of draws per class is equal across all classes.
+    """
+    labels = torch.tensor([LABEL_MAP[s['Diagnosis']] for s in dataset.samples])
+    class_counts = torch.bincount(labels)                         # [n_classes]
+    class_weights = 1.0 / class_counts.float()                   # inverse frequency
+    sample_weights = class_weights[labels]                        # one weight per sample
+
+    return WeightedRandomSampler(
+        weights=sample_weights,
+        num_samples=len(dataset),   # same epoch length as the regular loader
+        replacement=True,           # necessary for oversampling minority classes
+    )

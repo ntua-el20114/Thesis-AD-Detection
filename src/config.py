@@ -23,25 +23,28 @@ class Config:
     text_dim:  int
 
     # Model
-    n_classes:    int
-    d_model:      int
-    ca_heads:     int
-    ca_layers:    int
-    rgat_heads:   int
-    rgat_layers:  int
-    graph_window: int
+    n_classes:     int
+    d_model:       int
+    ca_heads:      int
+    ca_layers:     int
+    rgat_heads:    int
+    rgat_layers:   int
+    graph_window:  int
+    skip_log_base: int
 
     # Regularization
-    dropout:      float
-    drop_edge:    float
-    patience:     int
-    weight_decay: float
+    dropout:        float
+    drop_edge:      float
+    weight_decay:   float
+    balanced_mixup: bool
+    mixup_alpha:    float
 
     # Training
     device:     str
     batch_size: int
     lr:         float
     epochs:     int
+    patience:   int
 
     # Hyperparameter Optimization
     hpo_epochs: int

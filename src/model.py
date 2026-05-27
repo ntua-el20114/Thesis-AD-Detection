@@ -58,6 +58,7 @@ class ConGrAD(nn.Module):
         )
         self.window = cfg.graph_window
         self.drop_edge = cfg.drop_edge
+        self.skip_log_base = cfg.skip_log_base
 
     def forward(self, audio, text, mask, speakers):
         B, L = audio.shape[:2]

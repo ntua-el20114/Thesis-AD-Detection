@@ -1,4 +1,5 @@
-import sys, csv, random
+import csv, random
+import os
 from pathlib import Path
 from typing import Any
 import numpy as np
@@ -23,14 +24,24 @@ class Tee:
         for s in self.streams: s.flush()
 
 
+
 def set_seed(seed: int):
     """
-    Sets the base_seed as the global seed in all operations.
+    Sets the base_seed as the global seed in all operations 
+    and enforces deterministic GPU execution.
     """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
+    
+    # Force deterministic CuDNN and PyTorch operations
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    torch.use_deterministic_algorithms(True, warn_only=True)
+    
+    # Required by PyTorch for deterministic scatter operations on CUDA 10.2+
+    os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':4096:8'
 
 
 def print_model_summary(model: torch.nn.Module):

@@ -2,42 +2,92 @@ import sys, shutil, argparse
 from datetime import datetime
 from pathlib import Path
 
+import numpy as np
 import torch
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from sklearn.metrics import classification_report
 
 from config import Config
-from dataset import MultiConADDataset, collate_fn
+from dataset import MultiConADDataset, collate_fn, make_balanced_sampler
 from model import CoAttentionClassifier, ConGrAD
 from utils import Tee, set_seed, extract_metrics, save_results_csv, \
                   compute_uar, plot_training, TARGET_NAMES, print_model_summary
 
 
-MODEL = ConGrAD
+MODEL = ConGrAD        # CoAttentionClassifier, ConGrAD
 
 
-def run_epoch(model, loader, device, optimizer=None, criterion=None):
+def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
+    """
+    Balanced-MixUp (Galdran et al., MICCAI 2021).
+    Mixes a regular and a class-balanced batch.
+      - lam ~ Beta(alpha, 1): naturally skews toward 0, so the regular batch
+        dominates via the (1-lam) coefficient without any clamping.
+      - Features:  x_mix = (1-lam)*x_reg  + lam*x_bal
+      - Labels:    y_mix = (1-lam)*y_reg  + lam*y_bal  (soft, one-hot weighted)
+    The soft labels require a soft cross-entropy loss (see run_epoch).
+    """
+    trill_r, gemma_r, _,        mask_r, y_r = batch_reg
+    trill_b, gemma_b, speakers, mask_b, y_b = batch_bal
+    trill_r, gemma_r, mask_r = trill_r.to(device), gemma_r.to(device), mask_r.to(device)
+    trill_b, gemma_b, mask_b = trill_b.to(device), gemma_b.to(device), mask_b.to(device)
+    speakers, y_r, y_b = speakers.to(device), y_r.to(device), y_b.to(device)
+
+    # Pad both batches to the same sequence length
+    T = max(trill_r.size(1), trill_b.size(1))
+    def _p3(x): return F.pad(x, (0, 0, 0, T - x.size(1)))        # [B, T, D]
+    def _p2(x, v=0): return F.pad(x, (0, T - x.size(1)), value=v) # [B, T]
+    trill_r, trill_b = _p3(trill_r), _p3(trill_b)
+    gemma_r, gemma_b = _p3(gemma_r), _p3(gemma_b)
+    mask_r,  mask_b  = _p2(mask_r),  _p2(mask_b)
+    speakers         = _p2(speakers)
+
+    lam = np.random.beta(alpha, 1)
+    y_mix = ((1 - lam) * F.one_hot(y_r, n_classes).float()
+             +      lam * F.one_hot(y_b, n_classes).float())
+    return ((1-lam)*trill_r + lam*trill_b,
+            (1-lam)*gemma_r + lam*gemma_b,
+            speakers, mask_b, y_mix)
+
+
+def run_epoch(model, loader, device, optimizer=None, criterion=None, balanced_loader=None, cfg=None):
     training = optimizer is not None
     model.train() if training else model.eval()
     total_loss, preds, labels = 0, [], []
+
+    loader_iter = zip(loader, balanced_loader) if (training and balanced_loader) \
+                  else ((b, None) for b in loader)
+
     with torch.set_grad_enabled(training):
-        for trill, gemma, speakers, mask, y in loader:
-            trill, gemma, speakers, mask, y = (
-                trill.to(device), gemma.to(device),
-                speakers.to(device), mask.to(device), y.to(device)
-            )
-            logits = model(trill, gemma, mask, speakers)
+        for batch_reg, batch_bal in loader_iter:
+            if batch_bal is not None:
+                trill, gemma, speakers, mask, y = mixup_batch(
+                    batch_reg, batch_bal, cfg.mixup_alpha, cfg.n_classes, device
+                )
+                logits = model(trill, gemma, mask, speakers)
+                # Soft cross-entropy: matches the original paper's loss formulation
+                loss = -(F.log_softmax(logits, dim=-1) * y).sum(dim=-1).mean()
+            else:
+                trill, gemma, speakers, mask, y = batch_reg
+                trill, gemma, speakers, mask, y = (
+                    trill.to(device), gemma.to(device),
+                    speakers.to(device), mask.to(device), y.to(device)
+                )
+                logits = model(trill, gemma, mask, speakers)
+                if training:
+                    loss = criterion(logits, y)
+
             if training:
-                loss = criterion(logits, y)
                 optimizer.zero_grad(); loss.backward(); optimizer.step()
                 total_loss += loss.item()
             preds.extend(logits.argmax(-1).cpu().tolist())
-            labels.extend(y.cpu().tolist())
+            labels.extend((y.argmax(-1) if y.dim() == 2 else y).cpu().tolist())
     return total_loss / len(loader), preds, labels
 
 
-def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict:
-    model = MODEL(cfg).to(device)
+def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader, balanced_loader) -> dict:
+    model     = MODEL(cfg).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     criterion = torch.nn.CrossEntropyLoss()
 
@@ -46,21 +96,18 @@ def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict
     best_uar, patience_counter = 0.0, 0
 
     for epoch in range(cfg.epochs):
-        loss, train_preds, train_labels = run_epoch(model, train_loader, device, optimizer, criterion)
+        loss, train_preds, train_labels = run_epoch(model, train_loader, device, optimizer, criterion, balanced_loader, cfg)
         _, val_preds, val_labels = run_epoch(model, test_loader, device)
 
         train_uar = compute_uar(train_labels, train_preds)
-        val_uar = compute_uar(val_labels, val_preds)
-
+        val_uar   = compute_uar(val_labels, val_preds)
         history['train_loss'].append(loss)
         history['train_uar'].append(train_uar)
         history['val_uar'].append(val_uar)
-
         print(f"  Epoch {epoch+1:02d}/{cfg.epochs} | loss {loss:.4f} | "
               f"train UAR {train_uar:.4f} | val UAR {val_uar:.4f}")
 
         torch.save(model.state_dict(), run_dir / 'last_checkpoint.pt')
-
         if val_uar > best_uar:
             best_uar = val_uar
             patience_counter = 0
@@ -75,7 +122,6 @@ def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader) -> dict
                 break
 
     plot_training(history, run_dir / 'training.png', cfg.experiment_name)
-
     model.load_state_dict(torch.load(run_dir / 'best_model.pt'))
     _, preds, labels = run_epoch(model, test_loader, device)
     print(classification_report(labels, preds, target_names=TARGET_NAMES))
@@ -102,23 +148,25 @@ def main(config_path: str):
     train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True,  **loader_kw)
     test_loader  = DataLoader(test_ds,  batch_size=cfg.batch_size, shuffle=False, **loader_kw)
 
-    # print experiment info
+    balanced_loader = None
+    if cfg.balanced_mixup:
+        balanced_loader = DataLoader(train_ds, batch_size=cfg.batch_size,
+                                     sampler=make_balanced_sampler(train_ds), **loader_kw)
+
     print("\n" + "="*50)
     print("EXPERIMENT: ", cfg.experiment_name)
     print("="*50)
     print(cfg.experiment_description, "\n")
-
-    # print model summary on a temporary sample model
+    print(f"Balanced-MixUp: {'ON' if cfg.balanced_mixup else 'OFF'}\n")
     print_model_summary(MODEL(cfg))
 
-    # Repeat train/eval experiment [n_runs] times
     all_metrics = []
     for i in range(cfg.n_runs):
         set_seed(cfg.base_seed + i)
         print(f"\n{'='*40}\nRun {i+1}/{cfg.n_runs} (seed={cfg.base_seed + i})\n{'='*40}")
         rep_dir = run_dir / f"run_{i}"
         rep_dir.mkdir()
-        all_metrics.append(train_one_run(cfg, rep_dir, device, train_loader, test_loader))
+        all_metrics.append(train_one_run(cfg, rep_dir, device, train_loader, test_loader, balanced_loader))
 
     save_results_csv(all_metrics, run_dir / 'results.csv', cfg.base_seed)
     print(f"\nResults saved to {run_dir / 'results.csv'}")
