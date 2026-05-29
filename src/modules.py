@@ -59,12 +59,12 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
                 if j != i:
                     pairs.add((min(i, j), max(i, j)))
             # Add logarithmic jump edges
-            # step = log_base
-            # while step < L:
-            #     for j in (i - step, i + step):
-            #         if 0 <= j < L:
-            #             pairs.add((min(i, j), max(i, j)))
-            #     step *= log_base
+            step = log_base
+            while step < L:
+                for j in (i - step, i + step):
+                    if 0 <= j < L:
+                        pairs.add((min(i, j), max(i, j)))
+                step *= log_base
  
         # Convert undirected pairs to directed edges
         for u, v in sorted(pairs):

@@ -7,8 +7,8 @@ test_jsonl:      ~/Thesis/data/MultiConAD/test_English.jsonl
 results_dir:     ~/Thesis/results
 
 # Experiment
-experiment_name: ConGrAD-BMU-0_1
-experiment_description: "ConGrAD with Balanced-MixUp alpha-0.1"
+experiment_name: ConGrAD-VIS
+experiment_description: "First test with visualizer"
 base_seed: 24
 n_runs: 1
 
@@ -17,29 +17,33 @@ audio_dim: 1024
 text_dim:  768
 
 # Model
-n_classes:     3
-d_model:       128
-ca_heads:      8
-ca_layers:     3
-rgat_heads:    8
-rgat_layers:   2
-graph_window:  5
-skip_log_base: 2       # log base of the graph skip-edges
+n_classes:    3
+d_model:      128
+ca_heads:     4
+ca_layers:    1
+rgat_heads:   4
+rgat_layers:  2
+graph_window: 5
 
 # Regularization
-dropout:        0.4
-drop_edge:      0.1
-weight_decay:   0.0001
-balanced_mixup: true
-mixup_alpha:    0.1    # as a grows we have more balanced classes, but risk more overfitting
+dropout:      0.5
+drop_edge:    0.1
+patience:     10
+weight_decay: 0.0001
 
 # Training
 device:     cuda
 batch_size: 16
 lr:         0.0001
-epochs:     60
-patience:   10
+epochs:     30
 
-# Hyperparameter Optiomization
-hpo_epochs: 20 
+# Data Augmentation
+balanced_mixup: true
+mixup_alpha:    0.1
+
+# Visualization
+visualizations: true   # set false to skip t-SNE and graph plots
+
+# Hyperparameter Optimization
+hpo_epochs: 20
 hpo_trials: 50

@@ -6,6 +6,27 @@ from torch.nn.utils.rnn import pad_sequence
 
 LABEL_MAP = {'HC': 0, 'MCI': 1, 'Dementia': 2}
 
+# Known MultiConAD/DementiaBank corpus prefixes
+_CORPUS_MAP = {
+    'pitt':      'Pitt',
+    'adress':    'ADReSS',
+    'taukadial': 'TAUKADIAL',
+    'tauk':      'TAUKADIAL',
+    'delaware':  'Delaware',
+    'wls':       'WLS',
+    'kempler':   'Kempler',
+    'vas':       'VAS',
+}
+
+
+def extract_corpus(file_name: str) -> str:
+    """Infer source corpus from file name prefix (e.g. 'Pitt_001_PAR' -> 'Pitt')."""
+    prefix = file_name.split('_')[0].lower()
+    for key, name in _CORPUS_MAP.items():
+        if prefix.startswith(key):
+            return name
+    return file_name.split('_')[0]   # fallback: use prefix verbatim
+
 
 def load_jsonl(path):
     with open(path) as f:
@@ -24,6 +45,8 @@ class MultiConADDataset(Dataset):
             and (self.trill_dir / f"{s['File_Name']}.pt").exists()
             and s['File_Name'] in self.speakers
         ]
+        # Corpus name per sample — used by Visualizer for t-SNE colouring
+        self.corpus_names = [extract_corpus(s['File_Name']) for s in self.samples]
         print(f"Loaded {len(self.samples)}/{len(all_samples)} samples with embeddings")
 
     def __getitem__(self, idx):
@@ -51,20 +74,15 @@ def collate_fn(batch):
 
 def make_balanced_sampler(dataset: MultiConADDataset) -> WeightedRandomSampler:
     """
-    Builds a WeightedRandomSampler that samples each class with equal probability,
-    effectively oversampling minority classes (MCI, Dementia) to match the majority
-    (HC). Used as the balanced loader in Balanced-MixUp.
-
-    Each sample receives a weight of 1 / class_count for its class, so that the
-    expected number of draws per class is equal across all classes.
+    WeightedRandomSampler that gives each class equal expected draw rate,
+    oversampling MCI and Dementia to match the HC majority.
     """
     labels = torch.tensor([LABEL_MAP[s['Diagnosis']] for s in dataset.samples])
-    class_counts = torch.bincount(labels)                         # [n_classes]
-    class_weights = 1.0 / class_counts.float()                   # inverse frequency
-    sample_weights = class_weights[labels]                        # one weight per sample
-
+    class_counts  = torch.bincount(labels)
+    class_weights = 1.0 / class_counts.float()
+    sample_weights = class_weights[labels]
     return WeightedRandomSampler(
         weights=sample_weights,
-        num_samples=len(dataset),   # same epoch length as the regular loader
-        replacement=True,           # necessary for oversampling minority classes
+        num_samples=len(dataset),
+        replacement=True,
     )

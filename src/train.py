@@ -12,21 +12,20 @@ from config import Config
 from dataset import MultiConADDataset, collate_fn, make_balanced_sampler
 from model import CoAttentionClassifier, ConGrAD
 from utils import Tee, set_seed, extract_metrics, save_results_csv, \
-                  compute_uar, plot_training, TARGET_NAMES, print_model_summary
+                  compute_uar, plot_training, TARGET_NAMES, print_model_summary, \
+                  Visualizer
 
 
-MODEL = ConGrAD        # CoAttentionClassifier, ConGrAD
+MODEL = ConGrAD
 
 
 def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
     """
     Balanced-MixUp (Galdran et al., MICCAI 2021).
-    Mixes a regular and a class-balanced batch.
-      - lam ~ Beta(alpha, 1): naturally skews toward 0, so the regular batch
-        dominates via the (1-lam) coefficient without any clamping.
-      - Features:  x_mix = (1-lam)*x_reg  + lam*x_bal
-      - Labels:    y_mix = (1-lam)*y_reg  + lam*y_bal  (soft, one-hot weighted)
-    The soft labels require a soft cross-entropy loss (see run_epoch).
+      - lam ~ Beta(alpha, 1): skews toward 0, regular batch dominates via (1-lam)
+      - Features:  x_mix = (1-lam)*x_reg + lam*x_bal
+      - Labels:    y_mix = (1-lam)*y_reg + lam*y_bal  (soft one-hot)
+    Loss is computed as soft cross-entropy (see run_epoch).
     """
     trill_r, gemma_r, _,        mask_r, y_r = batch_reg
     trill_b, gemma_b, speakers, mask_b, y_b = batch_bal
@@ -36,14 +35,14 @@ def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
 
     # Pad both batches to the same sequence length
     T = max(trill_r.size(1), trill_b.size(1))
-    def _p3(x): return F.pad(x, (0, 0, 0, T - x.size(1)))        # [B, T, D]
-    def _p2(x, v=0): return F.pad(x, (0, T - x.size(1)), value=v) # [B, T]
+    def _p3(x): return F.pad(x, (0, 0, 0, T - x.size(1)))
+    def _p2(x, v=0): return F.pad(x, (0, T - x.size(1)), value=v)
     trill_r, trill_b = _p3(trill_r), _p3(trill_b)
     gemma_r, gemma_b = _p3(gemma_r), _p3(gemma_b)
     mask_r,  mask_b  = _p2(mask_r),  _p2(mask_b)
     speakers         = _p2(speakers)
 
-    lam = np.random.beta(alpha, 1)
+    lam   = np.random.beta(alpha, 1)
     y_mix = ((1 - lam) * F.one_hot(y_r, n_classes).float()
              +      lam * F.one_hot(y_b, n_classes).float())
     return ((1-lam)*trill_r + lam*trill_b,
@@ -51,7 +50,8 @@ def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
             speakers, mask_b, y_mix)
 
 
-def run_epoch(model, loader, device, optimizer=None, criterion=None, balanced_loader=None, cfg=None):
+def run_epoch(model, loader, device, optimizer=None, criterion=None,
+              balanced_loader=None, cfg=None):
     training = optimizer is not None
     model.train() if training else model.eval()
     total_loss, preds, labels = 0, [], []
@@ -66,8 +66,7 @@ def run_epoch(model, loader, device, optimizer=None, criterion=None, balanced_lo
                     batch_reg, batch_bal, cfg.mixup_alpha, cfg.n_classes, device
                 )
                 logits = model(trill, gemma, mask, speakers)
-                # Soft cross-entropy: matches the original paper's loss formulation
-                loss = -(F.log_softmax(logits, dim=-1) * y).sum(dim=-1).mean()
+                loss   = -(F.log_softmax(logits, dim=-1) * y).sum(dim=-1).mean()
             else:
                 trill, gemma, speakers, mask, y = batch_reg
                 trill, gemma, speakers, mask, y = (
@@ -86,7 +85,35 @@ def run_epoch(model, loader, device, optimizer=None, criterion=None, balanced_lo
     return total_loss / len(loader), preds, labels
 
 
-def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader, balanced_loader) -> dict:
+def _collect_vis(model, loader, device, visualizer):
+    """
+    Single eval pass that extracts pooled vectors for t-SNE.
+    Uses return_pooled=True; corpus names are read from loader.dataset.corpus_names.
+    Called after the best model has been loaded, so loader must use shuffle=False.
+    """
+    model.eval()
+    bs = loader.batch_size
+    ds = loader.dataset
+    with torch.no_grad():
+        for i, (trill, gemma, speakers, mask, y) in enumerate(loader):
+            trill, gemma, speakers, mask = (
+                trill.to(device), gemma.to(device),
+                speakers.to(device), mask.to(device)
+            )
+            logits, pooled = model(trill, gemma, mask, speakers, return_pooled=True)
+            start  = i * bs
+            end    = start + y.size(0)
+            visualizer.collect(
+                pooled,
+                y.tolist(),
+                logits.argmax(-1).cpu().tolist(),
+                ds.corpus_names[start:end],
+            )
+
+
+def train_one_run(cfg, run_dir: Path, device,
+                  train_loader, test_loader,
+                  balanced_loader, visualizer) -> dict:
     model     = MODEL(cfg).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     criterion = torch.nn.CrossEntropyLoss()
@@ -96,11 +123,13 @@ def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader, balance
     best_uar, patience_counter = 0.0, 0
 
     for epoch in range(cfg.epochs):
-        loss, train_preds, train_labels = run_epoch(model, train_loader, device, optimizer, criterion, balanced_loader, cfg)
+        loss, train_preds, train_labels = run_epoch(
+            model, train_loader, device, optimizer, criterion, balanced_loader, cfg
+        )
         _, val_preds, val_labels = run_epoch(model, test_loader, device)
 
         train_uar = compute_uar(train_labels, train_preds)
-        val_uar   = compute_uar(val_labels, val_preds)
+        val_uar   = compute_uar(val_labels,   val_preds)
         history['train_loss'].append(loss)
         history['train_uar'].append(train_uar)
         history['val_uar'].append(val_uar)
@@ -122,9 +151,27 @@ def train_one_run(cfg, run_dir: Path, device, train_loader, test_loader, balance
                 break
 
     plot_training(history, run_dir / 'training.png', cfg.experiment_name)
+
     model.load_state_dict(torch.load(run_dir / 'best_model.pt'))
     _, preds, labels = run_epoch(model, test_loader, device)
     print(classification_report(labels, preds, target_names=TARGET_NAMES))
+
+    # Visualization
+    if visualizer.enabled:
+        _collect_vis(model, test_loader, device, visualizer)
+        visualizer.plot_tsne(f"{cfg.experiment_name} / {run_dir.name}")
+        # Graph: collect up to 4 test samples of reasonable length for 2x2 grid
+        ds = test_loader.dataset
+        graph_samples = []
+        for s in ds.samples:
+            spk = torch.tensor(ds.speakers[s['File_Name']])
+            if 10 <= len(spk) <= 40:
+                graph_samples.append((spk, s['File_Name']))
+            if len(graph_samples) == 4:
+                break
+        if graph_samples:
+            visualizer.plot_graph(graph_samples, cfg.graph_window)
+
     return extract_metrics(labels, preds)
 
 
@@ -153,11 +200,16 @@ def main(config_path: str):
         balanced_loader = DataLoader(train_ds, batch_size=cfg.batch_size,
                                      sampler=make_balanced_sampler(train_ds), **loader_kw)
 
+    # Guard against silent misconfiguration
+    if not cfg.balanced_mixup and cfg.mixup_alpha > 0:
+        print('WARNING: mixup_alpha is set but balanced_mixup is False — augmentation disabled.')
+
     print("\n" + "="*50)
     print("EXPERIMENT: ", cfg.experiment_name)
     print("="*50)
     print(cfg.experiment_description, "\n")
-    print(f"Balanced-MixUp: {'ON' if cfg.balanced_mixup else 'OFF'}\n")
+    print(f"Balanced-MixUp: {'ON' if cfg.balanced_mixup else 'OFF'}")
+    print(f"Visualizations: {'ON' if cfg.visualizations else 'OFF'}\n")
     print_model_summary(MODEL(cfg))
 
     all_metrics = []
@@ -166,7 +218,11 @@ def main(config_path: str):
         print(f"\n{'='*40}\nRun {i+1}/{cfg.n_runs} (seed={cfg.base_seed + i})\n{'='*40}")
         rep_dir = run_dir / f"run_{i}"
         rep_dir.mkdir()
-        all_metrics.append(train_one_run(cfg, rep_dir, device, train_loader, test_loader, balanced_loader))
+        visualizer = Visualizer(cfg.visualizations, rep_dir)
+        all_metrics.append(
+            train_one_run(cfg, rep_dir, device,
+                          train_loader, test_loader, balanced_loader, visualizer)
+        )
 
     save_results_csv(all_metrics, run_dir / 'results.csv', cfg.base_seed)
     print(f"\nResults saved to {run_dir / 'results.csv'}")
