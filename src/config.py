@@ -5,12 +5,14 @@ import yaml
 @dataclass
 class Config:
     # Paths
-    gemma_dir:       str
-    trill_dir:       str
-    speakers_json:   str
-    train_jsonl:     str
-    test_jsonl:      str
-    results_dir:     str
+    gemma_dir:        str
+    trill_dir:        str
+    speakers_json:    str
+    train_jsonl:      str
+    test_jsonl:       str
+    results_dir:      str
+    pretrained_model: str
+
 
     # Experiment
     experiment_name:        str
@@ -36,6 +38,10 @@ class Config:
     drop_edge:    float
     patience:     int
     weight_decay: float
+
+    # Domain-Adversarial Training
+    adv_lambda: float   # weight of adversarial loss; 0.0 disables DANN
+    n_domains:  int     # must equal number of distinct corpora in training data
 
     # Training
     device:     str
