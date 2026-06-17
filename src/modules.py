@@ -3,12 +3,11 @@ import torch.nn as nn
 from torch_geometric.nn import RGATConv
 import torch.nn.functional as F
 import math
+from torch.autograd import Function
 
 
 def sinusoidal_encoding(L, d_model, device):
-    """
-    Generates sinusoidal positional embeddings.
-    """
+    """Generates sinusoidal positional embeddings."""
     positions = torch.arange(L, device=device).unsqueeze(1)            # [L, 1]
     div_term = torch.exp(
         torch.arange(0, d_model, 2, device=device) * (-math.log(10000.0) / d_model)
@@ -25,7 +24,7 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
 
     PyG MessagePassing modules (e.g. RGATConv) do not support batching,
     so we output a single graph derived of disconnected sub-graphs.
- 
+
     Args:
         h              [B, L_max, d_h]  utterance embeddings (post positional encoding)
         lengths        [B]              true sequence length per sample
@@ -33,7 +32,7 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
         window         int              symmetric local context window (past and future)
         device         str              target device
         log_base       int              base for logarithmic skip edges (default: 2)
- 
+
     Returns:
         x            [N, d_h]  flat node features
         edge_index   [2, E]    global edge array
@@ -44,13 +43,13 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
     srcs, dsts, rels = [], [], []
     node_feats, batches, masks = [], [], []
     offset = 0      # for global indexing
- 
+
     for b, L in enumerate(lengths.tolist()):
         spk = speakers[b, :L]
         node_feats.append(h[b, :L])
         batches.append(torch.full((L,), b, dtype=torch.long, device=device))
-        masks.append(spk == 1) # convert to bool
- 
+        masks.append(spk == 1)
+
         # Collect undirected pairs via a set
         pairs = set()
         for i in range(L):
@@ -65,39 +64,38 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
                     if 0 <= j < L:
                         pairs.add((min(i, j), max(i, j)))
                 step *= log_base
- 
+
         # Convert undirected pairs to directed edges
-        for u, v in sorted(pairs):
-            # we sort the pairs to assert deterministic behaviour
+        for u, v in pairs:
             su, sv = spk[u].item(), spk[v].item()
             srcs += [u + offset, v + offset]
             dsts += [v + offset, u + offset]
             rels += [su * 2 + sv, sv * 2 + su]      # 0: int->int    1: int->par
                                                     # 2: par->int    3: par->par
- 
+
         offset += L
 
-    x = torch.cat(node_feats).to(device)
+    x          = torch.cat(node_feats).to(device)
     edge_index = torch.tensor([srcs, dsts], dtype=torch.long, device=device)
-    edge_type = torch.tensor(rels, dtype=torch.long, device=device)
-    batch = torch.cat(batches)
-    spk_mask = torch.cat(masks)
- 
+    edge_type  = torch.tensor(rels,         dtype=torch.long, device=device)
+    batch      = torch.cat(batches)
+    spk_mask   = torch.cat(masks)
+
     # DropEdge: randomly remove edges during training
     if drop_edge > 0.0:
-        keep = torch.rand(edge_index.size(1), device=device) > drop_edge
+        keep       = torch.rand(edge_index.size(1), device=device) > drop_edge
         edge_index = edge_index[:, keep]
         edge_type  = edge_type[keep]
 
     return x, edge_index, edge_type, batch, spk_mask
- 
+
 
 class CoAttentionBlock(nn.Module):
     def __init__(self, d_model, n_heads, dropout):
         super().__init__()
         kw = dict(dropout=dropout, batch_first=True)
         self.audio_attn = nn.MultiheadAttention(d_model, n_heads, **kw)
-        self.text_attn = nn.MultiheadAttention(d_model, n_heads, **kw)
+        self.text_attn  = nn.MultiheadAttention(d_model, n_heads, **kw)
         self.ffn_a = nn.Sequential(nn.Linear(d_model, d_model * 4), nn.GELU(),
                                    nn.Dropout(dropout), nn.Linear(d_model * 4, d_model))
         self.ffn_t = nn.Sequential(nn.Linear(d_model, d_model * 4), nn.GELU(),
@@ -112,9 +110,9 @@ class CoAttentionBlock(nn.Module):
         a, _ = self.audio_attn(audio, text, text, key_padding_mask=kpm)
         t, _ = self.text_attn (text, audio, audio, key_padding_mask=kpm)
         audio = self.norm_a1(audio + a)
-        text = self.norm_t1(text + t)
+        text  = self.norm_t1(text  + t)
         audio = self.norm_a2(audio + self.ffn_a(audio))
-        text = self.norm_t2(text + self.ffn_t(text))
+        text  = self.norm_t2(text  + self.ffn_t(text))
         return audio, text
 
 
@@ -143,3 +141,45 @@ class RGAT(nn.Module):
         return x
 
 
+# ---------------------------------------------------------------------------
+# Domain-Adversarial Neural Network components (Ganin et al., JMLR 2016)
+# ---------------------------------------------------------------------------
+
+class GradientReversalFunction(Function):
+    """
+    Identity in the forward pass; negates and scales gradients in the backward pass.
+    This makes the encoder adversarially invariant to whatever the downstream classifier predicts.
+    """
+    @staticmethod
+    def forward(ctx, x, alpha):
+        # x: [B, d]  input features (passed through unchanged)
+        # alpha: scalar reversal strength (annealed during training)
+        ctx.alpha = alpha
+        return x.clone()
+
+    @staticmethod
+    def backward(ctx, grad_output):
+        # returns negated+scaled gradient to the encoder, None for alpha (not a tensor)
+        return -ctx.alpha * grad_output, None
+
+
+class DomainClassifier(nn.Module):
+    """
+    Predicts sub-dataset origin from pooled representations.
+    The GRL ensures the encoder is trained to make this prediction as difficult as possible,
+    producing domain-invariant features.
+    """
+    def __init__(self, d_model, n_domains, dropout):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(d_model, d_model),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(d_model, n_domains),
+        )
+
+    def forward(self, x, alpha):
+        # x:     [B, d_model]  pooled sample representations
+        # alpha: scalar        reversal strength, annealed from ~0 to ~1 during training
+        x = GradientReversalFunction.apply(x, alpha)  # identity forward, negated gradient backward
+        return self.net(x)

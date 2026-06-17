@@ -52,7 +52,7 @@ def compute_uar(labels, preds) -> float:
     return float(r['macro avg']['recall'])
 
 
-def extract_metrics(labels, preds) -> dict:
+def extract_metrics(labels, preds, test_domains=None) -> dict:
     r: dict[str, Any] = classification_report(labels, preds, target_names=TARGET_NAMES,
                                                output_dict=True, zero_division=0)
     def f1(key): return round(float(r[key]['f1-score']), 4)
@@ -114,10 +114,6 @@ def plot_training(history: dict, path: Path, experiment_name):
     plt.close()
     print(f"  Training plot saved to {path}")
 
-
-# ---------------------------------------------------------------------------
-# Visualizer
-# ---------------------------------------------------------------------------
 
 class Visualizer:
     """
@@ -193,7 +189,7 @@ class Visualizer:
             m = corpus == corp
             axes[2].scatter(coords[m, 0], coords[m, 1], c=[corp_cmap(i)],
                             label=corp, alpha=0.7, s=18)
-        axes[2].set_title('Corpus Origin')
+        axes[2].set_title('Source Corpus')
         axes[2].legend(fontsize=7)
 
         plt.suptitle(f't-SNE of Pooled Representations — {title}')
@@ -264,10 +260,6 @@ class Visualizer:
             ax.set_title(name, fontsize=9)
             ax.axis('off')
 
-        # Hide unused subplots if fewer than 4 samples were found
-        for ax_idx in range(len(samples), 4):
-            axes[ax_idx].axis('off')
-
         from matplotlib.patches import Patch
         legend = (
             [Patch(fc='#3498db', label='Interviewer'),
@@ -282,3 +274,14 @@ class Visualizer:
         plt.savefig(path, dpi=150, bbox_inches='tight')
         plt.close()
         print(f'  Graph saved to {path}')
+
+
+def get_alpha(epoch: int, total_epochs: int) -> float:
+    """
+    DANN annealing schedule (Ganin et al., JMLR 2016).
+    Ramps the GRL coefficient from 0 → ~1 using a sigmoid curve,
+    letting the diagnosis classifier stabilise before the adversary activates.
+    """
+    import math
+    p = epoch / max(total_epochs - 1, 1)
+    return 2.0 / (1.0 + math.exp(-10.0 * p)) - 1.0
