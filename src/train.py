@@ -13,25 +13,27 @@ from dataset import MultiConADDataset, collate_fn, make_balanced_sampler
 from model import CoAttentionClassifier, ConGrAD
 from utils import Tee, set_seed, extract_metrics, save_results_csv, \
                   compute_uar, plot_training, TARGET_NAMES, print_model_summary, \
-                  Visualizer
+                  get_alpha, Visualizer
 
 
 MODEL = ConGrAD
 
 
-def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
+def mixup_batch(batch_reg, batch_bal, alpha_mix, n_classes, device):
     """
     Balanced-MixUp (Galdran et al., MICCAI 2021).
-      - lam ~ Beta(alpha, 1): skews toward 0, regular batch dominates via (1-lam)
+      - alpha_mix: MixUp Beta parameter (distinct from the DANN GRL alpha)
+      - lam ~ Beta(alpha_mix, 1): skews toward 0, regular batch dominates via (1-lam)
       - Features:  x_mix = (1-lam)*x_reg + lam*x_bal
       - Labels:    y_mix = (1-lam)*y_reg + lam*y_bal  (soft one-hot)
-    Loss is computed as soft cross-entropy (see run_epoch).
+      - domain_ids: taken from the balanced batch (consistent with label assignment)
     """
-    trill_r, gemma_r, _,        mask_r, y_r = batch_reg
-    trill_b, gemma_b, speakers, mask_b, y_b = batch_bal
+    trill_r, gemma_r, speakers_r, mask_r, y_r, domain_ids_r = batch_reg
+    trill_b, gemma_b, _, mask_b, y_b, _ = batch_bal
     trill_r, gemma_r, mask_r = trill_r.to(device), gemma_r.to(device), mask_r.to(device)
     trill_b, gemma_b, mask_b = trill_b.to(device), gemma_b.to(device), mask_b.to(device)
-    speakers, y_r, y_b = speakers.to(device), y_r.to(device), y_b.to(device)
+    speakers_r, y_r, y_b = speakers_r.to(device), y_r.to(device), y_b.to(device)
+    domain_ids_r = domain_ids_r.to(device)
 
     # Pad both batches to the same sequence length
     T = max(trill_r.size(1), trill_b.size(1))
@@ -39,70 +41,93 @@ def mixup_batch(batch_reg, batch_bal, alpha, n_classes, device):
     def _p2(x, v=0): return F.pad(x, (0, T - x.size(1)), value=v)
     trill_r, trill_b = _p3(trill_r), _p3(trill_b)
     gemma_r, gemma_b = _p3(gemma_r), _p3(gemma_b)
-    mask_r,  mask_b  = _p2(mask_r),  _p2(mask_b)
-    speakers         = _p2(speakers)
+    mask_r, mask_b = _p2(mask_r),  _p2(mask_b)
+    speakers_r = _p2(speakers_r)
 
-    lam   = np.random.beta(alpha, 1)
+    lam = np.random.beta(alpha_mix, 1)
     y_mix = ((1 - lam) * F.one_hot(y_r, n_classes).float()
-             +      lam * F.one_hot(y_b, n_classes).float())
+             + lam * F.one_hot(y_b, n_classes).float())
+             
+    # Since lam ~ Beta(alpha_mix, 1) is heavily skewed towards 0 (for small alpha_mix), 
+    # (1-lam) is near 1, meaning the regular batch dominates both features and labels.
+    # Therefore, categorical sequences (speakers, mask) and domain IDs MUST be taken 
+    # from the dominant regular batch, not the balanced batch.
+    mask_mix = mask_r | mask_b
+
     return ((1-lam)*trill_r + lam*trill_b,
             (1-lam)*gemma_r + lam*gemma_b,
-            speakers, mask_b, y_mix)
+            speakers_r, mask_mix, y_mix, domain_ids_r)
 
 
-def run_epoch(model, loader, device, optimizer=None, criterion=None,
-              balanced_loader=None, cfg=None):
+def run_epoch(model, loader, device, cfg, optimizer=None, criterion=None,
+              balanced_loader=None, epoch=0):
     training = optimizer is not None
     model.train() if training else model.eval()
-    total_loss, preds, labels = 0, [], []
+    total_loss, preds, labels, corpus_ids = 0, [], [], []
 
+    # Gradient Reversal Layer coefficient, for DANN
+    # alpha_grl = get_alpha(epoch, cfg.epochs)
+
+    # (batch_reg, batch_bal) - regular batch and batch balanced with Balanced-MixUp
     loader_iter = zip(loader, balanced_loader) if (training and balanced_loader) \
                   else ((b, None) for b in loader)
 
     with torch.set_grad_enabled(training):
         for batch_reg, batch_bal in loader_iter:
             if batch_bal is not None:
-                trill, gemma, speakers, mask, y = mixup_batch(
+                # Balanced-MixUp: soft diagnosis labels, hard domain labels from balanced batch
+                audio, text, speakers, mask, y, domain_ids = mixup_batch(
                     batch_reg, batch_bal, cfg.mixup_alpha, cfg.n_classes, device
                 )
-                logits = model(trill, gemma, mask, speakers)
-                loss   = -(F.log_softmax(logits, dim=-1) * y).sum(dim=-1).mean()
+                logits = model(audio, text, mask, speakers)
+                if isinstance(logits, tuple): logits = logits[0]
+                main_loss = -(F.log_softmax(logits, dim=-1) * y).sum(dim=-1).mean()
             else:
-                trill, gemma, speakers, mask, y = batch_reg
-                trill, gemma, speakers, mask, y = (
-                    trill.to(device), gemma.to(device),
-                    speakers.to(device), mask.to(device), y.to(device)
+                audio, text, speakers, mask, y, domain_ids = batch_reg
+                audio, text, speakers, mask, y, domain_ids = (
+                    audio.to(device), text.to(device), speakers.to(device),
+                    mask.to(device),  y.to(device),    domain_ids.to(device)
                 )
-                logits = model(trill, gemma, mask, speakers)
-                if training:
-                    loss = criterion(logits, y)
+                logits = model(audio, text, mask, speakers)
+                if isinstance(logits, tuple): logits = logits[0]
+                main_loss = criterion(logits, y) if criterion is not None else None
 
             if training:
-                optimizer.zero_grad(); loss.backward(); optimizer.step()
-                total_loss += loss.item()
+                # Domain Adversarial Training
+                # adv_loss   = F.cross_entropy(domain_logits, domain_ids)
+                loss = main_loss # + cfg.adv_lambda * adv_loss
+                if loss is not None:
+                    total_loss += loss.item()
+                    optimizer.zero_grad(); loss.backward(); optimizer.step()
+
             preds.extend(logits.argmax(-1).cpu().tolist())
             labels.extend((y.argmax(-1) if y.dim() == 2 else y).cpu().tolist())
-    return total_loss / len(loader), preds, labels
+            corpus_ids.extend(domain_ids.cpu().tolist())
+
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+
+    return total_loss / len(loader), preds, labels, corpus_ids
 
 
 def _collect_vis(model, loader, device, visualizer):
     """
-    Single eval pass that extracts pooled vectors for t-SNE.
+    Single eval pass collecting pooled vectors for t-SNE.
     Uses return_pooled=True; corpus names are read from loader.dataset.corpus_names.
-    Called after the best model has been loaded, so loader must use shuffle=False.
+    Called after the best model has been loaded; loader must use shuffle=False.
     """
     model.eval()
     bs = loader.batch_size
     ds = loader.dataset
     with torch.no_grad():
-        for i, (trill, gemma, speakers, mask, y) in enumerate(loader):
+        for i, (trill, gemma, speakers, mask, y, _) in enumerate(loader):
             trill, gemma, speakers, mask = (
                 trill.to(device), gemma.to(device),
                 speakers.to(device), mask.to(device)
             )
             logits, pooled = model(trill, gemma, mask, speakers, return_pooled=True)
-            start  = i * bs
-            end    = start + y.size(0)
+            start = i * bs
+            end   = start + y.size(0)
             visualizer.collect(
                 pooled,
                 y.tolist(),
@@ -111,10 +136,17 @@ def _collect_vis(model, loader, device, visualizer):
             )
 
 
-def train_one_run(cfg, run_dir: Path, device,
+def train(cfg, run_dir: Path, device,
                   train_loader, test_loader,
                   balanced_loader, visualizer) -> dict:
-    model     = MODEL(cfg).to(device)
+
+    model = MODEL(cfg).to(device)
+    
+    # Initialized from pretrained model
+    if getattr(cfg, 'pretrained_model', None):
+        print(f"Loading pretrained model from {cfg.pretrained_model}")
+        model.load_state_dict(torch.load(cfg.pretrained_model, map_location=device), strict=False)
+        
     optimizer = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     criterion = torch.nn.CrossEntropyLoss()
 
@@ -123,13 +155,16 @@ def train_one_run(cfg, run_dir: Path, device,
     best_uar, patience_counter = 0.0, 0
 
     for epoch in range(cfg.epochs):
-        loss, train_preds, train_labels = run_epoch(
-            model, train_loader, device, optimizer, criterion, balanced_loader, cfg
+        loss, train_preds, train_labels, _ = run_epoch(
+            model, train_loader, device, cfg, optimizer, criterion, balanced_loader, epoch
         )
-        _, val_preds, val_labels = run_epoch(model, test_loader, device)
+        _, val_preds, val_labels, _ = run_epoch(
+            model, test_loader, device, cfg, epoch=epoch
+        )
 
+        # Use UAR as primaty metric
         train_uar = compute_uar(train_labels, train_preds)
-        val_uar   = compute_uar(val_labels,   val_preds)
+        val_uar = compute_uar(val_labels,   val_preds)
         history['train_loss'].append(loss)
         history['train_uar'].append(train_uar)
         history['val_uar'].append(val_uar)
@@ -153,14 +188,13 @@ def train_one_run(cfg, run_dir: Path, device,
     plot_training(history, run_dir / 'training.png', cfg.experiment_name)
 
     model.load_state_dict(torch.load(run_dir / 'best_model.pt'))
-    _, preds, labels = run_epoch(model, test_loader, device)
-    print(classification_report(labels, preds, target_names=TARGET_NAMES))
+    _, preds, labels, test_domains = run_epoch(model, test_loader, device, cfg)
+    print(classification_report(labels, preds, target_names=TARGET_NAMES, labels=[0, 1, 2])) 
 
-    # Visualization
+    # Latent space visualization
     if visualizer.enabled:
         _collect_vis(model, test_loader, device, visualizer)
         visualizer.plot_tsne(f"{cfg.experiment_name} / {run_dir.name}")
-        # Graph: collect up to 4 test samples of reasonable length for 2x2 grid
         ds = test_loader.dataset
         graph_samples = []
         for s in ds.samples:
@@ -172,12 +206,12 @@ def train_one_run(cfg, run_dir: Path, device,
         if graph_samples:
             visualizer.plot_graph(graph_samples, cfg.graph_window)
 
-    return extract_metrics(labels, preds)
+    return extract_metrics(labels, preds, test_domains)
 
 
 def main(config_path: str):
-    cfg     = Config.from_yaml(config_path)
-    ts      = datetime.now().strftime('%Y%m%d_%H%M%S')
+    cfg = Config.from_yaml(config_path)
+    ts = datetime.now().strftime('%Y%m%d_%H%M%S')
     run_dir = Path(cfg.results_dir) / f"{ts}_{cfg.experiment_name}"
     run_dir.mkdir(parents=True)
     shutil.copy(config_path, run_dir / 'config.yaml')
@@ -189,29 +223,38 @@ def main(config_path: str):
     print(f"Run dir: {run_dir}")
     device = torch.device(cfg.device if torch.cuda.is_available() else 'cpu')
 
+    # Create Datasets
     train_ds = MultiConADDataset(cfg.train_jsonl, cfg.gemma_dir, cfg.trill_dir, cfg.speakers_json)
     test_ds  = MultiConADDataset(cfg.test_jsonl,  cfg.gemma_dir, cfg.trill_dir, cfg.speakers_json)
-    loader_kw    = dict(collate_fn=collate_fn, num_workers=4, pin_memory=True)
-    train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True,  **loader_kw)
-    test_loader  = DataLoader(test_ds,  batch_size=cfg.batch_size, shuffle=False, **loader_kw)
+    train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True,
+                              collate_fn=collate_fn, num_workers=4, pin_memory=True)
+    test_loader  = DataLoader(test_ds,  batch_size=cfg.batch_size, shuffle=False, 
+                              collate_fn=collate_fn, num_workers=4, pin_memory=True)
 
+    # If Balanced-MixUp is set, use the corresponding loader
     balanced_loader = None
     if cfg.balanced_mixup:
-        balanced_loader = DataLoader(train_ds, batch_size=cfg.batch_size,
-                                     sampler=make_balanced_sampler(train_ds), **loader_kw)
+        balanced_loader = DataLoader(train_ds, 
+                                     batch_size=cfg.batch_size,
+                                     sampler=make_balanced_sampler(train_ds), 
+                                     collate_fn=collate_fn,
+                                     num_workers=4, 
+                                     pin_memory=True)
 
-    # Guard against silent misconfiguration
     if not cfg.balanced_mixup and cfg.mixup_alpha > 0:
         print('WARNING: mixup_alpha is set but balanced_mixup is False — augmentation disabled.')
 
+    # Print configs and model summary
     print("\n" + "="*50)
     print("EXPERIMENT: ", cfg.experiment_name)
     print("="*50)
     print(cfg.experiment_description, "\n")
     print(f"Balanced-MixUp: {'ON' if cfg.balanced_mixup else 'OFF'}")
+    # print(f"DANN: {'ON (lambda=' + str(cfg.adv_lambda) + ')' if cfg.adv_lambda > 0 else 'OFF'}")
     print(f"Visualizations: {'ON' if cfg.visualizations else 'OFF'}\n")
     print_model_summary(MODEL(cfg))
 
+    # Repeat the train/test experiment with different initial seeds
     all_metrics = []
     for i in range(cfg.n_runs):
         set_seed(cfg.base_seed + i)
@@ -220,10 +263,9 @@ def main(config_path: str):
         rep_dir.mkdir()
         visualizer = Visualizer(cfg.visualizations, rep_dir)
         all_metrics.append(
-            train_one_run(cfg, rep_dir, device,
+            train(cfg, rep_dir, device,
                           train_loader, test_loader, balanced_loader, visualizer)
         )
-
     save_results_csv(all_metrics, run_dir / 'results.csv', cfg.base_seed)
     print(f"\nResults saved to {run_dir / 'results.csv'}")
 

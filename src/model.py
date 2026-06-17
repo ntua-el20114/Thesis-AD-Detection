@@ -22,12 +22,13 @@ class CoAttentionClassifier(nn.Module):
             nn.Dropout(cfg.dropout),
             nn.Linear(cfg.d_model, cfg.n_classes),
         )
+        # self.domain_classifier = DomainClassifier(2 * cfg.d_model, cfg.n_domains, cfg.dropout)
 
-    def forward(self, audio, text, mask, speakers=None, return_pooled=False):
+    def forward(self, audio, text, mask, speakers=None, alpha=1.0, return_pooled=False):
         # speakers unused; accepted for interface compatibility with ConGrAD
-        kpm = ~mask
-        audio = self.audio_proj(audio)
-        text  = self.text_proj(text)
+        kpm        = ~mask
+        audio      = self.audio_proj(audio)
+        text       = self.text_proj(text)
         for layer in self.layers:
             audio, text = layer(audio, text, kpm)
         m          = mask.unsqueeze(-1).float()
@@ -35,7 +36,10 @@ class CoAttentionClassifier(nn.Module):
         text_pool  = (text  * m).sum(1) / m.sum(1)
         pooled     = torch.cat([audio_pool, text_pool], dim=-1)
         logits     = self.classifier(pooled)
-        return (logits, pooled.detach()) if return_pooled else logits
+        if return_pooled:
+            return logits, pooled.detach()
+        # return logits, self.domain_classifier(pooled, alpha)
+        return logits
 
 
 class ConGrAD(nn.Module):
@@ -56,11 +60,12 @@ class ConGrAD(nn.Module):
             nn.Dropout(cfg.dropout),
             nn.Linear(cfg.d_model, cfg.n_classes),
         )
+        # self.domain_classifier = DomainClassifier(cfg.d_model, cfg.n_domains, cfg.dropout)
         self.window    = cfg.graph_window
         self.drop_edge = cfg.drop_edge
 
-    def forward(self, audio, text, mask, speakers, return_pooled=False):
-        B, L = audio.shape[:2]
+    def forward(self, audio, text, mask, speakers, alpha=1.0, return_pooled=False):
+        B, L    = audio.shape[:2]
         lengths = mask.sum(dim=1).long()
 
         audio = self.audio_proj(audio)
@@ -88,4 +93,7 @@ class ConGrAD(nn.Module):
                 pooled[b] = (w.unsqueeze(-1) * x_par[m]).sum(0)
 
         logits = self.classifier(pooled)
-        return (logits, pooled.detach()) if return_pooled else logits
+        if return_pooled:
+            return logits, pooled.detach()
+        # return logits, self.domain_classifier(pooled, alpha)
+        return logits
