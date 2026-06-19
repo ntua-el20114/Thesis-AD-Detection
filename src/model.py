@@ -46,44 +46,52 @@ class ConGrAD(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         self.audio_proj = nn.Linear(cfg.audio_dim, cfg.d_model)
-        self.text_proj  = nn.Linear(cfg.text_dim,  cfg.d_model)
+        self.text_proj = nn.Linear(cfg.text_dim,  cfg.d_model)
         self.co_attn = nn.ModuleList([
             CoAttentionBlock(cfg.d_model, cfg.ca_heads, cfg.dropout)
             for _ in range(cfg.rgat_layers)
         ])
-        self.fusion    = nn.Linear(2 * cfg.d_model, cfg.d_model)
-        self.rgat      = RGAT(cfg.d_model, cfg.rgat_layers, cfg.rgat_heads, cfg.dropout)
-        self.pool_gate = nn.Linear(cfg.d_model, 1)
+        self.fusion = nn.Linear(2*cfg.d_model, cfg.d_model)
+        self.rgat = RGAT(cfg.d_model, cfg.rgat_layers, cfg.rgat_heads, cfg.dropout)
+        self.att_score = nn.Linear(2*cfg.d_model, 1)
         self.classifier = nn.Sequential(
-            nn.Linear(cfg.d_model, cfg.d_model),
+            nn.Linear(2*cfg.d_model, cfg.d_model),
             nn.GELU(),
             nn.Dropout(cfg.dropout),
             nn.Linear(cfg.d_model, cfg.n_classes),
         )
         # self.domain_classifier = DomainClassifier(cfg.d_model, cfg.n_domains, cfg.dropout)
-        self.window    = cfg.graph_window
+        self.window = cfg.graph_window
         self.drop_edge = cfg.drop_edge
 
     def forward(self, audio, text, mask, speakers, alpha=1.0, return_pooled=False):
-        B, L    = audio.shape[:2]
+        B, L = audio.shape[:2]
         lengths = mask.sum(dim=1).long()
 
+        # Project modalities
         audio = self.audio_proj(audio)
-        text  = self.text_proj(text)
+        text = self.text_proj(text)
+
+        # Multimodal Fusion
         for layer in self.co_attn:
             audio, text = layer(audio, text, ~mask)
-
         h = self.fusion(torch.cat([audio, text], dim=-1))
-        h = h + sinusoidal_encoding(L, h.size(-1), h.device)
 
-        x, edge_index, edge_type, batch, spk_mask = graphify(
+        # Graph Construction
+        h = h + sinusoidal_encoding(L, h.size(-1), h.device)
+        h_flat, edge_index, edge_type, batch, spk_mask = graphify(
             h, lengths, speakers, self.window, h.device, drop_edge=self.drop_edge
         )
-        x = self.rgat(x, edge_index, edge_type)
+
+        # RGAT
+        x = self.rgat(h_flat, edge_index, edge_type)
+
+        # Concatenate pre-rgat features
+        x = torch.cat([h_flat, x], dim=-1)
 
         x_par = x[spk_mask]
         b_par = batch[spk_mask]
-        att   = self.pool_gate(x_par).squeeze(-1)
+        att = self.att_score(x_par).squeeze(-1)
 
         pooled = torch.zeros(B, x.size(-1), device=x.device)
         for b in range(B):
@@ -97,3 +105,4 @@ class ConGrAD(nn.Module):
             return logits, pooled.detach()
         # return logits, self.domain_classifier(pooled, alpha)
         return logits
+
