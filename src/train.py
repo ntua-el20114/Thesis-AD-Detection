@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from sklearn.metrics import classification_report
 
@@ -13,10 +14,11 @@ from dataset import MultiConADDataset, collate_fn, make_balanced_sampler
 from model import CoAttentionClassifier, ConGrAD
 from utils import Tee, set_seed, extract_metrics, save_results_csv, \
                   compute_uar, plot_training, TARGET_NAMES, print_model_summary, \
-                  get_alpha, Visualizer
+                  report_vram_projection, get_alpha, Visualizer
 
 
 MODEL = ConGrAD
+# MODEL = CoAttentionClassifier
 
 
 def mixup_batch(batch_reg, batch_bal, alpha_mix, n_classes, device):
@@ -25,7 +27,7 @@ def mixup_batch(batch_reg, batch_bal, alpha_mix, n_classes, device):
       - alpha_mix: MixUp Beta parameter (distinct from the DANN GRL alpha)
       - lam ~ Beta(alpha_mix, 1): skews toward 0, regular batch dominates via (1-lam)
       - Features:  x_mix = (1-lam)*x_reg + lam*x_bal
-      - Labels:    y_mix = (1-lam)*y_reg + lam*y_bal  (soft one-hot)
+      - Labels: y_mix = (1-lam)*y_reg + lam*y_bal  (soft one-hot)
       - domain_ids: taken from the balanced batch (consistent with label assignment)
     """
     trill_r, gemma_r, speakers_r, mask_r, y_r, domain_ids_r = batch_reg
@@ -241,9 +243,6 @@ def main(config_path: str):
                                      num_workers=4, 
                                      pin_memory=True)
 
-    if not cfg.balanced_mixup and cfg.mixup_alpha > 0:
-        print('WARNING: mixup_alpha is set but balanced_mixup is False — augmentation disabled.')
-
     # Print configs and model summary
     print("\n" + "="*50)
     print("EXPERIMENT: ", cfg.experiment_name)
@@ -253,6 +252,8 @@ def main(config_path: str):
     # print(f"DANN: {'ON (lambda=' + str(cfg.adv_lambda) + ')' if cfg.adv_lambda > 0 else 'OFF'}")
     print(f"Visualizations: {'ON' if cfg.visualizations else 'OFF'}\n")
     print_model_summary(MODEL(cfg))
+    if cfg.report_gpu:
+        report_vram_projection(cfg, MODEL, train_ds, device)
 
     # Repeat the train/test experiment with different initial seeds
     all_metrics = []

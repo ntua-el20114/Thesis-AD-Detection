@@ -19,6 +19,7 @@ class Config:
     experiment_description: str
     base_seed:              int
     n_runs:                 int
+    report_gpu:             bool 
 
     # Embedding dims
     audio_dim: int
@@ -64,6 +65,10 @@ class Config:
     def from_yaml(cls, path: str) -> 'Config':
         with open(path) as f:
             data = yaml.safe_load(f)
+        
+        # Replace hyphens with underscores in keys for dataclass compatibility
+        data = {k.replace('-', '_'): v for k, v in data.items()}
+        
         for key, value in data.items():
             if isinstance(value, str) and value.startswith('~'):
                 data[key] = str(Path(value).expanduser())

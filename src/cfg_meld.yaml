@@ -1,0 +1,55 @@
+# Paths
+gemma_dir:        ~/Thesis/data/MELD/gemma
+trill_dir:        ~/Thesis/data/MELD/trillsson
+speakers_json:    ~/Thesis/data/MELD/speakers.json
+train_jsonl:      ~/Thesis/data/MELD/train.jsonl
+test_jsonl:       ~/Thesis/data/MELD/test.jsonl
+results_dir:      ~/Thesis/results/MELD
+pretrained_model: ""  
+
+# Experiment
+experiment_name: MELD_ConGrAD
+experiment_description: "Training ConGrAD and CoAttention on MELD for utterance-level emotion recognition (7 classes)."
+base_seed:  24
+n_runs:     1
+report_gpu: false
+
+# Embedding dims (Assumes the same Trillsson and Gemma dimensions)
+audio_dim: 1024
+text_dim:  768
+
+# Model
+n_classes:    7    # MELD has 7 emotion classes
+d_model:      256
+ca_heads:     4
+ca_layers:    1
+rgat_heads:   4
+rgat_layers:  2
+graph_window: 5
+
+# Regularization
+dropout:      0.5
+drop_edge:    0.1
+patience:     15
+weight_decay: 0.0001
+
+# Domain-Adversarial Training (Not applicable to our MELD script, set to 0 to disable)
+adv_lambda: 0.0   
+n_domains:  1     
+
+# Training
+device:     cuda
+batch_size: 16
+lr:         0.0001
+epochs:     60
+
+# Data Augmentation (Disabled for now as our MELD script doesn't implement domain mixup)
+balanced_mixup: false
+mixup_alpha:    0.0
+
+# Visualization
+visualizations: false
+
+# Hyperparameter Optimization
+hpo_epochs: 20
+hpo_trials: 50

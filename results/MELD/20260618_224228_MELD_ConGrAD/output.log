@@ -1,0 +1,87 @@
+Using device: cuda
+Starting training on MELD with ConGrAD...
+Epoch 01/60 | loss 1.6211 | train F1 0.3065 | val F1 0.3127
+    ↳ best model saved (F1 0.3127)
+Epoch 02/60 | loss 1.5395 | train F1 0.3045 | val F1 0.3147
+    ↳ best model saved (F1 0.3147)
+Epoch 03/60 | loss 1.5103 | train F1 0.3387 | val F1 0.3875
+    ↳ best model saved (F1 0.3875)
+Epoch 04/60 | loss 1.4703 | train F1 0.3720 | val F1 0.4093
+    ↳ best model saved (F1 0.4093)
+Epoch 05/60 | loss 1.3616 | train F1 0.4406 | val F1 0.4712
+    ↳ best model saved (F1 0.4712)
+Epoch 06/60 | loss 1.3157 | train F1 0.4849 | val F1 0.4861
+    ↳ best model saved (F1 0.4861)
+Epoch 07/60 | loss 1.2597 | train F1 0.5183 | val F1 0.5475
+    ↳ best model saved (F1 0.5475)
+Epoch 08/60 | loss 1.2068 | train F1 0.5533 | val F1 0.5901
+    ↳ best model saved (F1 0.5901)
+Epoch 09/60 | loss 1.1767 | train F1 0.5696 | val F1 0.6041
+    ↳ best model saved (F1 0.6041)
+Epoch 10/60 | loss 1.1553 | train F1 0.5754 | val F1 0.5943
+Epoch 11/60 | loss 1.1389 | train F1 0.5871 | val F1 0.5951
+Epoch 12/60 | loss 1.1030 | train F1 0.6003 | val F1 0.6105
+    ↳ best model saved (F1 0.6105)
+Epoch 13/60 | loss 1.0790 | train F1 0.6066 | val F1 0.6091
+Epoch 14/60 | loss 1.0700 | train F1 0.6145 | val F1 0.6121
+    ↳ best model saved (F1 0.6121)
+Epoch 15/60 | loss 1.0503 | train F1 0.6152 | val F1 0.6167
+    ↳ best model saved (F1 0.6167)
+Epoch 16/60 | loss 1.0317 | train F1 0.6268 | val F1 0.6205
+    ↳ best model saved (F1 0.6205)
+Epoch 17/60 | loss 1.0107 | train F1 0.6338 | val F1 0.6176
+Epoch 18/60 | loss 1.0104 | train F1 0.6355 | val F1 0.6165
+Epoch 19/60 | loss 0.9855 | train F1 0.6439 | val F1 0.6206
+    ↳ best model saved (F1 0.6206)
+Epoch 20/60 | loss 0.9822 | train F1 0.6444 | val F1 0.6186
+Epoch 21/60 | loss 0.9702 | train F1 0.6458 | val F1 0.6290
+    ↳ best model saved (F1 0.6290)
+Epoch 22/60 | loss 0.9547 | train F1 0.6597 | val F1 0.6157
+Epoch 23/60 | loss 0.9364 | train F1 0.6613 | val F1 0.6330
+    ↳ best model saved (F1 0.6330)
+Epoch 24/60 | loss 0.9323 | train F1 0.6637 | val F1 0.6093
+Epoch 25/60 | loss 0.9168 | train F1 0.6656 | val F1 0.6246
+Epoch 26/60 | loss 0.9125 | train F1 0.6722 | val F1 0.6241
+Epoch 27/60 | loss 0.8958 | train F1 0.6785 | val F1 0.6181
+Epoch 28/60 | loss 0.8782 | train F1 0.6808 | val F1 0.6211
+Epoch 29/60 | loss 0.8640 | train F1 0.6925 | val F1 0.6274
+Epoch 30/60 | loss 0.8452 | train F1 0.6961 | val F1 0.6306
+Epoch 31/60 | loss 0.8407 | train F1 0.6975 | val F1 0.6266
+Epoch 32/60 | loss 0.8296 | train F1 0.7023 | val F1 0.6169
+Epoch 33/60 | loss 0.8215 | train F1 0.7059 | val F1 0.6338
+    ↳ best model saved (F1 0.6338)
+Epoch 34/60 | loss 0.7932 | train F1 0.7135 | val F1 0.6305
+Epoch 35/60 | loss 0.7866 | train F1 0.7156 | val F1 0.6360
+    ↳ best model saved (F1 0.6360)
+Epoch 36/60 | loss 0.7739 | train F1 0.7248 | val F1 0.6279
+Epoch 37/60 | loss 0.7567 | train F1 0.7296 | val F1 0.6181
+Epoch 38/60 | loss 0.7524 | train F1 0.7329 | val F1 0.6292
+Epoch 39/60 | loss 0.7366 | train F1 0.7352 | val F1 0.6279
+Epoch 40/60 | loss 0.7298 | train F1 0.7376 | val F1 0.6155
+Epoch 41/60 | loss 0.7121 | train F1 0.7460 | val F1 0.6314
+Epoch 42/60 | loss 0.6840 | train F1 0.7536 | val F1 0.6190
+Epoch 43/60 | loss 0.6773 | train F1 0.7607 | val F1 0.6104
+Epoch 44/60 | loss 0.6715 | train F1 0.7613 | val F1 0.6324
+Epoch 45/60 | loss 0.6514 | train F1 0.7682 | val F1 0.6184
+Epoch 46/60 | loss 0.6224 | train F1 0.7777 | val F1 0.6219
+Epoch 47/60 | loss 0.6217 | train F1 0.7785 | val F1 0.6164
+Epoch 48/60 | loss 0.6075 | train F1 0.7836 | val F1 0.6026
+Epoch 49/60 | loss 0.5974 | train F1 0.7897 | val F1 0.6203
+Epoch 50/60 | loss 0.5770 | train F1 0.7933 | val F1 0.6224
+Early stopping triggered at epoch 50
+
+Test Results:
+              precision    recall  f1-score   support
+
+       anger       0.52      0.55      0.53       345
+     disgust       0.42      0.07      0.12        68
+        fear       0.06      0.02      0.03        50
+         joy       0.59      0.60      0.60       402
+     neutral       0.73      0.84      0.78      1256
+     sadness       0.54      0.26      0.35       208
+    surprise       0.60      0.57      0.58       281
+
+    accuracy                           0.65      2610
+   macro avg       0.49      0.42      0.43      2610
+weighted avg       0.63      0.65      0.63      2610
+

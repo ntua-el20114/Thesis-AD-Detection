@@ -1,0 +1,423 @@
+Run dir: /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt
+Loaded 2203/2204 samples with embeddings
+Loaded 266/266 samples with embeddings
+
+==================================================
+EXPERIMENT:  CoAttentionClassifier-alt
+==================================================
+CoAttentionClassifier, but match the fusion scheme of ConGrAD 
+
+Balanced-MixUp: OFF
+Visualizations: ON
+
+
+==================================================
+MODEL ARCHITECTURE & PARAMETERS
+==================================================
+CoAttentionClassifier(
+  (audio_proj): Linear(in_features=1024, out_features=128, bias=True)
+  (text_proj): Linear(in_features=768, out_features=128, bias=True)
+  (layers): ModuleList(
+    (0): CoAttentionBlock(
+      (audio_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (text_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (ffn_a): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (ffn_t): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (norm_a1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_a2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+  (fusion): Linear(in_features=256, out_features=128, bias=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=128, out_features=128, bias=True)
+    (1): GELU(approximate='none')
+    (2): Dropout(p=0.5, inplace=False)
+    (3): Linear(in_features=128, out_features=3, bias=True)
+  )
+)
+--------------------------------------------------
+Total parameters:     675,971
+Trainable parameters: 675,971
+Non-trainable params: 0
+==================================================
+
+
+========================================
+Run 1/5 (seed=24)
+========================================
+  Epoch 01/60 | loss 0.7914 | train UAR 0.3338 | val UAR 0.3838
+    ↳ best model saved (UAR 0.3838)
+  Epoch 02/60 | loss 0.6987 | train UAR 0.3846 | val UAR 0.4387
+    ↳ best model saved (UAR 0.4387)
+  Epoch 03/60 | loss 0.6350 | train UAR 0.4623 | val UAR 0.5236
+    ↳ best model saved (UAR 0.5236)
+  Epoch 04/60 | loss 0.5984 | train UAR 0.5336 | val UAR 0.5990
+    ↳ best model saved (UAR 0.5990)
+  Epoch 05/60 | loss 0.5729 | train UAR 0.5570 | val UAR 0.5855
+  Epoch 06/60 | loss 0.5502 | train UAR 0.5772 | val UAR 0.5155
+  Epoch 07/60 | loss 0.5185 | train UAR 0.6185 | val UAR 0.5926
+  Epoch 08/60 | loss 0.5044 | train UAR 0.6142 | val UAR 0.6549
+    ↳ best model saved (UAR 0.6549)
+  Epoch 09/60 | loss 0.4937 | train UAR 0.6350 | val UAR 0.5960
+  Epoch 10/60 | loss 0.4760 | train UAR 0.6598 | val UAR 0.6704
+    ↳ best model saved (UAR 0.6704)
+  Epoch 11/60 | loss 0.4634 | train UAR 0.6562 | val UAR 0.6370
+  Epoch 12/60 | loss 0.4560 | train UAR 0.6728 | val UAR 0.6680
+  Epoch 13/60 | loss 0.4476 | train UAR 0.6693 | val UAR 0.6394
+  Epoch 14/60 | loss 0.4437 | train UAR 0.6820 | val UAR 0.5832
+  Epoch 15/60 | loss 0.4195 | train UAR 0.7021 | val UAR 0.6916
+    ↳ best model saved (UAR 0.6916)
+  Epoch 16/60 | loss 0.4260 | train UAR 0.6811 | val UAR 0.6593
+  Epoch 17/60 | loss 0.4059 | train UAR 0.7021 | val UAR 0.6377
+  Epoch 18/60 | loss 0.3913 | train UAR 0.7070 | val UAR 0.6835
+  Epoch 19/60 | loss 0.3885 | train UAR 0.6953 | val UAR 0.6727
+  Epoch 20/60 | loss 0.3748 | train UAR 0.7279 | val UAR 0.6229
+  Epoch 21/60 | loss 0.3611 | train UAR 0.7349 | val UAR 0.7061
+    ↳ best model saved (UAR 0.7061)
+  Epoch 22/60 | loss 0.3649 | train UAR 0.7208 | val UAR 0.6815
+  Epoch 23/60 | loss 0.3415 | train UAR 0.7432 | val UAR 0.6896
+  Epoch 24/60 | loss 0.3412 | train UAR 0.7511 | val UAR 0.7293
+    ↳ best model saved (UAR 0.7293)
+  Epoch 25/60 | loss 0.3384 | train UAR 0.7479 | val UAR 0.6663
+  Epoch 26/60 | loss 0.3212 | train UAR 0.7581 | val UAR 0.7111
+  Epoch 27/60 | loss 0.3149 | train UAR 0.7582 | val UAR 0.5539
+  Epoch 28/60 | loss 0.3118 | train UAR 0.7776 | val UAR 0.7347
+    ↳ best model saved (UAR 0.7347)
+  Epoch 29/60 | loss 0.3051 | train UAR 0.7798 | val UAR 0.6754
+  Epoch 30/60 | loss 0.2970 | train UAR 0.7676 | val UAR 0.6936
+  Epoch 31/60 | loss 0.2802 | train UAR 0.8004 | val UAR 0.7643
+    ↳ best model saved (UAR 0.7643)
+  Epoch 32/60 | loss 0.2832 | train UAR 0.7792 | val UAR 0.6926
+  Epoch 33/60 | loss 0.2669 | train UAR 0.7960 | val UAR 0.7135
+  Epoch 34/60 | loss 0.2572 | train UAR 0.8132 | val UAR 0.6865
+  Epoch 35/60 | loss 0.2640 | train UAR 0.8038 | val UAR 0.7158
+  Epoch 36/60 | loss 0.2484 | train UAR 0.8173 | val UAR 0.6906
+  Epoch 37/60 | loss 0.2476 | train UAR 0.8153 | val UAR 0.7293
+  Epoch 38/60 | loss 0.2295 | train UAR 0.8360 | val UAR 0.6704
+  Epoch 39/60 | loss 0.2311 | train UAR 0.8290 | val UAR 0.6667
+  Epoch 40/60 | loss 0.2126 | train UAR 0.8428 | val UAR 0.6923
+  Epoch 41/60 | loss 0.2237 | train UAR 0.8350 | val UAR 0.6889
+  Epoch 42/60 | loss 0.2039 | train UAR 0.8618 | val UAR 0.6751
+  Epoch 43/60 | loss 0.2063 | train UAR 0.8612 | val UAR 0.6690
+  Epoch 44/60 | loss 0.2034 | train UAR 0.8541 | val UAR 0.6808
+  Epoch 45/60 | loss 0.1864 | train UAR 0.8619 | val UAR 0.6384
+  Epoch 46/60 | loss 0.2041 | train UAR 0.8526 | val UAR 0.7138
+  Early stopping triggered at epoch 46
+  Training plot saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_0/training.png
+              precision    recall  f1-score   support
+
+          HC       0.78      0.58      0.67       110
+         MCI       0.66      0.88      0.75        90
+    Dementia       0.86      0.83      0.85        66
+
+    accuracy                           0.74       266
+   macro avg       0.77      0.76      0.76       266
+weighted avg       0.76      0.74      0.74       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_0/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_0/graph.png
+
+========================================
+Run 2/5 (seed=25)
+========================================
+  Epoch 01/60 | loss 0.7684 | train UAR 0.3348 | val UAR 0.3333
+    ↳ best model saved (UAR 0.3333)
+  Epoch 02/60 | loss 0.6735 | train UAR 0.3929 | val UAR 0.4424
+    ↳ best model saved (UAR 0.4424)
+  Epoch 03/60 | loss 0.6257 | train UAR 0.4768 | val UAR 0.4862
+    ↳ best model saved (UAR 0.4862)
+  Epoch 04/60 | loss 0.5944 | train UAR 0.5314 | val UAR 0.4744
+  Epoch 05/60 | loss 0.5618 | train UAR 0.5458 | val UAR 0.5589
+    ↳ best model saved (UAR 0.5589)
+  Epoch 06/60 | loss 0.5485 | train UAR 0.5757 | val UAR 0.6576
+    ↳ best model saved (UAR 0.6576)
+  Epoch 07/60 | loss 0.5174 | train UAR 0.6212 | val UAR 0.5983
+  Epoch 08/60 | loss 0.5114 | train UAR 0.6050 | val UAR 0.6626
+    ↳ best model saved (UAR 0.6626)
+  Epoch 09/60 | loss 0.4837 | train UAR 0.6368 | val UAR 0.5865
+  Epoch 10/60 | loss 0.4712 | train UAR 0.6481 | val UAR 0.6374
+  Epoch 11/60 | loss 0.4697 | train UAR 0.6454 | val UAR 0.6118
+  Epoch 12/60 | loss 0.4707 | train UAR 0.6426 | val UAR 0.6539
+  Epoch 13/60 | loss 0.4435 | train UAR 0.6715 | val UAR 0.6684
+    ↳ best model saved (UAR 0.6684)
+  Epoch 14/60 | loss 0.4336 | train UAR 0.6693 | val UAR 0.6973
+    ↳ best model saved (UAR 0.6973)
+  Epoch 15/60 | loss 0.4275 | train UAR 0.6799 | val UAR 0.6980
+    ↳ best model saved (UAR 0.6980)
+  Epoch 16/60 | loss 0.4225 | train UAR 0.6916 | val UAR 0.7030
+    ↳ best model saved (UAR 0.7030)
+  Epoch 17/60 | loss 0.4155 | train UAR 0.6829 | val UAR 0.7192
+    ↳ best model saved (UAR 0.7192)
+  Epoch 18/60 | loss 0.3963 | train UAR 0.6923 | val UAR 0.7081
+  Epoch 19/60 | loss 0.3875 | train UAR 0.6967 | val UAR 0.7182
+  Epoch 20/60 | loss 0.3786 | train UAR 0.7177 | val UAR 0.6933
+  Epoch 21/60 | loss 0.3679 | train UAR 0.7224 | val UAR 0.7101
+  Epoch 22/60 | loss 0.3655 | train UAR 0.7313 | val UAR 0.6882
+  Epoch 23/60 | loss 0.3650 | train UAR 0.7191 | val UAR 0.7232
+    ↳ best model saved (UAR 0.7232)
+  Epoch 24/60 | loss 0.3422 | train UAR 0.7390 | val UAR 0.6694
+  Epoch 25/60 | loss 0.3588 | train UAR 0.7294 | val UAR 0.6983
+  Epoch 26/60 | loss 0.3306 | train UAR 0.7497 | val UAR 0.7067
+  Epoch 27/60 | loss 0.3156 | train UAR 0.7652 | val UAR 0.6273
+  Epoch 28/60 | loss 0.3160 | train UAR 0.7591 | val UAR 0.7209
+  Epoch 29/60 | loss 0.3031 | train UAR 0.7624 | val UAR 0.6828
+  Epoch 30/60 | loss 0.2932 | train UAR 0.7750 | val UAR 0.7135
+  Epoch 31/60 | loss 0.3037 | train UAR 0.7620 | val UAR 0.6811
+  Epoch 32/60 | loss 0.2748 | train UAR 0.7961 | val UAR 0.7020
+  Epoch 33/60 | loss 0.2894 | train UAR 0.7786 | val UAR 0.7168
+  Epoch 34/60 | loss 0.2738 | train UAR 0.8052 | val UAR 0.6754
+  Epoch 35/60 | loss 0.2529 | train UAR 0.8036 | val UAR 0.6949
+  Epoch 36/60 | loss 0.2440 | train UAR 0.8202 | val UAR 0.6522
+  Epoch 37/60 | loss 0.2478 | train UAR 0.8284 | val UAR 0.7158
+  Epoch 38/60 | loss 0.2389 | train UAR 0.8315 | val UAR 0.7300
+    ↳ best model saved (UAR 0.7300)
+  Epoch 39/60 | loss 0.2248 | train UAR 0.8315 | val UAR 0.7017
+  Epoch 40/60 | loss 0.2142 | train UAR 0.8475 | val UAR 0.7226
+  Epoch 41/60 | loss 0.2038 | train UAR 0.8501 | val UAR 0.7481
+    ↳ best model saved (UAR 0.7481)
+  Epoch 42/60 | loss 0.2074 | train UAR 0.8590 | val UAR 0.7118
+  Epoch 43/60 | loss 0.2150 | train UAR 0.8403 | val UAR 0.7286
+  Epoch 44/60 | loss 0.1810 | train UAR 0.8844 | val UAR 0.7003
+  Epoch 45/60 | loss 0.1754 | train UAR 0.8814 | val UAR 0.7199
+  Epoch 46/60 | loss 0.1862 | train UAR 0.8677 | val UAR 0.7057
+  Epoch 47/60 | loss 0.1763 | train UAR 0.8779 | val UAR 0.7192
+  Epoch 48/60 | loss 0.1600 | train UAR 0.8743 | val UAR 0.7128
+  Epoch 49/60 | loss 0.1539 | train UAR 0.8920 | val UAR 0.7007
+  Epoch 50/60 | loss 0.1375 | train UAR 0.9043 | val UAR 0.6539
+  Epoch 51/60 | loss 0.1470 | train UAR 0.8960 | val UAR 0.7253
+  Epoch 52/60 | loss 0.1170 | train UAR 0.9219 | val UAR 0.6556
+  Epoch 53/60 | loss 0.1160 | train UAR 0.9211 | val UAR 0.6892
+  Epoch 54/60 | loss 0.1175 | train UAR 0.9201 | val UAR 0.6912
+  Epoch 55/60 | loss 0.1250 | train UAR 0.9164 | val UAR 0.7034
+  Epoch 56/60 | loss 0.1005 | train UAR 0.9299 | val UAR 0.7195
+  Early stopping triggered at epoch 56
+  Training plot saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_1/training.png
+              precision    recall  f1-score   support
+
+          HC       0.72      0.66      0.69       110
+         MCI       0.65      0.78      0.71        90
+    Dementia       0.93      0.80      0.86        66
+
+    accuracy                           0.74       266
+   macro avg       0.77      0.75      0.75       266
+weighted avg       0.75      0.74      0.74       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_1/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_1/graph.png
+
+========================================
+Run 3/5 (seed=26)
+========================================
+  Epoch 01/60 | loss 0.7682 | train UAR 0.3374 | val UAR 0.4003
+    ↳ best model saved (UAR 0.4003)
+  Epoch 02/60 | loss 0.6711 | train UAR 0.4065 | val UAR 0.4209
+    ↳ best model saved (UAR 0.4209)
+  Epoch 03/60 | loss 0.6162 | train UAR 0.4632 | val UAR 0.5795
+    ↳ best model saved (UAR 0.5795)
+  Epoch 04/60 | loss 0.5878 | train UAR 0.5297 | val UAR 0.5034
+  Epoch 05/60 | loss 0.5541 | train UAR 0.5694 | val UAR 0.4306
+  Epoch 06/60 | loss 0.5316 | train UAR 0.5849 | val UAR 0.5498
+  Epoch 07/60 | loss 0.5247 | train UAR 0.6111 | val UAR 0.6818
+    ↳ best model saved (UAR 0.6818)
+  Epoch 08/60 | loss 0.5019 | train UAR 0.6147 | val UAR 0.6347
+  Epoch 09/60 | loss 0.4924 | train UAR 0.6455 | val UAR 0.6461
+  Epoch 10/60 | loss 0.4663 | train UAR 0.6460 | val UAR 0.6350
+  Epoch 11/60 | loss 0.4777 | train UAR 0.6526 | val UAR 0.6848
+    ↳ best model saved (UAR 0.6848)
+  Epoch 12/60 | loss 0.4681 | train UAR 0.6428 | val UAR 0.6044
+  Epoch 13/60 | loss 0.4551 | train UAR 0.6611 | val UAR 0.5761
+  Epoch 14/60 | loss 0.4323 | train UAR 0.6708 | val UAR 0.6296
+  Epoch 15/60 | loss 0.4287 | train UAR 0.6808 | val UAR 0.7296
+    ↳ best model saved (UAR 0.7296)
+  Epoch 16/60 | loss 0.4106 | train UAR 0.6891 | val UAR 0.6475
+  Epoch 17/60 | loss 0.4026 | train UAR 0.7106 | val UAR 0.6077
+  Epoch 18/60 | loss 0.4191 | train UAR 0.6792 | val UAR 0.6118
+  Epoch 19/60 | loss 0.3992 | train UAR 0.6795 | val UAR 0.6875
+  Epoch 20/60 | loss 0.3779 | train UAR 0.7102 | val UAR 0.6872
+  Epoch 21/60 | loss 0.3734 | train UAR 0.7133 | val UAR 0.6646
+  Epoch 22/60 | loss 0.3665 | train UAR 0.7197 | val UAR 0.6636
+  Epoch 23/60 | loss 0.3609 | train UAR 0.7169 | val UAR 0.6064
+  Epoch 24/60 | loss 0.3579 | train UAR 0.7226 | val UAR 0.6663
+  Epoch 25/60 | loss 0.3369 | train UAR 0.7421 | val UAR 0.7364
+    ↳ best model saved (UAR 0.7364)
+  Epoch 26/60 | loss 0.3368 | train UAR 0.7521 | val UAR 0.7384
+    ↳ best model saved (UAR 0.7384)
+  Epoch 27/60 | loss 0.3347 | train UAR 0.7482 | val UAR 0.6976
+  Epoch 28/60 | loss 0.3297 | train UAR 0.7347 | val UAR 0.7290
+  Epoch 29/60 | loss 0.2973 | train UAR 0.7780 | val UAR 0.7411
+    ↳ best model saved (UAR 0.7411)
+  Epoch 30/60 | loss 0.2970 | train UAR 0.7799 | val UAR 0.7178
+  Epoch 31/60 | loss 0.2942 | train UAR 0.7732 | val UAR 0.7165
+  Epoch 32/60 | loss 0.2805 | train UAR 0.7967 | val UAR 0.7209
+  Epoch 33/60 | loss 0.2734 | train UAR 0.7935 | val UAR 0.7316
+  Epoch 34/60 | loss 0.2597 | train UAR 0.8016 | val UAR 0.7215
+  Epoch 35/60 | loss 0.2691 | train UAR 0.7952 | val UAR 0.6946
+  Epoch 36/60 | loss 0.2492 | train UAR 0.8204 | val UAR 0.7114
+  Epoch 37/60 | loss 0.2468 | train UAR 0.8186 | val UAR 0.5966
+  Epoch 38/60 | loss 0.2229 | train UAR 0.8301 | val UAR 0.7239
+  Epoch 39/60 | loss 0.2343 | train UAR 0.8294 | val UAR 0.6909
+  Epoch 40/60 | loss 0.2155 | train UAR 0.8390 | val UAR 0.7239
+  Epoch 41/60 | loss 0.1995 | train UAR 0.8493 | val UAR 0.7606
+    ↳ best model saved (UAR 0.7606)
+  Epoch 42/60 | loss 0.2002 | train UAR 0.8564 | val UAR 0.7114
+  Epoch 43/60 | loss 0.1795 | train UAR 0.8762 | val UAR 0.7081
+  Epoch 44/60 | loss 0.1575 | train UAR 0.8851 | val UAR 0.7047
+  Epoch 45/60 | loss 0.1513 | train UAR 0.8915 | val UAR 0.7024
+  Epoch 46/60 | loss 0.1645 | train UAR 0.8826 | val UAR 0.6909
+  Epoch 47/60 | loss 0.1646 | train UAR 0.8834 | val UAR 0.7114
+  Epoch 48/60 | loss 0.1536 | train UAR 0.9004 | val UAR 0.6609
+  Epoch 49/60 | loss 0.1418 | train UAR 0.9018 | val UAR 0.7205
+  Epoch 50/60 | loss 0.1263 | train UAR 0.9153 | val UAR 0.6589
+  Epoch 51/60 | loss 0.1262 | train UAR 0.9217 | val UAR 0.6956
+  Epoch 52/60 | loss 0.1444 | train UAR 0.8930 | val UAR 0.7088
+  Epoch 53/60 | loss 0.1021 | train UAR 0.9374 | val UAR 0.6569
+  Epoch 54/60 | loss 0.1192 | train UAR 0.9236 | val UAR 0.6670
+  Epoch 55/60 | loss 0.1280 | train UAR 0.9053 | val UAR 0.7074
+  Epoch 56/60 | loss 0.0806 | train UAR 0.9528 | val UAR 0.7253
+  Early stopping triggered at epoch 56
+  Training plot saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_2/training.png
+              precision    recall  f1-score   support
+
+          HC       0.69      0.78      0.73       110
+         MCI       0.74      0.67      0.70        90
+    Dementia       0.92      0.83      0.87        66
+
+    accuracy                           0.76       266
+   macro avg       0.78      0.76      0.77       266
+weighted avg       0.76      0.76      0.76       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_2/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_2/graph.png
+
+========================================
+Run 4/5 (seed=27)
+========================================
+  Epoch 01/60 | loss 0.7744 | train UAR 0.3340 | val UAR 0.3333
+    ↳ best model saved (UAR 0.3333)
+  Epoch 02/60 | loss 0.6690 | train UAR 0.3973 | val UAR 0.4832
+    ↳ best model saved (UAR 0.4832)
+  Epoch 03/60 | loss 0.6155 | train UAR 0.5020 | val UAR 0.4411
+  Epoch 04/60 | loss 0.5828 | train UAR 0.5479 | val UAR 0.3987
+  Epoch 05/60 | loss 0.5828 | train UAR 0.5412 | val UAR 0.6488
+    ↳ best model saved (UAR 0.6488)
+  Epoch 06/60 | loss 0.5613 | train UAR 0.5611 | val UAR 0.6572
+    ↳ best model saved (UAR 0.6572)
+  Epoch 07/60 | loss 0.5413 | train UAR 0.6025 | val UAR 0.6599
+    ↳ best model saved (UAR 0.6599)
+  Epoch 08/60 | loss 0.5161 | train UAR 0.6240 | val UAR 0.6596
+  Epoch 09/60 | loss 0.5015 | train UAR 0.6246 | val UAR 0.6811
+    ↳ best model saved (UAR 0.6811)
+  Epoch 10/60 | loss 0.4872 | train UAR 0.6447 | val UAR 0.6791
+  Epoch 11/60 | loss 0.4766 | train UAR 0.6464 | val UAR 0.5869
+  Epoch 12/60 | loss 0.4536 | train UAR 0.6518 | val UAR 0.7300
+    ↳ best model saved (UAR 0.7300)
+  Epoch 13/60 | loss 0.4529 | train UAR 0.6613 | val UAR 0.7370
+    ↳ best model saved (UAR 0.7370)
+  Epoch 14/60 | loss 0.4370 | train UAR 0.6806 | val UAR 0.6946
+  Epoch 15/60 | loss 0.4332 | train UAR 0.6820 | val UAR 0.6485
+  Epoch 16/60 | loss 0.4197 | train UAR 0.6895 | val UAR 0.6047
+  Epoch 17/60 | loss 0.4130 | train UAR 0.6881 | val UAR 0.6747
+  Epoch 18/60 | loss 0.3945 | train UAR 0.6869 | val UAR 0.6131
+  Epoch 19/60 | loss 0.3971 | train UAR 0.7030 | val UAR 0.6909
+  Epoch 20/60 | loss 0.3754 | train UAR 0.7215 | val UAR 0.6906
+  Epoch 21/60 | loss 0.3858 | train UAR 0.6957 | val UAR 0.7040
+  Epoch 22/60 | loss 0.3534 | train UAR 0.7256 | val UAR 0.6862
+  Epoch 23/60 | loss 0.3630 | train UAR 0.7184 | val UAR 0.6983
+  Epoch 24/60 | loss 0.3392 | train UAR 0.7403 | val UAR 0.7071
+  Epoch 25/60 | loss 0.3382 | train UAR 0.7324 | val UAR 0.7138
+  Epoch 26/60 | loss 0.3348 | train UAR 0.7480 | val UAR 0.6236
+  Epoch 27/60 | loss 0.3228 | train UAR 0.7616 | val UAR 0.6933
+  Epoch 28/60 | loss 0.3155 | train UAR 0.7579 | val UAR 0.6451
+  Early stopping triggered at epoch 28
+  Training plot saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_3/training.png
+              precision    recall  f1-score   support
+
+          HC       0.74      0.51      0.60       110
+         MCI       0.63      0.78      0.70        90
+    Dementia       0.77      0.92      0.84        66
+
+    accuracy                           0.70       266
+   macro avg       0.71      0.74      0.71       266
+weighted avg       0.71      0.70      0.69       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_3/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_3/graph.png
+
+========================================
+Run 5/5 (seed=28)
+========================================
+  Epoch 01/60 | loss 0.7626 | train UAR 0.3372 | val UAR 0.4084
+    ↳ best model saved (UAR 0.4084)
+  Epoch 02/60 | loss 0.6737 | train UAR 0.3904 | val UAR 0.4333
+    ↳ best model saved (UAR 0.4333)
+  Epoch 03/60 | loss 0.6226 | train UAR 0.5073 | val UAR 0.5114
+    ↳ best model saved (UAR 0.5114)
+  Epoch 04/60 | loss 0.5990 | train UAR 0.5134 | val UAR 0.4983
+  Epoch 05/60 | loss 0.5602 | train UAR 0.5651 | val UAR 0.5256
+    ↳ best model saved (UAR 0.5256)
+  Epoch 06/60 | loss 0.5492 | train UAR 0.5754 | val UAR 0.6269
+    ↳ best model saved (UAR 0.6269)
+  Epoch 07/60 | loss 0.5479 | train UAR 0.5941 | val UAR 0.6589
+    ↳ best model saved (UAR 0.6589)
+  Epoch 08/60 | loss 0.5235 | train UAR 0.5871 | val UAR 0.6673
+    ↳ best model saved (UAR 0.6673)
+  Epoch 09/60 | loss 0.4928 | train UAR 0.6343 | val UAR 0.6178
+  Epoch 10/60 | loss 0.4916 | train UAR 0.6424 | val UAR 0.6367
+  Epoch 11/60 | loss 0.4639 | train UAR 0.6493 | val UAR 0.6441
+  Epoch 12/60 | loss 0.4661 | train UAR 0.6315 | val UAR 0.7030
+    ↳ best model saved (UAR 0.7030)
+  Epoch 13/60 | loss 0.4581 | train UAR 0.6555 | val UAR 0.6643
+  Epoch 14/60 | loss 0.4366 | train UAR 0.6654 | val UAR 0.7104
+    ↳ best model saved (UAR 0.7104)
+  Epoch 15/60 | loss 0.4282 | train UAR 0.6919 | val UAR 0.5808
+  Epoch 16/60 | loss 0.4195 | train UAR 0.6827 | val UAR 0.7131
+    ↳ best model saved (UAR 0.7131)
+  Epoch 17/60 | loss 0.4092 | train UAR 0.6759 | val UAR 0.7367
+    ↳ best model saved (UAR 0.7367)
+  Epoch 18/60 | loss 0.3962 | train UAR 0.6960 | val UAR 0.7189
+  Epoch 19/60 | loss 0.3849 | train UAR 0.7018 | val UAR 0.6721
+  Epoch 20/60 | loss 0.3780 | train UAR 0.7158 | val UAR 0.6970
+  Epoch 21/60 | loss 0.3651 | train UAR 0.7226 | val UAR 0.6620
+  Epoch 22/60 | loss 0.3746 | train UAR 0.7059 | val UAR 0.6923
+  Epoch 23/60 | loss 0.3540 | train UAR 0.7297 | val UAR 0.6663
+  Epoch 24/60 | loss 0.3358 | train UAR 0.7389 | val UAR 0.7131
+  Epoch 25/60 | loss 0.3363 | train UAR 0.7344 | val UAR 0.7024
+  Epoch 26/60 | loss 0.3172 | train UAR 0.7512 | val UAR 0.7077
+  Epoch 27/60 | loss 0.3195 | train UAR 0.7440 | val UAR 0.7051
+  Epoch 28/60 | loss 0.3135 | train UAR 0.7649 | val UAR 0.6822
+  Epoch 29/60 | loss 0.2940 | train UAR 0.7623 | val UAR 0.7152
+  Epoch 30/60 | loss 0.2750 | train UAR 0.7884 | val UAR 0.6778
+  Epoch 31/60 | loss 0.2651 | train UAR 0.7923 | val UAR 0.6724
+  Epoch 32/60 | loss 0.2723 | train UAR 0.7917 | val UAR 0.7020
+  Early stopping triggered at epoch 32
+  Training plot saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_4/training.png
+              precision    recall  f1-score   support
+
+          HC       0.73      0.55      0.62       110
+         MCI       0.64      0.76      0.69        90
+    Dementia       0.78      0.91      0.84        66
+
+    accuracy                           0.71       266
+   macro avg       0.72      0.74      0.72       266
+weighted avg       0.71      0.71      0.70       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_4/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/run_4/graph.png
+
+Results saved to /home/michraf/Thesis/results/20260619_170742_CoAttentionClassifier-alt/results.csv

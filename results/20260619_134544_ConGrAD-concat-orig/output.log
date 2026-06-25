@@ -1,0 +1,188 @@
+Run dir: /home/michraf/Thesis/results/20260619_134544_ConGrAD-concat-orig
+Loaded 2203/2204 samples with embeddings
+Loaded 266/266 samples with embeddings
+
+==================================================
+EXPERIMENT:  ConGrAD-concat-orig
+==================================================
+ConGrAD, but concatenate pre-rgat before classification, like in MERC-GCN. 
+
+Balanced-MixUp: OFF
+Visualizations: ON
+
+
+==================================================
+MODEL ARCHITECTURE & PARAMETERS
+==================================================
+ConGrAD(
+  (audio_proj): Linear(in_features=1024, out_features=128, bias=True)
+  (text_proj): Linear(in_features=768, out_features=128, bias=True)
+  (co_attn): ModuleList(
+    (0-1): 2 x CoAttentionBlock(
+      (audio_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (text_attn): MultiheadAttention(
+        (out_proj): NonDynamicallyQuantizableLinear(in_features=128, out_features=128, bias=True)
+      )
+      (ffn_a): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (ffn_t): Sequential(
+        (0): Linear(in_features=128, out_features=512, bias=True)
+        (1): GELU(approximate='none')
+        (2): Dropout(p=0.5, inplace=False)
+        (3): Linear(in_features=512, out_features=128, bias=True)
+      )
+      (norm_a1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_a2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+      (norm_t2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+    )
+  )
+  (fusion): Linear(in_features=256, out_features=128, bias=True)
+  (rgat): RGAT(
+    (layers): ModuleList(
+      (0-1): 2 x RGATConv(128, 32, heads=4)
+    )
+    (drop): Dropout(p=0.5, inplace=False)
+  )
+  (att_score): Linear(in_features=256, out_features=1, bias=True)
+  (classifier): Sequential(
+    (0): Linear(in_features=256, out_features=128, bias=True)
+    (1): GELU(approximate='none')
+    (2): Dropout(p=0.5, inplace=False)
+    (3): Linear(in_features=128, out_features=3, bias=True)
+  )
+)
+--------------------------------------------------
+Total parameters:     1,224,836
+Trainable parameters: 1,224,836
+Non-trainable params: 0
+==================================================
+
+
+==================================================
+WORST-CASE VRAM PROJECTION (Batch Size: 16, Max Seq Len: 403)
+==================================================
+===============================================================================================
+Layer (type:depth-idx)                        Output Shape              Param #
+===============================================================================================
+ConGrAD                                       [16, 3]                   --
+├─Linear: 1-1                                 [16, 403, 128]            131,200
+├─Linear: 1-2                                 [16, 403, 128]            98,432
+├─ModuleList: 1-3                             --                        --
+│    └─CoAttentionBlock: 2-1                  [16, 403, 128]            --
+│    │    └─MultiheadAttention: 3-1           [16, 403, 128]            66,048
+│    │    └─MultiheadAttention: 3-2           [16, 403, 128]            66,048
+│    │    └─LayerNorm: 3-3                    [16, 403, 128]            256
+│    │    └─LayerNorm: 3-4                    [16, 403, 128]            256
+│    │    └─Sequential: 3-5                   [16, 403, 128]            131,712
+│    │    └─LayerNorm: 3-6                    [16, 403, 128]            256
+│    │    └─Sequential: 3-7                   [16, 403, 128]            131,712
+│    │    └─LayerNorm: 3-8                    [16, 403, 128]            256
+│    └─CoAttentionBlock: 2-2                  [16, 403, 128]            --
+│    │    └─MultiheadAttention: 3-9           [16, 403, 128]            66,048
+│    │    └─MultiheadAttention: 3-10          [16, 403, 128]            66,048
+│    │    └─LayerNorm: 3-11                   [16, 403, 128]            256
+│    │    └─LayerNorm: 3-12                   [16, 403, 128]            256
+│    │    └─Sequential: 3-13                  [16, 403, 128]            131,712
+│    │    └─LayerNorm: 3-14                   [16, 403, 128]            256
+│    │    └─Sequential: 3-15                  [16, 403, 128]            131,712
+│    │    └─LayerNorm: 3-16                   [16, 403, 128]            256
+├─Linear: 1-4                                 [16, 403, 128]            32,896
+├─RGAT: 1-5                                   [6448, 128]               --
+│    └─ModuleList: 2-5                        --                        (recursive)
+│    │    └─RGATConv: 3-17                    [6448, 128]               67,840
+│    └─Dropout: 2-4                           [6448, 128]               --
+│    └─ModuleList: 2-5                        --                        (recursive)
+│    │    └─RGATConv: 3-18                    [6448, 128]               67,840
+│    └─Dropout: 2-6                           [6448, 128]               --
+├─Linear: 1-6                                 [0, 1]                    257
+├─Sequential: 1-7                             [16, 3]                   --
+│    └─Linear: 2-7                            [16, 128]                 32,896
+│    └─GELU: 2-8                              [16, 128]                 --
+│    └─Dropout: 2-9                           [16, 128]                 --
+│    └─Linear: 2-10                           [16, 3]                   387
+===============================================================================================
+Total params: 1,224,836
+Trainable params: 1,224,836
+Non-trainable params: 0
+Total mult-adds (M): 13.20
+===============================================================================================
+Input size (MB): 46.28
+Forward/backward pass size (MB): 204.70
+Params size (MB): 3.30
+Estimated Total Size (MB): 254.28
+===============================================================================================
+
+========================================
+Run 1/1 (seed=24)
+========================================
+  Epoch 01/60 | loss 0.7924 | train UAR 0.3329 | val UAR 0.3333
+    ↳ best model saved (UAR 0.3333)
+  Epoch 02/60 | loss 0.7146 | train UAR 0.3503 | val UAR 0.3242
+  Epoch 03/60 | loss 0.6509 | train UAR 0.3866 | val UAR 0.3374
+    ↳ best model saved (UAR 0.3374)
+  Epoch 04/60 | loss 0.6244 | train UAR 0.4549 | val UAR 0.3997
+    ↳ best model saved (UAR 0.3997)
+  Epoch 05/60 | loss 0.5953 | train UAR 0.5152 | val UAR 0.5320
+    ↳ best model saved (UAR 0.5320)
+  Epoch 06/60 | loss 0.5633 | train UAR 0.5508 | val UAR 0.5993
+    ↳ best model saved (UAR 0.5993)
+  Epoch 07/60 | loss 0.5470 | train UAR 0.5651 | val UAR 0.6303
+    ↳ best model saved (UAR 0.6303)
+  Epoch 08/60 | loss 0.5422 | train UAR 0.5545 | val UAR 0.6357
+    ↳ best model saved (UAR 0.6357)
+  Epoch 09/60 | loss 0.5247 | train UAR 0.5971 | val UAR 0.5993
+  Epoch 10/60 | loss 0.5086 | train UAR 0.6095 | val UAR 0.6761
+    ↳ best model saved (UAR 0.6761)
+  Epoch 11/60 | loss 0.4959 | train UAR 0.6300 | val UAR 0.6438
+  Epoch 12/60 | loss 0.4924 | train UAR 0.6231 | val UAR 0.5795
+  Epoch 13/60 | loss 0.4664 | train UAR 0.6495 | val UAR 0.7125
+    ↳ best model saved (UAR 0.7125)
+  Epoch 14/60 | loss 0.4492 | train UAR 0.6709 | val UAR 0.6902
+  Epoch 15/60 | loss 0.4300 | train UAR 0.6762 | val UAR 0.6428
+  Epoch 16/60 | loss 0.4159 | train UAR 0.6773 | val UAR 0.6663
+  Epoch 17/60 | loss 0.4055 | train UAR 0.7071 | val UAR 0.6505
+  Epoch 18/60 | loss 0.3912 | train UAR 0.7068 | val UAR 0.6764
+  Epoch 19/60 | loss 0.3883 | train UAR 0.7034 | val UAR 0.6347
+  Epoch 20/60 | loss 0.3789 | train UAR 0.7130 | val UAR 0.6909
+  Epoch 21/60 | loss 0.3672 | train UAR 0.7224 | val UAR 0.6946
+  Epoch 22/60 | loss 0.3559 | train UAR 0.7238 | val UAR 0.5687
+  Epoch 23/60 | loss 0.3222 | train UAR 0.7680 | val UAR 0.7202
+    ↳ best model saved (UAR 0.7202)
+  Epoch 24/60 | loss 0.3272 | train UAR 0.7525 | val UAR 0.6717
+  Epoch 25/60 | loss 0.3055 | train UAR 0.7727 | val UAR 0.6508
+  Epoch 26/60 | loss 0.2834 | train UAR 0.7916 | val UAR 0.6852
+  Epoch 27/60 | loss 0.2925 | train UAR 0.7834 | val UAR 0.7192
+  Epoch 28/60 | loss 0.2751 | train UAR 0.8074 | val UAR 0.6673
+  Epoch 29/60 | loss 0.2521 | train UAR 0.8249 | val UAR 0.6825
+  Epoch 30/60 | loss 0.2600 | train UAR 0.8066 | val UAR 0.6724
+  Epoch 31/60 | loss 0.2632 | train UAR 0.8112 | val UAR 0.6983
+  Epoch 32/60 | loss 0.2347 | train UAR 0.8418 | val UAR 0.6535
+  Epoch 33/60 | loss 0.2275 | train UAR 0.8517 | val UAR 0.6828
+  Epoch 34/60 | loss 0.2289 | train UAR 0.8400 | val UAR 0.6869
+  Epoch 35/60 | loss 0.2186 | train UAR 0.8548 | val UAR 0.6929
+  Epoch 36/60 | loss 0.1983 | train UAR 0.8707 | val UAR 0.6842
+  Epoch 37/60 | loss 0.1846 | train UAR 0.8757 | val UAR 0.7071
+  Epoch 38/60 | loss 0.2001 | train UAR 0.8670 | val UAR 0.6872
+  Early stopping triggered at epoch 38
+  Training plot saved to /home/michraf/Thesis/results/20260619_134544_ConGrAD-concat-orig/run_0/training.png
+              precision    recall  f1-score   support
+
+          HC       0.71      0.57      0.63       110
+         MCI       0.61      0.83      0.71        90
+    Dementia       0.91      0.76      0.83        66
+
+    accuracy                           0.71       266
+   macro avg       0.74      0.72      0.72       266
+weighted avg       0.73      0.71      0.71       266
+
+  t-SNE saved to /home/michraf/Thesis/results/20260619_134544_ConGrAD-concat-orig/run_0/tsne.png
+  Graph saved to /home/michraf/Thesis/results/20260619_134544_ConGrAD-concat-orig/run_0/graph.png
+
+Results saved to /home/michraf/Thesis/results/20260619_134544_ConGrAD-concat-orig/results.csv

@@ -5,13 +5,14 @@ speakers_json:    ~/Thesis/data/MultiConAD/speakers.json
 train_jsonl:      ~/Thesis/data/MultiConAD/train_English.jsonl
 test_jsonl:       ~/Thesis/data/MultiConAD/test_English.jsonl
 results_dir:      ~/Thesis/results
-pretrained_model: ~/Thesis/results/20260604_161940_ConGrAD_pretrain/epoch_60.pt
+pretrained_model: null
 
 # Experiment
-experiment_name: ConGrAD-BM-pt_60
-experiment_description: "ConGrAD, loaded from pretrained on 20 batches, 60 epochs"
+experiment_name: ConGrAD-ForBack-PosEmbIn
+experiment_description: "ConGrAD, with positional embeddings applied directly after the input projections"
 base_seed: 24
 n_runs: 1
+report_gpu: false # I might remove this
 
 # Embedding dims
 audio_dim: 1024
@@ -33,7 +34,7 @@ patience:     15
 weight_decay: 0.0001
 
 # Domain-Adversarial Training
-adv_lambda: 0.3   # weight of adversarial loss; set 0.0 to disable DANN
+adv_lambda: 0.0   # weight of adversarial loss; set 0.0 to disable DANN
 n_domains:  9     # number of distinct corpora present in training data
 
 # Training
@@ -43,7 +44,7 @@ lr:         0.0001
 epochs:     60
 
 # Data Augmentation
-balanced_mixup: true
+balanced_mixup: false
 mixup_alpha:    0.4
 
 # Visualization

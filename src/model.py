@@ -16,8 +16,9 @@ class CoAttentionClassifier(nn.Module):
             CoAttentionBlock(cfg.d_model, cfg.ca_heads, cfg.dropout)
             for _ in range(cfg.ca_layers)
         ])
+        self.fusion = nn.Linear(2*cfg.d_model, cfg.d_model)
         self.classifier = nn.Sequential(
-            nn.Linear(2 * cfg.d_model, cfg.d_model),
+            nn.Linear(cfg.d_model, cfg.d_model),
             nn.GELU(),
             nn.Dropout(cfg.dropout),
             nn.Linear(cfg.d_model, cfg.n_classes),
@@ -26,16 +27,17 @@ class CoAttentionClassifier(nn.Module):
 
     def forward(self, audio, text, mask, speakers=None, alpha=1.0, return_pooled=False):
         # speakers unused; accepted for interface compatibility with ConGrAD
-        kpm        = ~mask
-        audio      = self.audio_proj(audio)
-        text       = self.text_proj(text)
+        kpm = ~mask
+        audio = self.audio_proj(audio)
+        text = self.text_proj(text)
         for layer in self.layers:
             audio, text = layer(audio, text, kpm)
-        m          = mask.unsqueeze(-1).float()
+        m = mask.unsqueeze(-1).float()
         audio_pool = (audio * m).sum(1) / m.sum(1)
-        text_pool  = (text  * m).sum(1) / m.sum(1)
-        pooled     = torch.cat([audio_pool, text_pool], dim=-1)
-        logits     = self.classifier(pooled)
+        text_pool = (text  * m).sum(1) / m.sum(1)
+        # pooled = torch.cat([audio_pool, text_pool], dim=-1)
+        pooled = self.fusion(torch.cat([audio_pool, text_pool], dim=-1))
+        logits = self.classifier(pooled)
         if return_pooled:
             return logits, pooled.detach()
         # return logits, self.domain_classifier(pooled, alpha)
@@ -52,7 +54,12 @@ class ConGrAD(nn.Module):
             for _ in range(cfg.rgat_layers)
         ])
         self.fusion = nn.Linear(2*cfg.d_model, cfg.d_model)
-        self.rgat = RGAT(cfg.d_model, cfg.rgat_layers, cfg.rgat_heads, cfg.dropout)
+        
+        # Calculate number of relations for Relative Positional Embedding
+        D = 2 * cfg.graph_window + 3
+        n_relations = 4 * D
+        
+        self.rgat = RGAT(cfg.d_model, cfg.rgat_layers, cfg.rgat_heads, cfg.dropout, n_relations=n_relations)
         self.att_score = nn.Linear(2*cfg.d_model, 1)
         self.classifier = nn.Sequential(
             nn.Linear(2*cfg.d_model, cfg.d_model),
@@ -72,13 +79,17 @@ class ConGrAD(nn.Module):
         audio = self.audio_proj(audio)
         text = self.text_proj(text)
 
+        # Add sinusoidal encoding 
+        # pe = sinusoidal_encoding(L, audio.size(-1), audio.device)
+        # audio = audio + pe
+        # text = text + pe
+
         # Multimodal Fusion
         for layer in self.co_attn:
             audio, text = layer(audio, text, ~mask)
         h = self.fusion(torch.cat([audio, text], dim=-1))
 
-        # Graph Construction
-        h = h + sinusoidal_encoding(L, h.size(-1), h.device)
+        # Graph Construction (using Relative Positional Embeddings in edge_type)
         h_flat, edge_index, edge_type, batch, spk_mask = graphify(
             h, lengths, speakers, self.window, h.device, drop_edge=self.drop_edge
         )
@@ -89,8 +100,10 @@ class ConGrAD(nn.Module):
         # Concatenate pre-rgat features
         x = torch.cat([h_flat, x], dim=-1)
 
-        x_par = x[spk_mask]
-        b_par = batch[spk_mask]
+        # x_par = x[spk_mask]
+        # b_par = batch[spk_mask]
+        x_par = x
+        b_par = batch
         att = self.att_score(x_par).squeeze(-1)
 
         pooled = torch.zeros(B, x.size(-1), device=x.device)

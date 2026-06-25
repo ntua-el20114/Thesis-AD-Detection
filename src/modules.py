@@ -44,6 +44,14 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
     node_feats, batches, masks = [], [], []
     offset = 0      # for global indexing
 
+    # Distance buckets D:
+    # 0: unused (self loops)
+    # 1 to window: forward distance
+    # window+1 to 2*window: backward distance
+    # 2*window+1: far forward (jump edges)
+    # 2*window+2: far backward (jump edges)
+    D = 2 * window + 3
+
     for b, L in enumerate(lengths.tolist()):
         spk = speakers[b, :L]
         node_feats.append(h[b, :L])
@@ -67,11 +75,24 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
 
         # Convert undirected pairs to directed edges
         for u, v in pairs:
+            # u is always < v since pairs stores (min, max)
             su, sv = spk[u].item(), spk[v].item()
+            
+            dist = v - u
+            
+            if dist <= window:
+                bucket_uv = dist
+                bucket_vu = window + dist
+            else:
+                bucket_uv = 2 * window + 1
+                bucket_vu = 2 * window + 2
+                
+            rel_uv = (su * 2 + sv) * D + bucket_uv
+            rel_vu = (sv * 2 + su) * D + bucket_vu
+            
             srcs += [u + offset, v + offset]
             dsts += [v + offset, u + offset]
-            rels += [su * 2 + sv, sv * 2 + su]      # 0: int->int    1: int->par
-                                                    # 2: par->int    3: par->par
+            rels += [rel_uv, rel_vu]
 
         offset += L
 

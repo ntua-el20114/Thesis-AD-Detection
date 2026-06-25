@@ -46,6 +46,34 @@ def print_model_summary(model: torch.nn.Module):
     print("="*50 + "\n")
 
 
+def report_vram_projection(cfg, model_class, train_ds, device):
+    """Dynamically projects worst-case VRAM using torchinfo and the dataset's max sequence length."""
+    try:
+        from torchinfo import summary
+        dummy_model = model_class(cfg).to(device)
+        
+        # Find the absolute longest sequence in the dataset
+        max_len = max(len(train_ds.speakers[s['File_Name']]) for s in train_ds.samples)
+        
+        # Create a worst-case dummy batch
+        audio = torch.randn(cfg.batch_size, max_len, cfg.audio_dim, device=device)
+        text = torch.randn(cfg.batch_size, max_len, cfg.text_dim, device=device)
+        speakers = torch.zeros(cfg.batch_size, max_len, dtype=torch.long, device=device)
+        mask = torch.ones(cfg.batch_size, max_len, dtype=torch.bool, device=device)
+        
+        print("\n" + "="*50)
+        print(f"WORST-CASE VRAM PROJECTION (Batch Size: {cfg.batch_size}, Max Seq Len: {max_len})")
+        print("="*50)
+        summary(dummy_model, input_data=(audio, text, mask, speakers), verbose=1)
+        
+        # Clean up memory
+        del dummy_model, audio, text, speakers, mask
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    except ImportError:
+        print("\n[INFO] `torchinfo` is not installed. Run `pip install torchinfo` to see VRAM projections.\n")
+
+
 def compute_uar(labels, preds) -> float:
     r: dict[str, Any] = classification_report(labels, preds, target_names=TARGET_NAMES,
                                                output_dict=True, zero_division=0)
