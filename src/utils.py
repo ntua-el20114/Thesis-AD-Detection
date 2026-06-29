@@ -105,6 +105,7 @@ def save_results_csv(all_metrics: list, path: Path, base_seed: int):
         w.writeheader()
         for run_name, metrics in rows.items():
             w.writerow({'run': run_name, **metrics})
+    print("\nAVERAGE PERFORMANCE:\n", rows['mean'])
 
 
 def plot_training(history: dict, path: Path, experiment_name):

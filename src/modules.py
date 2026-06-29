@@ -18,7 +18,7 @@ def sinusoidal_encoding(L, d_model, device):
     return pe
 
 
-def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
+def graphify(h, lengths, speakers, window, device, log_base=0, drop_edge=0.0):
     """
     Transform a batch of utterance sequences into PyG graphs.
 
@@ -31,7 +31,7 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
         speakers       [B, L_max]       speaker ID per utterance (0=interviewer, 1=participant)
         window         int              symmetric local context window (past and future)
         device         str              target device
-        log_base       int              base for logarithmic skip edges (default: 2)
+        log_base       int              base for logarithmic skip edges (default: 2) (no-skip-edges: 0)
 
     Returns:
         x            [N, d_h]  flat node features
@@ -44,13 +44,12 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
     node_feats, batches, masks = [], [], []
     offset = 0      # for global indexing
 
-    # Distance buckets D:
-    # 0: unused (self loops)
-    # 1 to window: forward distance
-    # window+1 to 2*window: backward distance
-    # 2*window+1: far forward (jump edges)
-    # 2*window+2: far backward (jump edges)
-    D = 2 * window + 3
+    # Distance buckets D (no self loops):
+    # 0 to window-1: forward distance (dist 1 to window)
+    # window to 2*window-1: backward distance (dist 1 to window)
+    # 2*window: far forward (jump edges)
+    # 2*window+1: far backward (jump edges)
+    D = 2 * window + 2
 
     for b, L in enumerate(lengths.tolist()):
         spk = speakers[b, :L]
@@ -66,12 +65,13 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
                 if j != i:
                     pairs.add((min(i, j), max(i, j)))
             # Add logarithmic jump edges
-            step = log_base
-            while step < L:
-                for j in (i - step, i + step):
-                    if 0 <= j < L:
-                        pairs.add((min(i, j), max(i, j)))
-                step *= log_base
+            if log_base > 1:
+                step = log_base
+                while step < L:
+                    for j in (i - step, i + step):
+                        if 0 <= j < L:
+                            pairs.add((min(i, j), max(i, j)))
+                    step *= log_base
 
         # Convert undirected pairs to directed edges
         for u, v in pairs:
@@ -81,11 +81,11 @@ def graphify(h, lengths, speakers, window, device, log_base=2, drop_edge=0.0):
             dist = v - u
             
             if dist <= window:
-                bucket_uv = dist
-                bucket_vu = window + dist
+                bucket_uv = dist - 1
+                bucket_vu = window + dist - 1
             else:
-                bucket_uv = 2 * window + 1
-                bucket_vu = 2 * window + 2
+                bucket_uv = 2 * window
+                bucket_vu = 2 * window + 1
                 
             rel_uv = (su * 2 + sv) * D + bucket_uv
             rel_vu = (sv * 2 + su) * D + bucket_vu

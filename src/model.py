@@ -56,7 +56,7 @@ class ConGrAD(nn.Module):
         self.fusion = nn.Linear(2*cfg.d_model, cfg.d_model)
         
         # Calculate number of relations for Relative Positional Embedding
-        D = 2 * cfg.graph_window + 3
+        D = 2 * cfg.graph_window + 2
         n_relations = 4 * D
         
         self.rgat = RGAT(cfg.d_model, cfg.rgat_layers, cfg.rgat_heads, cfg.dropout, n_relations=n_relations)
@@ -78,11 +78,6 @@ class ConGrAD(nn.Module):
         # Project modalities
         audio = self.audio_proj(audio)
         text = self.text_proj(text)
-
-        # Add sinusoidal encoding 
-        # pe = sinusoidal_encoding(L, audio.size(-1), audio.device)
-        # audio = audio + pe
-        # text = text + pe
 
         # Multimodal Fusion
         for layer in self.co_attn:
